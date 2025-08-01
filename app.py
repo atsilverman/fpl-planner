@@ -101,8 +101,19 @@ def get_team_rankings():
 
 @app.route('/api/player-fixture-history')
 def get_player_fixture_history():
-    """Return empty data for player fixture history (not implemented in static version)"""
-    return jsonify({'error': 'Player fixture history not available in static mode', 'is_new_player': True})
+    """Serve player fixture history from static JSON file"""
+    try:
+        with open('data/player-history.json', 'r') as f:
+            data = json.load(f)
+        
+        # For now, return default data for all players
+        # In the future, this could be expanded with actual player-specific data
+        return jsonify(data['data']['default'])
+            
+    except FileNotFoundError:
+        return jsonify({'fixtures': [], 'is_new_player': False})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/team-fixture-history')
 def get_team_fixture_history():
