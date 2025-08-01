@@ -28,6 +28,13 @@ def serve_static(filename):
     decoded_filename = urllib.parse.unquote(filename)
     return send_from_directory('static', decoded_filename)
 
+@app.route('/team-badges/<path:filename>')
+def serve_team_badges(filename):
+    """Serve team badge files specifically"""
+    import urllib.parse
+    decoded_filename = urllib.parse.unquote(filename)
+    return send_from_directory('static/team_badges_svg', decoded_filename)
+
 @app.route('/api/teams')
 def get_teams():
     """Serve teams data from static JSON file"""
@@ -109,19 +116,38 @@ def get_team_rankings():
 
 @app.route('/api/player-fixture-history')
 def get_player_fixture_history():
-    """Serve player fixture history from static JSON file"""
-    try:
-        with open('data/player-history.json', 'r') as f:
-            data = json.load(f)
-        
-        # For now, return default data for all players
-        # In the future, this could be expanded with actual player-specific data
-        return jsonify(data['data']['default'])
-            
-    except FileNotFoundError:
-        return jsonify({'fixtures': [], 'is_new_player': False})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    """Serve player fixture history data"""
+    # Return sample fixture history data directly
+    sample_data = {
+        'fixtures': [
+            {
+                'gameweek': 1,
+                'total_points': 6,
+                'minutes': 90,
+                'goals_scored': 0,
+                'assists': 0,
+                'clean_sheets': 1,
+                'bonus': 0,
+                'expected_goals': 0.0,
+                'expected_assists': 0.0,
+                'was_home': True
+            },
+            {
+                'gameweek': 2,
+                'total_points': 4,
+                'minutes': 90,
+                'goals_scored': 0,
+                'assists': 0,
+                'clean_sheets': 0,
+                'bonus': 0,
+                'expected_goals': 0.0,
+                'expected_assists': 0.0,
+                'was_home': False
+            }
+        ],
+        'is_new_player': False
+    }
+    return jsonify(sample_data)
 
 @app.route('/api/team-fixture-history')
 def get_team_fixture_history():
