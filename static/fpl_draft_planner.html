@@ -7856,8 +7856,8 @@
             const modalHeight = modalContent.offsetHeight || 400;
             
             // ALWAYS center the modal - no complex logic
-            const left = Math.max(20, (viewportWidth - modalWidth) / 2);
-            const top = Math.max(scrollY + 20, scrollY + (viewportHeight - modalHeight) / 2);
+            let left = Math.max(20, (viewportWidth - modalWidth) / 2);
+            let top = Math.max(scrollY + 20, scrollY + (viewportHeight - modalHeight) / 2);
             
 
             
