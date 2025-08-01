@@ -2,6 +2,7 @@ from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
 import os
 import json
+import csv
 
 app = Flask(__name__)
 
@@ -167,6 +168,50 @@ def get_player_fixture_history():
         if not player_name or not opponent_team_id:
             return jsonify({'error': 'Missing player_name or opponent_team_id parameter'}), 400
         
+        # Load team mappings to convert current team ID to historical team ID
+        team_mapping = {}
+        try:
+            # Load current teams (2025)
+            current_teams = {}
+            with open(os.path.expanduser('~/Desktop/teams_2025.csv'), 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    current_teams[row['id']] = {
+                        'name': row['name'],
+                        'short_name': row['short_name'],
+                        'code': row['code']
+                    }
+            
+            # Load historical teams (2024)
+            historical_teams = {}
+            with open(os.path.expanduser('~/Desktop/teams_2024.csv'), 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    historical_teams[row['id']] = {
+                        'name': row['name'],
+                        'short_name': row['short_name'],
+                        'code': row['code']
+                    }
+            
+            # Create mapping from current team ID to historical team ID using codes
+            code_to_historical_id = {}
+            for hist_id, hist_team in historical_teams.items():
+                code_to_historical_id[hist_team['code']] = hist_id
+            
+            # Map current team ID to historical team ID
+            current_team = current_teams.get(opponent_team_id)
+            if current_team and current_team['code'] in code_to_historical_id:
+                historical_team_id = code_to_historical_id[current_team['code']]
+            else:
+                # Team not in historical data (newly promoted team)
+                return jsonify({
+                    'fixtures': [],
+                    'is_new_player': False
+                })
+                
+        except Exception as e:
+            return jsonify({'error': f'Team mapping error: {str(e)}'}), 500
+        
         # Load real historical data
         with open('data/player-history.json', 'r') as f:
             history_data = json.load(f)
@@ -175,9 +220,9 @@ def get_player_fixture_history():
         if player_name in history_data['data']:
             player_data = history_data['data'][player_name]
             
-            # Find the opponent's data
-            if opponent_team_id in player_data:
-                return jsonify(player_data[opponent_team_id])
+            # Find the opponent's data using historical team ID
+            if str(historical_team_id) in player_data:
+                return jsonify(player_data[str(historical_team_id)])
             else:
                 # No historical data for this opponent
                 return jsonify({
@@ -190,9 +235,6 @@ def get_player_fixture_history():
                 'fixtures': [],
                 'is_new_player': True
             })
-        
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
