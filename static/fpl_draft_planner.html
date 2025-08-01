@@ -3223,6 +3223,81 @@
             opacity: 0.7;
         }
 
+        /* Mobile styles for difficulty scale */
+        @media (max-width: 768px) {
+            .difficulty-scale-container {
+                margin: 10px 0;
+                padding: 8px;
+            }
+            
+            .difficulty-scale {
+                height: 16px;
+                border-radius: 8px;
+            }
+            
+            .difficulty-indicator {
+                height: 28px;
+                top: -6px;
+            }
+            
+            .difficulty-indicator::after {
+                width: 8px;
+                height: 8px;
+                top: -3px;
+                left: -2px;
+            }
+            
+            .scale-labels {
+                margin-top: 6px;
+                font-size: 0.65rem;
+            }
+            
+            .scale-range {
+                font-size: 0.55rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .difficulty-scale-container {
+                margin: 8px 0;
+                padding: 6px;
+            }
+            
+            .difficulty-scale {
+                height: 14px;
+                border-radius: 7px;
+            }
+            
+            .difficulty-indicator {
+                height: 24px;
+                top: -5px;
+            }
+            
+            .difficulty-indicator::after {
+                width: 6px;
+                height: 6px;
+                top: -2px;
+                left: -1px;
+            }
+            
+            .scale-labels {
+                margin-top: 4px;
+                font-size: 0.6rem;
+                flex-wrap: wrap;
+                gap: 2px;
+            }
+            
+            .scale-label {
+                flex: 0 0 auto;
+                min-width: 0;
+                padding: 0 2px;
+            }
+            
+            .scale-range {
+                font-size: 0.5rem;
+            }
+        }
+
         /* Location buttons */
         .location-buttons {
             display: flex;
