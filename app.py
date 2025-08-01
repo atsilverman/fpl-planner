@@ -170,99 +170,125 @@ def get_player_fixture_history():
         # For now, return sample data that varies by player name to simulate different historical data
         # In a real implementation, this would query a database with actual historical data
         
-        # Generate different sample data based on player name to simulate individual player history
+        # Generate realistic sample data based on player name and opponent team
         import hashlib
-        player_hash = int(hashlib.md5(player_name.encode()).hexdigest()[:8], 16)
         
-        # Create different sample data for different players
-        if player_hash % 3 == 0:
-            # Sample data for some players
+        # Create a hash from both player name and opponent team ID for more realistic variation
+        combined_hash = int(hashlib.md5(f"{player_name}_{opponent_team_id}".encode()).hexdigest()[:8], 16)
+        
+        # Determine player type based on name patterns (this would normally come from database)
+        is_attacker = any(name in player_name.lower() for name in ['salah', 'haaland', 'kane', 'son', 'rashford', 'martinelli', 'saka', 'foden'])
+        is_defender = any(name in player_name.lower() for name in ['dias', 'vvd', 'virgil', 'saliba', 'gabriel', 'white', 'walker', 'cancelo'])
+        is_goalkeeper = any(name in player_name.lower() for name in ['alisson', 'ederson', 'ramsdale', 'pope', 'de gea', 'kepa'])
+        
+        # Generate realistic gameweek numbers (not always 1 and 2)
+        home_gw = (combined_hash % 20) + 1  # Gameweek 1-20
+        away_gw = ((combined_hash + 100) % 20) + 1  # Different gameweek 1-20
+        
+        if is_goalkeeper:
+            # Goalkeeper stats
+            home_points = 6 if combined_hash % 3 == 0 else 4 if combined_hash % 3 == 1 else 8
+            away_points = 2 if combined_hash % 4 == 0 else 6 if combined_hash % 4 == 1 else 4
             sample_data = {
                 'fixtures': [
                     {
-                        'gameweek': 1,
-                        'total_points': 8,
-                        'minutes': 90,
-                        'goals_scored': 1,
-                        'assists': 0,
-                        'clean_sheets': 1,
-                        'bonus': 1,
-                        'expected_goals': 0.8,
-                        'expected_assists': 0.1,
-                        'was_home': True
-                    },
-                    {
-                        'gameweek': 2,
-                        'total_points': 2,
+                        'gameweek': home_gw,
+                        'total_points': home_points,
                         'minutes': 90,
                         'goals_scored': 0,
                         'assists': 0,
-                        'clean_sheets': 0,
-                        'bonus': 0,
-                        'expected_goals': 0.2,
+                        'clean_sheets': 1 if home_points >= 6 else 0,
+                        'bonus': 1 if home_points >= 8 else 0,
+                        'saves': (combined_hash % 5) + 2,
+                        'goals_conceded': 0 if home_points >= 6 else (combined_hash % 3) + 1,
+                        'expected_goals': 0.0,
                         'expected_assists': 0.0,
+                        'expected_goals_conceded': 1.2 if home_points < 6 else 0.8,
+                        'was_home': True
+                    },
+                    {
+                        'gameweek': away_gw,
+                        'total_points': away_points,
+                        'minutes': 90,
+                        'goals_scored': 0,
+                        'assists': 0,
+                        'clean_sheets': 1 if away_points >= 6 else 0,
+                        'bonus': 1 if away_points >= 8 else 0,
+                        'saves': (combined_hash % 4) + 1,
+                        'goals_conceded': 0 if away_points >= 6 else (combined_hash % 3) + 1,
+                        'expected_goals': 0.0,
+                        'expected_assists': 0.0,
+                        'expected_goals_conceded': 1.5 if away_points < 6 else 1.0,
                         'was_home': False
                     }
                 ],
                 'is_new_player': False
             }
-        elif player_hash % 3 == 1:
-            # Different sample data for other players
+        elif is_defender:
+            # Defender stats
+            home_points = 7 if combined_hash % 4 == 0 else 3 if combined_hash % 4 == 1 else 6
+            away_points = 2 if combined_hash % 3 == 0 else 5 if combined_hash % 3 == 1 else 4
+            home_goals = 1 if home_points >= 7 else 0
+            away_goals = 1 if away_points >= 7 else 0
             sample_data = {
                 'fixtures': [
                     {
-                        'gameweek': 1,
-                        'total_points': 3,
+                        'gameweek': home_gw,
+                        'total_points': home_points,
                         'minutes': 90,
-                        'goals_scored': 0,
-                        'assists': 0,
-                        'clean_sheets': 1,
-                        'bonus': 0,
-                        'expected_goals': 0.1,
-                        'expected_assists': 0.3,
+                        'goals_scored': home_goals,
+                        'assists': 1 if home_points >= 7 and home_goals == 0 else 0,
+                        'clean_sheets': 1 if home_points >= 6 else 0,
+                        'bonus': 1 if home_points >= 7 else 0,
+                        'expected_goals': 0.3 if home_goals == 0 else 0.8,
+                        'expected_assists': 0.2 if home_points >= 6 else 0.1,
                         'was_home': True
                     },
                     {
-                        'gameweek': 2,
-                        'total_points': 6,
+                        'gameweek': away_gw,
+                        'total_points': away_points,
                         'minutes': 90,
-                        'goals_scored': 0,
-                        'assists': 1,
-                        'clean_sheets': 0,
-                        'bonus': 1,
-                        'expected_goals': 0.0,
-                        'expected_assists': 0.7,
+                        'goals_scored': away_goals,
+                        'assists': 1 if away_points >= 7 and away_goals == 0 else 0,
+                        'clean_sheets': 1 if away_points >= 6 else 0,
+                        'bonus': 1 if away_points >= 7 else 0,
+                        'expected_goals': 0.2 if away_goals == 0 else 0.6,
+                        'expected_assists': 0.1 if away_points >= 6 else 0.0,
                         'was_home': False
                     }
                 ],
                 'is_new_player': False
             }
         else:
-            # Default sample data for remaining players
+            # Attacker/Midfielder stats
+            home_points = 8 if combined_hash % 5 == 0 else 3 if combined_hash % 5 == 1 else 6
+            away_points = 2 if combined_hash % 4 == 0 else 7 if combined_hash % 4 == 1 else 4
+            home_goals = 1 if home_points >= 7 else 0
+            away_goals = 1 if away_points >= 7 else 0
+            home_assists = 1 if home_points >= 6 and home_goals == 0 else 0
+            away_assists = 1 if away_points >= 6 and away_goals == 0 else 0
             sample_data = {
                 'fixtures': [
                     {
-                        'gameweek': 1,
-                        'total_points': 6,
+                        'gameweek': home_gw,
+                        'total_points': home_points,
                         'minutes': 90,
-                        'goals_scored': 0,
-                        'assists': 0,
-                        'clean_sheets': 1,
-                        'bonus': 0,
-                        'expected_goals': 0.0,
-                        'expected_assists': 0.0,
+                        'goals_scored': home_goals,
+                        'assists': home_assists,
+                        'bonus': 1 if home_points >= 8 else 0,
+                        'expected_goals': 0.8 if home_goals == 0 else 1.2,
+                        'expected_assists': 0.6 if home_assists == 0 else 1.1,
                         'was_home': True
                     },
                     {
-                        'gameweek': 2,
-                        'total_points': 4,
+                        'gameweek': away_gw,
+                        'total_points': away_points,
                         'minutes': 90,
-                        'goals_scored': 0,
-                        'assists': 0,
-                        'clean_sheets': 0,
-                        'bonus': 0,
-                        'expected_goals': 0.0,
-                        'expected_assists': 0.0,
+                        'goals_scored': away_goals,
+                        'assists': away_assists,
+                        'bonus': 1 if away_points >= 8 else 0,
+                        'expected_goals': 0.5 if away_goals == 0 else 1.0,
+                        'expected_assists': 0.4 if away_assists == 0 else 0.9,
                         'was_home': False
                     }
                 ],
