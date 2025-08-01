@@ -160,7 +160,7 @@ def get_team_rankings():
 
 @app.route('/api/player-fixture-history')
 def get_player_fixture_history():
-    """Serve player fixture history data using name-based lookups"""
+    """Serve player fixture history data using team codes"""
     try:
         player_name = request.args.get('player_name', '')
         opponent_team_id = request.args.get('opponent_team_id', '')
@@ -168,31 +168,36 @@ def get_player_fixture_history():
         if not player_name or not opponent_team_id:
             return jsonify({'error': 'Missing player_name or opponent_team_id parameter'}), 400
         
-        # Map current team IDs to historical team IDs
-        # Based on the team ID changes between 2024 and 2025:
-        current_to_historical_mapping = {
-            '7': '6',   # Chelsea: 6 → 7
-            '8': '7',   # Crystal Palace: 7 → 8
-            '9': '8',   # Everton: 8 → 9
-            '10': '9',  # Fulham: 9 → 10
-            '11': '10', # Leeds: 10 → 11 (but Leeds wasn't in 2024)
-            '12': '12', # Liverpool: 12 → 12 (same)
-            '13': '13', # Man City: 13 → 13 (same)
-            '14': '14', # Man Utd: 14 → 14 (same)
-            '15': '15', # Newcastle: 15 → 15 (same)
-            '16': '16', # Nott'm Forest: 16 → 16 (same)
-            '17': '17', # Southampton: 17 → 17 (same)
-            '18': '18', # Spurs: 18 → 18 (same)
-            '19': '19', # West Ham: 19 → 19 (same)
-            '20': '20', # Wolves: 20 → 20 (same)
-            '1': '1',   # Arsenal: 1 → 1 (same)
-            '2': '2',   # Aston Villa: 2 → 2 (same)
-            '4': '3',   # Bournemouth: 3 → 4
-            '5': '4',   # Brentford: 4 → 5
-            '6': '5',   # Brighton: 5 → 6
+        # Map current team ID to team code
+        team_id_to_code = {
+            '1': '3',   # Arsenal
+            '2': '7',   # Aston Villa
+            '4': '91',  # Bournemouth
+            '5': '94',  # Brentford
+            '6': '36',  # Brighton
+            '7': '8',   # Chelsea
+            '8': '31',  # Crystal Palace
+            '9': '11',  # Everton
+            '10': '54', # Fulham
+            '11': '2',  # Leeds
+            '12': '14', # Liverpool
+            '13': '43', # Man City
+            '14': '1',  # Man Utd
+            '15': '4',  # Newcastle
+            '16': '17', # Nott'm Forest
+            '17': '56', # Sunderland
+            '18': '6',  # Spurs
+            '19': '21', # West Ham
+            '20': '39', # Wolves
         }
         
-        historical_team_id = current_to_historical_mapping.get(opponent_team_id, opponent_team_id)
+        team_code = team_id_to_code.get(opponent_team_id)
+        
+        if not team_code:
+            return jsonify({
+                'fixtures': [],
+                'is_new_player': False
+            })
         
         # Load real historical data
         with open('data/player-history.json', 'r') as f:
@@ -202,9 +207,9 @@ def get_player_fixture_history():
         if player_name in history_data['data']:
             player_data = history_data['data'][player_name]
             
-            # Find the opponent's data using historical team ID
-            if historical_team_id in player_data:
-                return jsonify(player_data[historical_team_id])
+            # Find the opponent's data using team code
+            if team_code in player_data:
+                return jsonify(player_data[team_code])
             else:
                 # No historical data for this opponent
                 return jsonify({
