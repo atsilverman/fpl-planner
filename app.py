@@ -23,7 +23,10 @@ def index():
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     """Serve static files including team badges"""
-    return send_from_directory('static', filename)
+    # Handle URL-encoded filenames (spaces, apostrophes, etc.)
+    import urllib.parse
+    decoded_filename = urllib.parse.unquote(filename)
+    return send_from_directory('static', decoded_filename)
 
 @app.route('/api/teams')
 def get_teams():
