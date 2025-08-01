@@ -173,7 +173,7 @@ def get_player_fixture_history():
         try:
             # Load current teams (2025)
             current_teams = {}
-            with open(os.path.expanduser('~/Desktop/teams_2025.csv'), 'r', encoding='utf-8') as f:
+            with open('data/teams_2025.csv', 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
                     current_teams[row['id']] = {
@@ -184,7 +184,7 @@ def get_player_fixture_history():
             
             # Load historical teams (2024)
             historical_teams = {}
-            with open(os.path.expanduser('~/Desktop/teams_2024.csv'), 'r', encoding='utf-8') as f:
+            with open('data/teams_2024.csv', 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
                     historical_teams[row['id']] = {
