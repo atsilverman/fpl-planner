@@ -160,37 +160,119 @@ def get_team_rankings():
 @app.route('/api/player-fixture-history')
 def get_player_fixture_history():
     """Serve player fixture history data"""
-    # Return sample fixture history data directly
-    sample_data = {
-        'fixtures': [
-            {
-                'gameweek': 1,
-                'total_points': 6,
-                'minutes': 90,
-                'goals_scored': 0,
-                'assists': 0,
-                'clean_sheets': 1,
-                'bonus': 0,
-                'expected_goals': 0.0,
-                'expected_assists': 0.0,
-                'was_home': True
-            },
-            {
-                'gameweek': 2,
-                'total_points': 4,
-                'minutes': 90,
-                'goals_scored': 0,
-                'assists': 0,
-                'clean_sheets': 0,
-                'bonus': 0,
-                'expected_goals': 0.0,
-                'expected_assists': 0.0,
-                'was_home': False
+    try:
+        player_name = request.args.get('player_name', '')
+        opponent_team_id = request.args.get('opponent_team_id', '')
+        
+        if not player_name or not opponent_team_id:
+            return jsonify({'error': 'Missing player_name or opponent_team_id parameter'}), 400
+        
+        # For now, return sample data that varies by player name to simulate different historical data
+        # In a real implementation, this would query a database with actual historical data
+        
+        # Generate different sample data based on player name to simulate individual player history
+        import hashlib
+        player_hash = int(hashlib.md5(player_name.encode()).hexdigest()[:8], 16)
+        
+        # Create different sample data for different players
+        if player_hash % 3 == 0:
+            # Sample data for some players
+            sample_data = {
+                'fixtures': [
+                    {
+                        'gameweek': 1,
+                        'total_points': 8,
+                        'minutes': 90,
+                        'goals_scored': 1,
+                        'assists': 0,
+                        'clean_sheets': 1,
+                        'bonus': 1,
+                        'expected_goals': 0.8,
+                        'expected_assists': 0.1,
+                        'was_home': True
+                    },
+                    {
+                        'gameweek': 2,
+                        'total_points': 2,
+                        'minutes': 90,
+                        'goals_scored': 0,
+                        'assists': 0,
+                        'clean_sheets': 0,
+                        'bonus': 0,
+                        'expected_goals': 0.2,
+                        'expected_assists': 0.0,
+                        'was_home': False
+                    }
+                ],
+                'is_new_player': False
             }
-        ],
-        'is_new_player': False
-    }
-    return jsonify(sample_data)
+        elif player_hash % 3 == 1:
+            # Different sample data for other players
+            sample_data = {
+                'fixtures': [
+                    {
+                        'gameweek': 1,
+                        'total_points': 3,
+                        'minutes': 90,
+                        'goals_scored': 0,
+                        'assists': 0,
+                        'clean_sheets': 1,
+                        'bonus': 0,
+                        'expected_goals': 0.1,
+                        'expected_assists': 0.3,
+                        'was_home': True
+                    },
+                    {
+                        'gameweek': 2,
+                        'total_points': 6,
+                        'minutes': 90,
+                        'goals_scored': 0,
+                        'assists': 1,
+                        'clean_sheets': 0,
+                        'bonus': 1,
+                        'expected_goals': 0.0,
+                        'expected_assists': 0.7,
+                        'was_home': False
+                    }
+                ],
+                'is_new_player': False
+            }
+        else:
+            # Default sample data for remaining players
+            sample_data = {
+                'fixtures': [
+                    {
+                        'gameweek': 1,
+                        'total_points': 6,
+                        'minutes': 90,
+                        'goals_scored': 0,
+                        'assists': 0,
+                        'clean_sheets': 1,
+                        'bonus': 0,
+                        'expected_goals': 0.0,
+                        'expected_assists': 0.0,
+                        'was_home': True
+                    },
+                    {
+                        'gameweek': 2,
+                        'total_points': 4,
+                        'minutes': 90,
+                        'goals_scored': 0,
+                        'assists': 0,
+                        'clean_sheets': 0,
+                        'bonus': 0,
+                        'expected_goals': 0.0,
+                        'expected_assists': 0.0,
+                        'was_home': False
+                    }
+                ],
+                'is_new_player': False
+            }
+        
+        return jsonify(sample_data)
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/team-fixture-history')
 def get_team_fixture_history():
