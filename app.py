@@ -168,8 +168,31 @@ def get_player_fixture_history():
         if not player_name or not opponent_team_id:
             return jsonify({'error': 'Missing player_name or opponent_team_id parameter'}), 400
         
-        # The historical data is already stored with current team IDs, so no mapping needed
-        historical_team_id = opponent_team_id
+        # Map current team IDs to historical team IDs
+        # Based on the team ID changes between 2024 and 2025:
+        team_id_mapping = {
+            '7': '6',   # Chelsea: 6 → 7
+            '8': '7',   # Crystal Palace: 7 → 8
+            '9': '8',   # Everton: 8 → 9
+            '10': '9',  # Fulham: 9 → 10
+            '11': '10', # Leeds: 10 → 11 (but Leeds wasn't in 2024)
+            '12': '12', # Liverpool: 12 → 12 (same)
+            '13': '13', # Man City: 13 → 13 (same)
+            '14': '14', # Man Utd: 14 → 14 (same)
+            '15': '15', # Newcastle: 15 → 15 (same)
+            '16': '16', # Nott'm Forest: 16 → 16 (same)
+            '17': '17', # Southampton: 17 → 17 (same)
+            '18': '18', # Spurs: 18 → 18 (same)
+            '19': '19', # West Ham: 19 → 19 (same)
+            '20': '20', # Wolves: 20 → 20 (same)
+            '1': '1',   # Arsenal: 1 → 1 (same)
+            '2': '2',   # Aston Villa: 2 → 2 (same)
+            '3': '3',   # Bournemouth: 3 → 3 (same)
+            '4': '4',   # Brentford: 4 → 4 (same)
+            '5': '5',   # Brighton: 5 → 5 (same)
+        }
+        
+        historical_team_id = team_id_mapping.get(opponent_team_id, opponent_team_id)
         
         # Load real historical data
         with open('data/player-history.json', 'r') as f:
