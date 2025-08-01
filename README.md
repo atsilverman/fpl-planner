@@ -100,4 +100,4 @@ The application uses your local PostgreSQL database containing:
 - If port 5000 is in use (common on macOS due to AirPlay), the server will use port 5001
 - Ensure your PostgreSQL server is running and accessible
 - Check that all required database tables exist and contain data
-- Verify database connection credentials in server.py 
+- Verify database connection credentials in server.py # Test auto-deploy
