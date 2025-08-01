@@ -160,7 +160,7 @@ def get_team_rankings():
 
 @app.route('/api/player-fixture-history')
 def get_player_fixture_history():
-    """Serve player fixture history data from real historical data"""
+    """Serve player fixture history data using name-based lookups"""
     try:
         player_name = request.args.get('player_name', '')
         opponent_team_id = request.args.get('opponent_team_id', '')
@@ -170,7 +170,7 @@ def get_player_fixture_history():
         
         # Map current team IDs to historical team IDs
         # Based on the team ID changes between 2024 and 2025:
-        team_id_mapping = {
+        current_to_historical_mapping = {
             '7': '6',   # Chelsea: 6 → 7
             '8': '7',   # Crystal Palace: 7 → 8
             '9': '8',   # Everton: 8 → 9
@@ -187,24 +187,24 @@ def get_player_fixture_history():
             '20': '20', # Wolves: 20 → 20 (same)
             '1': '1',   # Arsenal: 1 → 1 (same)
             '2': '2',   # Aston Villa: 2 → 2 (same)
-            '3': '3',   # Bournemouth: 3 → 3 (same)
-            '4': '4',   # Brentford: 4 → 4 (same)
-            '5': '5',   # Brighton: 5 → 5 (same)
+            '4': '3',   # Bournemouth: 3 → 4
+            '5': '4',   # Brentford: 4 → 5
+            '6': '5',   # Brighton: 5 → 6
         }
         
-        historical_team_id = team_id_mapping.get(opponent_team_id, opponent_team_id)
+        historical_team_id = current_to_historical_mapping.get(opponent_team_id, opponent_team_id)
         
         # Load real historical data
         with open('data/player-history.json', 'r') as f:
             history_data = json.load(f)
         
-        # Find the player's data
+        # Find the player's data by name
         if player_name in history_data['data']:
             player_data = history_data['data'][player_name]
             
             # Find the opponent's data using historical team ID
-            if str(historical_team_id) in player_data:
-                return jsonify(player_data[str(historical_team_id)])
+            if historical_team_id in player_data:
+                return jsonify(player_data[historical_team_id])
             else:
                 # No historical data for this opponent
                 return jsonify({
