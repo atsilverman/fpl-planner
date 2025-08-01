@@ -20,6 +20,11 @@ API_BASE_URL = os.environ.get('API_BASE_URL', 'http://localhost:5001')
 def index():
     return send_from_directory('static', 'fpl_draft_planner.html')
 
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    """Serve static files including team badges"""
+    return send_from_directory('static', filename)
+
 @app.route('/api/teams')
 def get_teams():
     """Serve teams data from static JSON file"""
