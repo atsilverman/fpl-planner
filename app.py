@@ -49,11 +49,49 @@ def get_teams():
 
 @app.route('/api/players')
 def get_players():
-    """Serve players data from static JSON file"""
+    """Serve players data from static JSON file with optional filtering"""
     try:
+        # Get filter parameters
+        position_filter = request.args.get('position', '')
+        location_filter = request.args.get('location', '')
+        
         with open('data/players.json', 'r') as f:
             data = json.load(f)
-        return jsonify(data['data'])
+        
+        players = data['data']
+        
+        # Apply position filter if specified
+        if position_filter:
+            position_codes = position_filter.split(',')
+            # Map position codes to element_type values
+            position_to_element_type = {
+                'GKP': 1,
+                'DEF': 2,
+                'MID': 3,
+                'FWD': 4
+            }
+            filtered_element_types = []
+            for pos in position_codes:
+                if pos in position_to_element_type:
+                    filtered_element_types.append(position_to_element_type[pos])
+            
+            if filtered_element_types:
+                players = [p for p in players if p['element_type'] in filtered_element_types]
+        
+        # Apply location filter if specified
+        if location_filter and location_filter != 'overall':
+            # Load teams data to get team locations
+            try:
+                with open('data/teams.json', 'r') as f:
+                    teams_data = json.load(f)
+                teams = {team['id']: team for team in teams_data['data']}
+                
+                # Filter players by team location
+                players = [p for p in players if teams.get(p['team_id'], {}).get('location') == location_filter]
+            except Exception as e:
+                print(f"Warning: Could not apply location filter: {e}")
+        
+        return jsonify(players)
     except FileNotFoundError:
         return jsonify({'error': 'Players data not found'}), 404
     except Exception as e:
