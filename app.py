@@ -63,17 +63,22 @@ def get_players():
         # Apply position filter if specified
         if position_filter:
             position_codes = position_filter.split(',')
-            # Map position codes to element_type values
-            position_to_element_type = {
-                'GKP': 1,
-                'DEF': 2,
-                'MID': 3,
-                'FWD': 4
-            }
             filtered_element_types = []
+            
             for pos in position_codes:
-                if pos in position_to_element_type:
+                # Handle both position codes (GKP, DEF, MID, FWD) and element_type values (1, 2, 3, 4)
+                if pos in ['GKP', 'DEF', 'MID', 'FWD']:
+                    # Map position codes to element_type values
+                    position_to_element_type = {
+                        'GKP': 1,
+                        'DEF': 2,
+                        'MID': 3,
+                        'FWD': 4
+                    }
                     filtered_element_types.append(position_to_element_type[pos])
+                elif pos in ['1', '2', '3', '4']:
+                    # Direct element_type values
+                    filtered_element_types.append(int(pos))
             
             if filtered_element_types:
                 players = [p for p in players if p['element_type'] in filtered_element_types]
