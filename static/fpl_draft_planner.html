@@ -4450,6 +4450,7 @@
                 document.querySelectorAll('.filter-btn[data-position]').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const position = btn.dataset.position;
+                        console.log('Position filter button clicked:', { position, currentSelectedPositions: [...selectedPositions] });
                         
                         if (position === '') {
                             // ALL button clicked - clear all selections
@@ -4476,6 +4477,7 @@
                                 allButton.classList.add('active');
                             }
                         }
+                        console.log('After position filter update:', { selectedPositions: [...selectedPositions] });
                         loadData();
                         checkFiltersModified();
                     });
@@ -4796,8 +4798,16 @@
                 
                 if (currentView === 'players') {
                     // Load players with filters
+                    console.log('Loading players with filters:', { positionFilter, locationFilter });
                     const playersResponse = await fetch(`${API_BASE_URL}/api/players?position=${positionFilter}&location=${locationFilter}`);
                     playersData = await playersResponse.json();
+                    console.log('Players API response:', { 
+                        totalPlayers: playersData.length, 
+                        positionFilter, 
+                        locationFilter,
+                        samplePlayer: playersData[0],
+                        selectedPositions: selectedPositions
+                    });
                 } else {
                     // For teams view, load team statistics data
                     console.log('Loading team stats for teams view...');
@@ -7926,10 +7936,9 @@
 
 
         function getSelectedPositions() {
-            if (selectedPositions.length === 0) {
-                return ''; // Return empty string for "ALL"
-            }
-            return selectedPositions.join(','); // Return comma-separated positions
+            const result = selectedPositions.length === 0 ? '' : selectedPositions.join(',');
+            console.log('getSelectedPositions called:', { selectedPositions: [...selectedPositions], result });
+            return result;
         }
 
         function getSelectedTeamType() {
