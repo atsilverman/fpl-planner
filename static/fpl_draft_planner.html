@@ -515,7 +515,7 @@
         }
         
         .btn-compare {
-            background: #f59e0b;
+            background: #8b5cf6;
             color: white;
             border: none;
             border-radius: 8px;
@@ -526,11 +526,11 @@
         }
         
         .btn-compare:hover {
-            background: #d97706;
+            background: #7c3aed;
         }
         
         .btn-compare.active {
-            background: #92400e;
+            background: #5b21b6;
         }
 
         .view-toggle-container {
@@ -5549,10 +5549,10 @@
             // Update team table headers based on current type
             updateTeamTableHeaders();
             
-            // Remove existing fixture headers
+            // Remove existing fixture headers and comparison headers
             const existingFixtureHeaders = tableHeader.querySelectorAll('th:not([data-sort])');
             existingFixtureHeaders.forEach(th => {
-                if (th.textContent.startsWith('GW')) {
+                if (th.textContent.startsWith('GW') || th.textContent === 'Goals' || th.textContent === 'Assists' || th.textContent === 'xG Δ' || th.textContent === 'xA' || th.textContent === 'CS' || th.textContent === 'GC' || th.textContent === 'Bonus' || th.textContent === 'Saves') {
                     th.remove();
                 }
             });
@@ -7445,6 +7445,7 @@
             const compareBtn = document.getElementById('compare-btn');
             if (compareBtn) {
                 compareBtn.classList.toggle('active', compareMode);
+                compareBtn.textContent = compareMode ? 'Exit Compare' : 'Compare';
             }
             renderTable();
         }
