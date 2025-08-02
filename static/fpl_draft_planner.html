@@ -4104,12 +4104,12 @@
                             </div>
                             
                             <!-- Display Options -->
-                            <div class="filter-section rank-filter-container">
-                                <span class="filter-label">Display:</span>
-                                <button class="filter-btn active" data-rank="none" onclick="handleRankFilter('none')">None</button>
-                                <button class="filter-btn" data-rank="rank" onclick="handleRankFilter('rank')">Rank</button>
-                                <button class="filter-btn" data-rank="last" onclick="handleRankFilter('last')">Last</button>
-                            </div>
+                                            <div class="filter-section rank-filter-container">
+                    <span class="filter-label">Display:</span>
+                    <button class="filter-btn active" data-rank="none" onclick="handleRankFilter('none')">None</button>
+                    <button class="filter-btn" data-rank="rank" onclick="handleRankFilter('rank')">Rank</button>
+                    <button class="filter-btn" data-rank="last" onclick="handleRankFilter('last')">Last</button>
+                </div>
                             
                             <!-- Toggle Options -->
                             <div class="filter-section toggle-options">
@@ -5295,6 +5295,15 @@
                     statValue = showPer90 ? (minutes > 0 ? parseFloat(((player.bonus || 0) * 90 / minutes).toFixed(2)) : 0) : (player.bonus || 0);
                 } else if (selectedStat === 'saves') {
                     statValue = showPer90 ? (minutes > 0 ? parseFloat(((player.saves || 0) * 90 / minutes).toFixed(2)) : 0) : (player.saves || 0);
+                }
+                
+                // Convert to rank if rank mode is enabled
+                if (showRankMode) {
+                    // Find the player's rank for this stat
+                    const playerRank = playerRanking[player.id];
+                    if (playerRank !== undefined) {
+                        statValue = playerRank;
+                    }
                 }
                 
                 // Calculate player's team rank based on position
@@ -6798,6 +6807,7 @@
             }
             showConditionalHighlight = true;
             showPer90 = false;
+            showRankMode = false;
             
             // Reset search input
             const searchInput = document.getElementById('search-input');
@@ -7220,6 +7230,7 @@
         let showHistory = false;
         let showConditionalHighlight = true;
         let showPer90 = false;
+        let showRankMode = false;
 
         function handleRankFilter(selectedRank) {
             console.log('handleRankFilter called with:', selectedRank);
@@ -7250,12 +7261,15 @@
             if (selectedRank === 'none') {
                 showRanks = false;
                 showHistory = false;
+                showRankMode = false;
             } else if (selectedRank === 'rank') {
                 showRanks = true;
                 showHistory = false;
+                showRankMode = true; // Convert values to ranks
             } else if (selectedRank === 'last') {
                 showRanks = false;
                 showHistory = true;
+                showRankMode = false;
             }
             
             console.log('Rank filter changed:', selectedRank, 'showRanks:', showRanks, 'showHistory:', showHistory);
