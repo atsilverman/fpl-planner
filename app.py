@@ -172,6 +172,7 @@ def get_player_fixture_history():
         team_id_to_code = {
             '1': '3',   # Arsenal
             '2': '7',   # Aston Villa
+            '3': '90',  # Burnley
             '4': '91',  # Bournemouth
             '5': '94',  # Brentford
             '6': '36',  # Brighton
@@ -193,6 +194,7 @@ def get_player_fixture_history():
         
         team_code = team_id_to_code.get(opponent_team_id)
         
+        # Reduced logging for performance
         if not team_code:
             return jsonify({
                 'fixtures': [],

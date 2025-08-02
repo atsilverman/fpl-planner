@@ -68,11 +68,11 @@
 
         /* Color scheme variables */
         :root {
-            --primary-color: #3C6E96;
+            --primary-color: #6197C1;
             --primary-hover: #2D5A7A;
             --secondary-color: #E3E9F1;
             --secondary-hover: #CBD5E1;
-            --button-color: #3C6E96;
+            --button-color: #6197C1;
             --button-hover: #2D5A7A;
             --shadow-color: rgba(60, 110, 150, 0.25);
             --shadow-hover: rgba(60, 110, 150, 0.35);
@@ -120,12 +120,17 @@
         }
 
         .header {
-            background: var(--primary-color);
-            color: white;
+            background: #F9FBFF;
+            color: #2D3748;
             padding: clamp(20px, 4vw, 40px) clamp(16px, 3vw, 32px);
             text-align: center;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .header h1 {
@@ -135,14 +140,16 @@
             position: relative;
             z-index: 1;
             letter-spacing: -0.025em;
+            color: #1A202C;
         }
 
         .header p {
             font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-            opacity: 0.9;
-            font-weight: 400;
+            opacity: 0.8;
+            font-weight: 500;
             position: relative;
             z-index: 1;
+            color: #4A5568;
         }
 
         .view-controls {
@@ -150,11 +157,22 @@
             display: flex;
             flex-direction: column;
             gap: clamp(8px, 2vw, 16px);
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .controls-container {
-            padding: 8px 30px;
+            padding: 8px 0;
             max-width: 100%;
+            width: 100%;
+            min-width: 100%;
+            box-sizing: border-box;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .controls-top-row {
@@ -197,7 +215,7 @@
 
         .search-input:focus {
             outline: none;
-            border-color: #3C6E96;
+            border-color: #6197C1;
             box-shadow: 
                 0 0 0 3px rgba(60, 110, 150, 0.15),
                 0 4px 12px rgba(0, 0, 0, 0.12),
@@ -291,14 +309,19 @@
             
             .display-description {
                 font-size: 9px !important;
-                color: #1e40af !important;
+                color: red !important;
                 font-style: italic !important;
                 margin-top: 2px !important;
                 margin-left: 8px !important;
                 opacity: 0.8 !important;
                 font-weight: normal !important;
                 line-height: 1.2 !important;
+                /* Ensure this overrides body color and font-size */
+                color: red !important;
+                font-size: 9px !important;
             }
+            
+
             
             .filter-btn {
                 min-height: 44px;
@@ -310,6 +333,10 @@
             .table-container {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
+                width: 100%;
+                min-width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
             }
             
             .player-table,
@@ -397,6 +424,12 @@
             align-items: center;
             gap: clamp(8px, 2vw, 16px);
             flex-wrap: wrap;
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .filter-button-container {
@@ -453,22 +486,26 @@
         }
 
         .btn-reset {
-            background: #f59e0b;
+            background: var(--primary-color);
             color: white;
-            border: 1px solid #d97706;
+            border: 1px solid var(--primary-color);
             padding: 12px 24px;
             font-size: 14px;
             font-weight: 600;
             min-width: 100px;
             height: 48px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px var(--shadow-color);
         }
 
         .btn-reset:hover {
-            background: #d97706;
-            border-color: #b45309;
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
             transform: translateY(-2px);
             box-shadow: 
-                0 8px 20px rgba(245, 158, 11, 0.35),
+                0 8px 20px var(--shadow-hover),
                 inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
@@ -494,9 +531,9 @@
         }
         
         .btn-reset-header {
-            background: #f59e0b;
-            color: white;
-            border: 1px solid #d97706;
+            background: white;
+            color: #6197C1;
+            border: 4px solid #6197C1;
             padding: 8px 16px;
             font-size: 14px;
             font-weight: 600;
@@ -508,10 +545,17 @@
         }
         
         .btn-reset-header:hover {
-            background: #d97706;
-            border-color: #b45309;
+            background: #6197C1;
+            color: white;
+            border-color: #6197C1;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 4px 12px rgba(97, 151, 193, 0.3);
+        }
+        
+        .btn-reset-header.active {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
+            color: white;
         }
         
         .btn-compare {
@@ -675,20 +719,29 @@
         }
 
         .filters-container {
-            padding: 20px;
-            background: rgba(248, 250, 252, 0.9);
-            border: 1px solid rgba(203, 213, 225, 0.4);
-            border-radius: 12px;
+            padding: 12px 20px 28px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
             display: none;
             opacity: 0;
             transition: opacity 0.3s ease;
             margin-top: 16px;
             width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .filters-container.expanded {
             display: block;
             opacity: 1;
+        }
+
+        #teams-filters {
+            margin-top: 0;
         }
 
         .color-scale {
@@ -934,7 +987,22 @@
         .gameweek-range-controls {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .range-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .range-label {
+            font-weight: 600;
+            color: #64748B;
+            font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .gameweek-range-controls label {
@@ -945,7 +1013,7 @@
         }
 
         .gameweek-range-controls input {
-            padding: 8px 12px;
+            padding: 4px 8px;
             border: 2px solid rgba(203, 213, 225, 0.8);
             border-radius: 8px;
             font-size: 1rem;
@@ -958,7 +1026,7 @@
 
         .gameweek-range-controls input:focus {
             outline: none;
-            border-color: #3C6E96;
+            border-color: #6197C1;
             box-shadow: 0 0 0 3px rgba(60, 110, 150, 0.1);
         }
         
@@ -995,7 +1063,9 @@
             text-align: center;
             padding: 8px 4px;
             background: white;
-            width: 60px;
+            width: 70px;
+            font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+            font-weight: 600;
         }
         
         .number-input-group input[type="number"]::-webkit-inner-spin-button,
@@ -1420,6 +1490,12 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
+        .filter-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
         .filter-columns {
             display: flex;
             gap: 24px;
@@ -1455,8 +1531,36 @@
             gap: clamp(8px, 2vw, 16px);
             flex-wrap: wrap;
             justify-content: flex-start;
-            padding: 16px 0;
+            padding: 12px 0;
             border-bottom: 1px solid rgba(203, 213, 225, 0.3);
+        }
+        
+        .view-controls-row {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .filters-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 48px;
+        }
+        
+        .view-group,
+        .top10-group,
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .filter-section:last-child {
@@ -1551,7 +1655,7 @@
 
         .filter-row select:focus {
             outline: none;
-            border-color: #3C6E96;
+            border-color: #6197C1;
             box-shadow: 
                 0 0 0 3px rgba(60, 110, 150, 0.15),
                 0 4px 12px rgba(0, 0, 0, 0.12),
@@ -1844,9 +1948,9 @@
         }
 
         .stat-btn.active {
-            background-color: #3C6E96;
+            background-color: #6197C1;
             color: white;
-            border-color: #3C6E96;
+            border-color: #6197C1;
         }
 
         /* Team Selection Styling */
@@ -1863,7 +1967,7 @@
 
         #team-table tbody tr.selected {
             background-color: rgba(60, 110, 150, 0.1);
-            border-left: 4px solid #3C6E96;
+            border-left: 4px solid #6197C1;
         }
 
         #team-table tbody tr.unselected {
@@ -1882,7 +1986,7 @@
         /* Player table selection styles */
         #player-table tbody tr.selected {
             background-color: rgba(60, 110, 150, 0.1);
-            border-left: 4px solid #3C6E96;
+            border-left: 4px solid #6197C1;
         }
 
         #player-table tbody tr.unselected {
@@ -2118,13 +2222,13 @@
 
         .page-number:hover {
             background: rgba(60, 110, 150, 0.1);
-            color: #3C6E96;
+            color: #6197C1;
         }
 
         .page-number.active {
-            background: #3C6E96;
+            background: #6197C1;
             color: white;
-            border-color: #3C6E96;
+            border-color: #6197C1;
         }
 
         .results-per-page {
@@ -2170,7 +2274,7 @@
 
         .results-per-page select:focus {
             outline: none;
-            border-color: #3C6E96;
+            border-color: #6197C1;
             box-shadow: 
                 0 0 0 3px rgba(60, 110, 150, 0.1),
                 0 4px 8px rgba(0, 0, 0, 0.08),
@@ -2882,6 +2986,33 @@
                 align-items: center;
             }
             
+            .gameweek-range-controls {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            
+            .range-group {
+                flex-direction: column;
+                gap: 4px;
+                align-items: flex-start;
+            }
+            
+            .view-controls-row,
+            .filters-row {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            
+            .view-group,
+            .top10-group,
+            .filter-group {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+            
             .gameweek-range-controls input {
                 width: 80px;
                 padding: 10px 12px;
@@ -3102,9 +3233,9 @@
         }
 
         .position-btn.active {
-            background: #3C6E96;
+            background: #6197C1;
             color: white;
-            border-color: #3C6E96;
+            border-color: #6197C1;
             box-shadow: 0 2px 8px rgba(60, 110, 150, 0.25);
         }
 
@@ -3120,6 +3251,28 @@
             font-weight: 600;
             border: none;
             border-radius: 12px;
+            background: #3BDD3C;
+            color: #1F2937;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 32px;
+            text-align: center;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(59, 221, 60, 0.25);
+        }
+
+        .top-player-pill:hover {
+            background: #2EC02E;
+            box-shadow: 0 4px 12px rgba(59, 221, 60, 0.35);
+        }
+
+        /* Compare Mode Pills (retains original yellow color) */
+        .compare-player-pill {
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
             background: #f2c640;
             color: #1F2937;
             cursor: pointer;
@@ -3130,7 +3283,7 @@
             box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);
         }
 
-        .top-player-pill:hover {
+        .compare-player-pill:hover {
             background: #e6b93a;
             box-shadow: 0 4px 12px rgba(242, 198, 64, 0.35);
         }
@@ -3171,18 +3324,62 @@
         }
 
         /* Top 10 ranking opacity classes - only affect background, preserve text color */
-        .top-rank-1 { background-color: rgba(242, 198, 64, 1.0) !important; }
-        .top-rank-2 { background-color: rgba(242, 198, 64, 0.9) !important; }
-        .top-rank-3 { background-color: rgba(242, 198, 64, 0.8) !important; }
-        .top-rank-4 { background-color: rgba(242, 198, 64, 0.7) !important; }
-        .top-rank-5 { background-color: rgba(242, 198, 64, 0.6) !important; }
-        .top-rank-6 { background-color: rgba(242, 198, 64, 0.5) !important; }
-        .top-rank-7 { background-color: rgba(242, 198, 64, 0.4) !important; }
-        .top-rank-8 { background-color: rgba(242, 198, 64, 0.3) !important; }
-        .top-rank-9 { background-color: rgba(242, 198, 64, 0.2) !important; }
-        .top-rank-10 { background-color: rgba(242, 198, 64, 0.1) !important; }
+        .top-rank-1 { background-color: rgba(59, 221, 60, 1.0) !important; }
+        .top-rank-2 { background-color: rgba(59, 221, 60, 0.9) !important; }
+        .top-rank-3 { background-color: rgba(59, 221, 60, 0.8) !important; }
+        .top-rank-4 { background-color: rgba(59, 221, 60, 0.7) !important; }
+        .top-rank-5 { background-color: rgba(59, 221, 60, 0.6) !important; }
+        .top-rank-6 { background-color: rgba(59, 221, 60, 0.5) !important; }
+        .top-rank-7 { background-color: rgba(59, 221, 60, 0.4) !important; }
+        .top-rank-8 { background-color: rgba(59, 221, 60, 0.3) !important; }
+        .top-rank-9 { background-color: rgba(59, 221, 60, 0.2) !important; }
+        .top-rank-10 { background-color: rgba(59, 221, 60, 0.1) !important; }
 
+        /* Toggle Switch Styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
 
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-label {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-label:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-label {
+            background-color: #6197C1;
+        }
+
+        input:checked + .toggle-label:before {
+            transform: translateX(26px);
+        }
 
         /* Difficulty Scale Visual Indicator */
         .difficulty-scale-container {
@@ -4067,9 +4264,7 @@
                     <button class="btn btn-reset-header" onclick="resetFilters()" id="reset-btn" style="display: none;">
                         Reset
                     </button>
-                    <button class="btn btn-compare" onclick="toggleCompareMode()" id="compare-btn" style="display: none;">
-                        Compare
-                    </button>
+
                     <div class="search-container">
                         <input type="text" id="search-input" placeholder="Search players/teams..." class="search-input" oninput="handleSearch()">
                         <div class="search-icon"></div>
@@ -4086,27 +4281,45 @@
                     <div class="filter-columns">
                         <!-- Left Column -->
                         <div class="filter-column">
-                            <!-- Gameweek Range -->
+                            <!-- View Toggle and Top 10 Toggle -->
                             <div class="filter-section">
-                                <span class="filter-label">Gameweek Range:</span>
-                                <div class="gameweek-range-controls">
-                                    <div class="number-input-group">
-                                        <button type="button" class="number-btn minus" onclick="adjustGameweek('start', -1, 'players')">-</button>
-                                        <input type="number" id="gameweek-start-players" value="1" min="1" max="38" style="width: 60px;" onchange="validateGameweekRange('players')">
-                                        <button type="button" class="number-btn plus" onclick="adjustGameweek('start', 1, 'players')">+</button>
+                                <div class="view-group">
+                                    <span class="filter-label">View:</span>
+                                    <div class="filter-buttons">
+                                        <button class="filter-btn active" data-stats="off" onclick="handleStatsToggle('off')">Fixtures</button>
+                                        <button class="filter-btn" data-stats="on" onclick="handleStatsToggle('on')">Stats</button>
                                     </div>
-                                    <label for="gameweek-end-players" class="filter-label">to:</label>
-                                    <div class="number-input-group">
-                                        <button type="button" class="number-btn minus" onclick="adjustGameweek('end', -1, 'players')">-</button>
-                                        <input type="number" id="gameweek-end-players" value="5" min="1" max="38" style="width: 60px;" onchange="validateGameweekRange('players')">
-                                        <button type="button" class="number-btn plus" onclick="adjustGameweek('end', 1, 'players')">+</button>
+                                </div>
+                                
+                                <!-- Top 10 Toggle (only visible when Stats is selected) -->
+                                <div id="highlighting-toggle" class="top10-group" style="display: none;">
+                                    <span class="filter-label">Top 10:</span>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="highlight-toggle" onchange="handleHighlightToggle(this.checked)">
+                                        <label for="highlight-toggle" class="toggle-label"></label>
                                     </div>
                                 </div>
                             </div>
                             
+                            <!-- Display Options -->
+                            <div class="filter-section">
+                                <span class="filter-label">Display:</span>
+                                <div class="filter-buttons">
+                                    <button class="filter-btn active" data-rank="none" onclick="handleRankFilter('none')">None</button>
+                                    <button class="filter-btn" data-rank="rank" onclick="handleRankFilter('rank')">Rank</button>
+                                    <button class="filter-btn" data-rank="last" onclick="handleRankFilter('last')">Last</button>
+                                    <button class="filter-btn" data-rank="per90" onclick="handleRankFilter('per90')">Per 90</button>
+                                </div>
+                                <div id="display-description" class="display-description" style="display: none; margin-top: 8px;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="filter-column">
                             <!-- Position Filter -->
                             <div class="filter-section">
                                 <span class="filter-label">Position:</span>
+                                <div class="filter-buttons">
                                 <button class="filter-btn active" data-position="">ALL</button>
                                 <button class="filter-btn" data-position="1">GKP</button>
                                 <button class="filter-btn" data-position="2">DEF</button>
@@ -4115,39 +4328,28 @@
                             </div>
                         </div>
                         
-                        <!-- Vertical Divider -->
-                        <div class="filter-divider"></div>
-                        
-                        <!-- Right Column -->
-                        <div class="filter-column">
-                            <!-- Statistic Filter -->
-                            <div class="filter-section">
-                                <span class="filter-label">Statistic:</span>
-                                <select id="stat-filter">
-                                    <option value="total_points">Points</option>
-                                    <option value="goals_scored">Goals</option>
-                                    <option value="assists">Assists</option>
-                                    <option value="goals_assists">G+A</option>
-                                    <option value="expected_goals">xG</option>
-                                    <option value="expected_assists">xA</option>
-                                    <option value="clean_sheets">Clean Sheets</option>
-                                    <option value="goals_conceded">Goals Conceded</option>
-                                    <option value="bonus">Bonus</option>
-                                    <option value="saves">Saves</option>
-                                </select>
+                            <!-- Gameweek Range -->
+                            <div class="filter-section" id="players-gameweek-range">
+                                <span class="filter-label">Gameweek:</span>
+                                <div class="gameweek-range-controls">
+                                    <div class="range-group">
+                                        <span class="range-label">From:</span>
+                                        <div class="number-input-group">
+                                            <button type="button" class="number-btn minus" onclick="adjustGameweek('start', -1, 'players')">-</button>
+                                            <input type="number" id="gameweek-start-players" value="1" min="1" max="38" onchange="validateGameweekRange('players')">
+                                            <button type="button" class="number-btn plus" onclick="adjustGameweek('start', 1, 'players')">+</button>
                             </div>
-                            
-                            <!-- Display Options -->
-                            <div class="filter-section rank-filter-container">
-                                <span class="filter-label">Display:</span>
-                                <button class="filter-btn active" data-rank="none" onclick="handleRankFilter('none')">None</button>
-                                <button class="filter-btn" data-rank="rank" onclick="handleRankFilter('rank')">Rank</button>
-                                <button class="filter-btn" data-rank="last" onclick="handleRankFilter('last')">Last</button>
-                                <button class="filter-btn" data-rank="per90" onclick="handleRankFilter('per90')">Per 90</button>
-                                <div id="display-description" class="display-description" style="display: none;"></div>
                             </div>
-                            
-
+                                    <div class="range-group">
+                                        <span class="range-label">To:</span>
+                                        <div class="number-input-group">
+                                            <button type="button" class="number-btn minus" onclick="adjustGameweek('end', -1, 'players')">-</button>
+                                            <input type="number" id="gameweek-end-players" value="5" min="1" max="38" onchange="validateGameweekRange('players')">
+                                            <button type="button" class="number-btn plus" onclick="adjustGameweek('end', 1, 'players')">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -4158,19 +4360,24 @@
                         <!-- Left Column -->
                         <div class="filter-column">
                             <!-- Gameweek Range -->
-                            <div class="filter-section">
-                                <span class="filter-label">Gameweek Range:</span>
+                            <div class="filter-section" id="teams-gameweek-range">
+                                <span class="filter-label">Gameweek:</span>
                                 <div class="gameweek-range-controls">
+                                    <div class="range-group">
+                                        <span class="range-label">From:</span>
                                     <div class="number-input-group">
                                         <button type="button" class="number-btn minus" onclick="adjustGameweek('start', -1, 'teams')">-</button>
-                                        <input type="number" id="gameweek-start-teams" value="1" min="1" max="38" style="width: 60px;" onchange="validateGameweekRange('teams')">
+                                            <input type="number" id="gameweek-start-teams" value="1" min="1" max="38" onchange="validateGameweekRange('teams')">
                                         <button type="button" class="number-btn plus" onclick="adjustGameweek('start', 1, 'teams')">+</button>
                                     </div>
-                                    <label for="gameweek-end-teams" class="filter-label">to:</label>
+                                    </div>
+                                    <div class="range-group">
+                                        <span class="range-label">To:</span>
                                     <div class="number-input-group">
                                         <button type="button" class="number-btn minus" onclick="adjustGameweek('end', -1, 'teams')">-</button>
-                                        <input type="number" id="gameweek-end-teams" value="5" min="1" max="38" style="width: 60px;" onchange="validateGameweekRange('teams')">
+                                            <input type="number" id="gameweek-end-teams" value="5" min="1" max="38" onchange="validateGameweekRange('teams')">
                                         <button type="button" class="number-btn plus" onclick="adjustGameweek('end', 1, 'teams')">+</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -4178,26 +4385,31 @@
                             <!-- Location Filter -->
                             <div class="filter-section">
                                 <span class="filter-label">Location:</span>
+                                <div class="filter-buttons">
                                 <button class="filter-btn active" data-location="overall">All</button>
                                 <button class="filter-btn" data-location="home">Home</button>
                                 <button class="filter-btn" data-location="away">Away</button>
+                                </div>
                             </div>
                         </div>
-                        
-                        <!-- Vertical Divider -->
-                        <div class="filter-divider"></div>
                         
                         <!-- Right Column -->
                         <div class="filter-column">
                             <!-- Type Filter -->
                             <div class="filter-section">
                                 <span class="filter-label">Type:</span>
-                                <button class="filter-btn active" data-type="attack">ATK</button>
-                                <button class="filter-btn" data-type="defense">DEF</button>
-                                <button class="filter-btn" data-type="goalie">GPK</button>
+                                <div class="filter-buttons">
+                                    <button class="filter-btn active" data-type="attack" onclick="handleTeamTypeFilter('attack')">ATK</button>
+                                    <button class="filter-btn" data-type="defense" onclick="handleTeamTypeFilter('defense')">DEF</button>
+                                    <button class="filter-btn" data-type="goalie" onclick="handleTeamTypeFilter('goalie')">GPK</button>
+                                </div>
                             </div>
                             
-
+                            <!-- Empty section to balance the layout -->
+                            <div class="filter-section" style="visibility: hidden;">
+                                <span class="filter-label">&nbsp;</span>
+                                <div style="height: 44px;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -4220,7 +4432,7 @@
                         <th></th>
                         <th class="sortable" data-sort="web_name">Player</th>
                         <th>Position</th>
-                        <th class="sortable" data-sort="now_cost">Price</th>
+                        <th class="sortable" data-sort="now_cost">£</th>
                         <th class="sortable" data-sort="total_points" id="stat-header">Points</th>
                     </tr>
                 </thead>
@@ -4379,11 +4591,84 @@
         let currentView = 'players'; // 'players' or 'teams'
         let selectedTeams = []; // Array to track selected teams in order
         let selectedPlayers = []; // Array to track selected players in order
+        let showHistory = false;
+        let showRanks = false;
+        let showPer90 = false;
+        let showRankMode = false;
+        let showConditionalHighlight = false;
+        let compareMode = false;
+        let showStats = false; // Default to fixtures view
         let teamStatsData = {}; // Object to store team statistics by location
         let currentTeamLocation = 'overall'; // Current location filter for teams
         let currentTeamType = 'attack'; // Current type filter for teams (attack/defense)
         let currentTeamStat = 'goals_scored'; // Current statistic for teams
         let currentSeason = '2024'; // Current season filter (2024 = 2024/25, 2025 = 2025/26)
+        
+        // Cache for historical data to avoid duplicate API calls
+        let historicalDataCache = new Map();
+        let rankDataCache = new Map();
+        
+        // Function to preload historical data in the background
+        async function preloadHistoricalData() {
+            console.log('Preloading historical data in background...');
+            
+            // Get current gameweek range
+            const gameweekStart = parseInt(document.getElementById('gameweek-start-players').value);
+            const gameweekEnd = parseInt(document.getElementById('gameweek-end-players').value);
+            
+            // Get all players (not just paginated ones)
+            const allPlayers = filteredPlayers.length > 0 ? filteredPlayers : playersData;
+            
+            // Preload for first 100 players to improve "Last" filter performance
+            const playersToPreload = allPlayers.slice(0, 100);
+            
+            for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
+                for (const player of playersToPreload) {
+                    const position = positions[player.element_type] || 'UNK';
+                    const playerFixtures = getPlayerFixtures(player.team_id, [gameweekEnd - gameweekStart + 1], position);
+                    const fixture = playerFixtures.find(f => f.gameweek === gw);
+                    
+                    if (fixture) {
+                        const cacheKey = `${player.web_name}_${fixture.opponent}_${fixture.isHome}`;
+                        if (!historicalDataCache.has(cacheKey)) {
+                            // Preload without updating UI
+                            try {
+                                const newlyPromotedTeams = ['BUR', 'LEE', 'SUN'];
+                                if (newlyPromotedTeams.includes(fixture.opponent)) {
+                                    historicalDataCache.set(cacheKey, 'N/A');
+                                    continue;
+                                }
+                                
+                                const opponentTeam = teamsData.find(t => t.short_name === fixture.opponent);
+                                if (!opponentTeam) {
+                                    historicalDataCache.set(cacheKey, 'N/A');
+                                    continue;
+                                }
+                                
+                                const response = await fetch(`${API_BASE_URL}/api/player-fixture-history?player_name=${encodeURIComponent(player.web_name)}&opponent_team_id=${opponentTeam.id}`);
+                                const data = await response.json();
+                                
+                                if (data.fixtures && data.fixtures.length > 0) {
+                                    const locationFixture = data.fixtures.find(f => f.was_home === fixture.isHome);
+                                    if (locationFixture) {
+                                        const points = locationFixture.total_points || '0';
+                                        historicalDataCache.set(cacheKey, points);
+                                    } else {
+                                        historicalDataCache.set(cacheKey, 'N/A');
+                                    }
+                                } else {
+                                    historicalDataCache.set(cacheKey, 'N/A');
+                                }
+                            } catch (error) {
+                                historicalDataCache.set(cacheKey, 'N/A');
+                            }
+                        }
+                    }
+                }
+            }
+            
+            console.log(`Preloaded historical data for ${playersToPreload.length} players`);
+        }
 
         // Position mapping
         const positions = {
@@ -4416,6 +4701,9 @@
                 const teamsResponse = await fetch(`${API_BASE_URL}/api/teams`);
                 teamsData = await teamsResponse.json();
                 
+                // Start preloading historical data immediately for better performance
+                preloadHistoricalData();
+                
 
 
                 // Add sorting event listeners
@@ -4442,10 +4730,7 @@
                 });
 
 
-                document.getElementById('stat-filter').addEventListener('change', () => {
-                    updateStatColumn();
-                    checkFiltersModified();
-                });
+
 
                 
                 // Add event listeners for position filter buttons
@@ -4709,7 +4994,7 @@
             console.log('Player table display:', document.getElementById('player-table').style.display);
             console.log('Team table display:', document.getElementById('team-table').style.display);
             
-            // Close filters panel when switching views to prevent conflicts
+            // Close filters panel and customize box when switching views
             const filtersContainer = document.getElementById('filters-container');
             filtersContainer.classList.remove('expanded');
             document.getElementById('customize-btn').style.display = 'block';
@@ -4727,6 +5012,12 @@
                 }
             }
             
+            // Hide display description when switching views
+            const displayDescription = document.getElementById('display-description');
+            if (displayDescription) {
+                displayDescription.style.display = 'none';
+            }
+            
 
             
             // Show/hide per 90 toggle (only for players view)
@@ -4735,20 +5026,32 @@
                 per90ToggleContainer.style.display = view === 'players' ? 'block' : 'none';
             }
             
-            // Update filters visibility based on view
+            // Hide Top 10 toggle when switching to teams view (only for players view)
+            const highlightingToggle = document.getElementById('highlighting-toggle');
+            if (highlightingToggle) {
+                const shouldShow = showStats && view === 'players';
+                highlightingToggle.style.display = shouldShow ? 'block' : 'none';
+            }
+            
+            // Keep filters hidden by default - they only show when Customize is clicked
             const playersFilters = document.getElementById('players-filters');
             const teamsFilters = document.getElementById('teams-filters');
             
-            if (view === 'teams') {
+            // Both should be hidden by default
                 playersFilters.style.display = 'none';
-                teamsFilters.style.display = 'block';
-            } else {
-                playersFilters.style.display = 'block';
                 teamsFilters.style.display = 'none';
-            }
             
             // Reset all filters and toggles when switching views
             resetFiltersOnViewSwitch();
+            
+            // Hide reset button when switching views (new session)
+            const resetBtn = document.getElementById('reset-btn');
+            if (resetBtn) {
+                resetBtn.style.display = 'none';
+                resetBtn.classList.remove('active');
+            }
+            // Reset the filtersModified state for the new view
+            filtersModified = false;
             
             // Reset display filter to "None" when switching views
             const rankFilterButtons = document.querySelectorAll('.rank-filter-container .filter-btn');
@@ -4761,6 +5064,27 @@
             showHistory = false;
             showRankMode = false;
             showPer90 = false;
+            
+            // Set default view mode based on selected view
+            if (view === 'teams') {
+                showStats = false; // Teams view defaults to Fixtures view (hybrid approach)
+            } else {
+                showStats = false; // Players view defaults to Fixtures view
+            }
+            
+            // Update View toggle buttons to reflect the correct state
+            const viewButtons = document.querySelectorAll('.filter-btn[data-stats]');
+            viewButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (showStats) {
+                const statsButton = document.querySelector('.filter-btn[data-stats="on"]');
+                if (statsButton) statsButton.classList.add('active');
+            } else {
+                const fixturesButton = document.querySelector('.filter-btn[data-stats="off"]');
+                if (fixturesButton) fixturesButton.classList.add('active');
+            }
             
             // Reset stat header to default when switching views
             const statHeader = document.getElementById('stat-header');
@@ -4782,28 +5106,13 @@
             // Reset compare mode when switching views
             if (compareMode) {
                 compareMode = false;
-                const compareBtn = document.getElementById('compare-btn');
-                if (compareBtn) {
-                    compareBtn.classList.remove('active');
-                    compareBtn.textContent = 'Compare';
-                    compareBtn.style.display = 'none';
-                }
-                // Restore original header state if it exists
-                const tableHeader = document.getElementById('table-header');
-                if (tableHeader && originalHeaderState) {
-                    tableHeader.innerHTML = originalHeaderState;
-                }
             }
             
             // Always clear selections when switching views
             selectedPlayers = [];
             selectedTeams = [];
             
-            // Ensure compare button is hidden
-            const compareBtn = document.getElementById('compare-btn');
-            if (compareBtn) {
-                compareBtn.style.display = 'none';
-            }
+
             
             // Show/hide pagination based on view (teams view doesn't need pagination)
             const paginationContainer = document.querySelector('.pagination-container');
@@ -4888,6 +5197,97 @@
                 }
 
                 await renderTable();
+                
+                            // Ensure Per 90 button state matches current view on initial load
+            const per90Button = document.querySelector('button[onclick="handleRankFilter(\'per90\')"]');
+            if (per90Button) {
+                if (showStats) {
+                    // Enable Per 90 button in Stats view
+                    per90Button.disabled = false;
+                    per90Button.style.opacity = '1';
+                    per90Button.style.cursor = 'pointer';
+                } else {
+                    // Disable Per 90 button in Fixtures view (not applicable)
+                    per90Button.disabled = true;
+                    per90Button.style.opacity = '0.5';
+                    per90Button.style.cursor = 'not-allowed';
+                    // Ensure Per 90 is not active
+                    if (showPer90) {
+                        showPer90 = false;
+                        per90Button.classList.remove('active');
+                    }
+                }
+            }
+            
+            // Ensure Gameweek Range controls state matches current view on initial load
+            const playersGameweekRange = document.getElementById('players-gameweek-range');
+            const teamsGameweekRange = document.getElementById('teams-gameweek-range');
+            
+            if (playersGameweekRange) {
+                const inputs = playersGameweekRange.querySelectorAll('input[type="number"]');
+                const buttons = playersGameweekRange.querySelectorAll('button');
+                
+                if (showStats) {
+                    // Disable and grey out gameweek range controls in Stats view
+                    inputs.forEach(input => {
+                        input.disabled = true;
+                        input.style.opacity = '0.5';
+                        input.style.cursor = 'not-allowed';
+                    });
+                    buttons.forEach(button => {
+                        button.disabled = true;
+                        button.style.opacity = '0.5';
+                        button.style.cursor = 'not-allowed';
+                    });
+                    playersGameweekRange.style.opacity = '0.5';
+                } else {
+                    // Enable gameweek range controls in Fixtures view
+                    inputs.forEach(input => {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                        input.style.cursor = 'auto';
+                    });
+                    buttons.forEach(button => {
+                        button.disabled = false;
+                        button.style.opacity = '1';
+                        button.style.cursor = 'pointer';
+                    });
+                    playersGameweekRange.style.opacity = '1';
+                }
+            }
+            
+            if (teamsGameweekRange) {
+                const inputs = teamsGameweekRange.querySelectorAll('input[type="number"]');
+                const buttons = teamsGameweekRange.querySelectorAll('button');
+                
+                if (showStats) {
+                    // Disable and grey out gameweek range controls in Stats view
+                    inputs.forEach(input => {
+                        input.disabled = true;
+                        input.style.opacity = '0.5';
+                        input.style.cursor = 'not-allowed';
+                    });
+                    buttons.forEach(button => {
+                        button.disabled = true;
+                        button.style.opacity = '0.5';
+                        button.style.cursor = 'not-allowed';
+                    });
+                    teamsGameweekRange.style.opacity = '0.5';
+                } else {
+                    // Enable gameweek range controls in Fixtures view
+                    inputs.forEach(input => {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                        input.style.cursor = 'auto';
+                    });
+                    buttons.forEach(button => {
+                        button.disabled = false;
+                        button.style.opacity = '1';
+                        button.style.cursor = 'pointer';
+                    });
+                    teamsGameweekRange.style.opacity = '1';
+                }
+            }
                 
                 loading.style.display = 'none';
                 if (currentView === 'players') {
@@ -5048,21 +5448,158 @@
             
             tbody.innerHTML = '';
             
-            // Remove existing fixture headers and comparison stat headers
+            // Remove existing fixture headers and stat headers - more comprehensive removal
             const existingFixtureHeaders = tableHeader.querySelectorAll('th:not([data-sort])');
             existingFixtureHeaders.forEach(th => {
                 const text = th.textContent.trim();
-                // Remove GW headers and comparison stat headers, but preserve Position header
-                if (text.startsWith('GW') || ['Goals', 'Assists', 'xG Δ', 'xA', 'CS', 'GC', 'Bonus', 'Saves'].includes(text)) {
+                // Remove GW headers and all stat headers, but preserve core headers (Player, Position, Price, Points)
+                if (text.startsWith('GW') || ['Goals', 'xG', 'xG Δ', 'A', 'xA Δ', 'GI', 'CS', 'GC', 'Saves', 'Bonus', 'Assists', 'xA', 'Expected Goals', 'Expected Assists'].includes(text)) {
                     th.remove();
                 }
             });
             
-            // Create fixture column headers (compare mode temporarily disabled)
+            // Also remove any sortable stat headers that might have been added previously
+            const existingSortableHeaders = tableHeader.querySelectorAll('th[data-sort]');
+            existingSortableHeaders.forEach(th => {
+                const sortField = th.getAttribute('data-sort');
+                const text = th.textContent.trim();
+                // Remove any stat-related sortable headers except core ones
+                if (['goals_scored', 'expected_goals', 'xG_delta', 'assists', 'xA_delta', 'goals_assists', 'clean_sheets', 'goals_conceded', 'saves', 'bonus'].includes(sortField) && 
+                    !['web_name', 'element_type', 'now_cost', 'total_points'].includes(sortField)) {
+                    th.remove();
+                }
+            });
+            
+            // Handle Points column visibility
+            const pointsHeader = tableHeader.querySelector('th[data-sort="total_points"]');
+            if (pointsHeader) {
+                if (showStats) {
+                    // Show Points column in Stats view
+                    pointsHeader.style.display = 'table-cell';
+                } else {
+                    // Hide Points column in Fixtures view
+                    pointsHeader.style.display = 'none';
+                }
+            }
+            
+            // Handle Last display button state
+            const lastButton = document.querySelector('button[onclick="handleRankFilter(\'last\')"]');
+            if (lastButton) {
+                if (showStats) {
+                    // Disable and grey out Last button in Stats view
+                    lastButton.disabled = true;
+                    lastButton.style.opacity = '0.5';
+                    lastButton.style.cursor = 'not-allowed';
+                    // If Last was active, switch to None
+                    if (showHistory) {
+                        showHistory = false;
+                        showRanks = false;
+                        showRankMode = false;
+                        lastButton.classList.remove('active');
+                        const noneButton = document.querySelector('button[onclick="handleRankFilter(\'none\')"]');
+                        if (noneButton) noneButton.classList.add('active');
+                    }
+                } else {
+                    // Enable Last button in Fixtures view
+                    lastButton.disabled = false;
+                    lastButton.style.opacity = '1';
+                    lastButton.style.cursor = 'pointer';
+                }
+            }
+            
+            // Handle Per 90 display button state
+            const per90Button = document.querySelector('button[onclick="handleRankFilter(\'per90\')"]');
+            if (per90Button) {
+                if (showStats) {
+                    // Enable Per 90 button in Stats view
+                    per90Button.disabled = false;
+                    per90Button.style.opacity = '1';
+                    per90Button.style.cursor = 'pointer';
+                } else {
+                    // Disable Per 90 button in Fixtures view (not applicable)
+                    per90Button.disabled = true;
+                    per90Button.style.opacity = '0.5';
+                    per90Button.style.cursor = 'not-allowed';
+                    // If Per 90 was active, switch to normal mode
+                    if (showPer90) {
+                        showPer90 = false;
+                        per90Button.classList.remove('active');
+                    }
+                }
+            }
+            
+            // Update None/Total button text based on view mode
+            const noneButton = document.querySelector('button[onclick="handleRankFilter(\'none\')"]');
+            if (noneButton) {
+                if (showStats) {
+                    noneButton.textContent = 'Total';
+                } else {
+                    noneButton.textContent = 'None';
+                }
+            }
+            
+            // Create fixture column headers or stats headers
+            if (showStats) {
+                // Stats mode: show stat headers with sorting
+                let statHeaders = [
+                    { text: 'Goals', field: 'goals_scored' },
+                    { text: 'xG', field: 'expected_goals' },
+                    { text: 'xG Δ', field: 'xG_delta' },
+                    { text: 'A', field: 'assists' },
+                    { text: 'xA Δ', field: 'xA_delta' },
+                    { text: 'GI', field: 'goals_assists' },
+                    { text: 'CS', field: 'clean_sheets' },
+                    { text: 'GC', field: 'goals_conceded' },
+                    { text: 'Saves', field: 'saves' },
+                    { text: 'Bonus', field: 'bonus' }
+                ];
+                
+                // Remove Saves column if DEF, MID, or FWD positions are selected (only GKP can earn save points)
+                const nonGkpPositions = ['DEF', 'MID', 'FWD'];
+                const hasNonGkpPosition = selectedPositions.some(pos => nonGkpPositions.includes(pos));
+                const hasGkpPosition = selectedPositions.includes('GKP');
+                
+                // If any non-GKP positions are selected and no GKP position is selected, remove Saves
+                if (hasNonGkpPosition && !hasGkpPosition) {
+                    statHeaders = statHeaders.filter(header => header.field !== 'saves');
+                }
+                
+                // Remove goal/assist related columns if only GKP is selected (goalkeepers don't score goals or get assists)
+                const onlyGkpSelected = selectedPositions.length === 1 && selectedPositions.includes('GKP');
+                console.log('GKP column filtering:', { 
+                    selectedPositions: [...selectedPositions], 
+                    selectedPositionsLength: selectedPositions.length, 
+                    onlyGkpSelected,
+                    hasGkp: selectedPositions.includes('GKP')
+                });
+                if (onlyGkpSelected) {
+                    statHeaders = statHeaders.filter(header => 
+                        !['goals_scored', 'expected_goals', 'xG_delta', 'assists', 'xA_delta', 'goals_assists'].includes(header.field)
+                    );
+                    console.log('Filtered stat headers for GKP only:', statHeaders.map(h => h.text));
+                }
+                
+                // Ensure we don't exceed the expected number of columns
+                const expectedColumns = 4 + statHeaders.length; // Badge, Player, Position, Price + Points (if visible) + stat columns
+                const currentColumns = tableHeader.querySelectorAll('th').length;
+                
+                if (currentColumns < expectedColumns) {
+                    statHeaders.forEach(header => {
+                        const th = document.createElement('th');
+                        th.textContent = header.text;
+                        th.className = 'sortable';
+                        th.setAttribute('data-sort', header.field);
+                        th.style.cursor = 'pointer';
+                        tableHeader.appendChild(th);
+                    });
+                }
+            } else {
+                // Fixture mode: show gameweek headers
             for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
                 const th = document.createElement('th');
                 th.textContent = `GW${gw}`;
                 tableHeader.appendChild(th);
+                }
             }
             
             // Re-add sorting event listeners for all headers (remove existing first)
@@ -5078,9 +5615,8 @@
             // Calculate rankings for display only (no sorting)
             let playerRanking = {};
             if (showRankMode) {
-                // Get the selected stat for ranking
-                const statFilter = document.getElementById('stat-filter');
-                const selectedStat = statFilter.value;
+                // Get the selected stat for ranking (default to total_points since stat-filter is removed)
+                const selectedStat = 'total_points';
                 
                 // Calculate stat values for ranking
                 const statValues = [];
@@ -5158,10 +5694,18 @@
                     // Sort by goals + assists
                     aVal = (a.goals_scored || 0) + (a.assists || 0);
                     bVal = (b.goals_scored || 0) + (b.assists || 0);
-                } else if (['total_points', 'goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus', 'saves', 'now_cost'].includes(currentSort.field)) {
+                } else if (['total_points', 'goals_scored', 'assists', 'expected_goals', 'expected_assists', 'xG_delta', 'xA_delta', 'clean_sheets', 'goals_conceded', 'bonus', 'saves', 'now_cost'].includes(currentSort.field)) {
                     // Handle stat fields
+                    if (currentSort.field === 'xG_delta') {
+                        aVal = calculateXGDelta(a);
+                        bVal = calculateXGDelta(b);
+                    } else if (currentSort.field === 'xA_delta') {
+                        aVal = (a.assists || 0) - parseFloat(a.expected_assists || 0);
+                        bVal = (b.assists || 0) - parseFloat(b.expected_assists || 0);
+                    } else {
                     aVal = parseFloat(a[currentSort.field] || 0);
                     bVal = parseFloat(b[currentSort.field] || 0);
+                    }
                 }
                 
                 if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
@@ -5179,9 +5723,8 @@
                 console.log(`Per 90 enabled: Filtered out players with < 900 minutes. Showing ${playersForStats.length} of ${sortedPlayers.length} players`);
             }
 
-            // Get the selected stat for top 10 ranking
-            const statFilter = document.getElementById('stat-filter');
-            const selectedStat = statFilter.value;
+            // Get the selected stat for top 10 ranking (default to total_points since stat-filter is removed)
+            const selectedStat = 'total_points';
             
             // Calculate stat values for display and top 10 highlighting
             const statValues = [];
@@ -5330,44 +5873,187 @@
                 // Get player's upcoming fixtures
                 const playerFixtures = getPlayerFixtures(player.team_id, gameweeks, position);
                 
-                // Create fixture cells or comparison stat cells
+                // Create fixture cells or stats cells
                 const fixtureCells = [];
                 
-                if (compareMode && selectedPlayers.length >= 2) {
-                    // Comparison mode: show stat columns instead of fixtures
-                    const availableColumns = gameweekEnd - gameweekStart + 1;
-                    const comparisonStats = getPositionSpecificStats(position, availableColumns);
+                if (showStats) {
+                    // Stats mode: show stat columns instead of fixtures
+                    let playerStats = [
+                        'goals_scored',
+                        'expected_goals', 
+                        'xG_delta',
+                        'assists',
+                        'xA_delta',
+                        'goals_assists',
+                        'clean_sheets',
+                        'goals_conceded',
+                        'saves',
+                        'bonus'
+                    ];
                     
-                    // Get selected players for leader comparison
-                    const selectedPlayerObjects = selectedPlayers.map(id => 
-                        playersData.find(p => p.id === id)
-                    ).filter(p => p);
+                    // Remove Saves stat if DEF, MID, or FWD positions are selected (only GKP can earn save points)
+                    const nonGkpPositions = ['DEF', 'MID', 'FWD'];
+                    const hasNonGkpPosition = selectedPositions.some(pos => nonGkpPositions.includes(pos));
+                    const hasGkpPosition = selectedPositions.includes('GKP');
                     
-                    comparisonStats.forEach(stat => {
+                    // If any non-GKP positions are selected and no GKP position is selected, remove Saves
+                    if (hasNonGkpPosition && !hasGkpPosition) {
+                        playerStats = playerStats.filter(stat => stat !== 'saves');
+                    }
+                    
+                    // Remove goal/assist related stats if only GKP is selected (goalkeepers don't score goals or get assists)
+                    const onlyGkpSelected = selectedPositions.length === 1 && selectedPositions.includes('GKP');
+                    console.log('GKP player stats filtering:', { 
+                        selectedPositions: [...selectedPositions], 
+                        selectedPositionsLength: selectedPositions.length, 
+                        onlyGkpSelected,
+                        hasGkp: selectedPositions.includes('GKP'),
+                        originalPlayerStats: [...playerStats]
+                    });
+                    if (onlyGkpSelected) {
+                        playerStats = playerStats.filter(stat => 
+                            !['goals_scored', 'expected_goals', 'xG_delta', 'assists', 'xA_delta', 'goals_assists'].includes(stat)
+                        );
+                        console.log('Filtered player stats for GKP only:', playerStats);
+                    }
+                    
+                    // Calculate rankings for each stat (all players, not just top 10)
+                    const allRankings = {};
+                    const top10Rankings = {};
+                    playerStats.forEach(stat => {
+                        const statValues = [];
+                        searchFilteredPlayers.forEach(p => {
+                            const data = getStatValue(p, stat);
+                            const value = typeof data.value === 'string' ? parseFloat(data.value.replace(/[+-]/g, '')) : data.value;
+                            if (!isNaN(value) && value > 0) {
+                                statValues.push({ player: p, value: value });
+                            }
+                        });
+                        
+                        // Sort by value (higher is better, except for goals_conceded)
+                        const lowerIsBetter = ['goals_conceded'];
+                        statValues.sort((a, b) => {
+                            if (lowerIsBetter.includes(stat)) {
+                                return a.value - b.value; // Lower is better
+                            } else {
+                                return b.value - a.value; // Higher is better
+                            }
+                        });
+                        
+                        // Create ranking map for ALL players
+                        statValues.forEach((item, index) => {
+                            if (!allRankings[stat]) allRankings[stat] = {};
+                            allRankings[stat][item.player.id] = index + 1;
+                        });
+                        
+                        // Create ranking map for top 10 (for highlighting)
+                        statValues.slice(0, 10).forEach((item, index) => {
+                            if (!top10Rankings[stat]) top10Rankings[stat] = {};
+                            top10Rankings[stat][item.player.id] = index + 1;
+                        });
+                    });
+                    
+                    playerStats.forEach(stat => {
                         const statData = getStatValue(player, stat);
-                        const isLeader = findStatLeader(selectedPlayerObjects, stat)?.id === player.id;
+                        const isTop10 = top10Rankings[stat] && top10Rankings[stat][player.id];
+                        const ranking = allRankings[stat] && allRankings[stat][player.id] ? allRankings[stat][player.id] : null;
                         
                         // Create stat label
                         const statLabels = {
                             'goals_scored': 'Goals',
-                            'assists': 'Assists',
-                            'expected_goals': 'xG Δ',
-                            'expected_assists': 'xA',
+                            'expected_goals': 'xG',
+                            'xG_delta': 'xG Δ',
+                            'assists': 'A',
+                            'xA_delta': 'xA Δ',
+                            'goals_assists': 'GI',
                             'clean_sheets': 'CS',
                             'goals_conceded': 'GC',
-                            'bonus': 'Bonus',
-                            'saves': 'Saves'
+                            'saves': 'Saves',
+                            'bonus': 'Bonus'
                         };
                         
                         const statLabel = statLabels[stat] || stat;
-                        const leaderStyle = isLeader ? 'class="top-player-pill" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"' : '';
+                        const top10Style = (isTop10 && showConditionalHighlight) ? `class="top-player-pill top-rank-${ranking}" style="display: inline-block; padding: 3px 8px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
+                        
+                        // If rank mode is enabled, show ranking instead of value
+                        let displayValue = statData.value;
+                        let displayColor = statData.color;
+                        
+                        // Apply per 90 calculation if enabled
+                        if (showPer90 && ['goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus', 'saves', 'goals_assists'].includes(stat)) {
+                            const minutes = player.minutes || 0;
+                            if (minutes > 0) {
+                                if (stat === 'goals_assists') {
+                                    const goals = player.goals_scored || 0;
+                                    const assists = player.assists || 0;
+                                    const gi = goals + assists;
+                                    displayValue = parseFloat((gi * 90 / minutes).toFixed(2));
+                                } else if (stat === 'expected_goals' || stat === 'expected_assists') {
+                                    displayValue = parseFloat((parseFloat(statData.value || 0) * 90 / minutes).toFixed(2));
+                                } else {
+                                    displayValue = parseFloat(((statData.value || 0) * 90 / minutes).toFixed(2));
+                                }
+                            } else {
+                                displayValue = 0;
+                            }
+                        }
+                        
+                        if (showRankMode && ranking !== null) {
+                            displayValue = ranking;
+                            displayColor = '#000000'; // Black for rankings
+                        }
+                        
+                        // Auto-compare: highlight best performer among selected players
+                        let isBestAmongSelected = false;
+                        if (showStats && selectedPlayers.length >= 2 && selectedPlayers.includes(player.id)) {
+                            // Get selected players for comparison
+                            const selectedPlayerObjects = selectedPlayers.map(id => 
+                                playersData.find(p => p.id === id)
+                            ).filter(p => p);
+                            
+                            // Find the best performer for this stat among selected players
+                            const bestPlayer = findStatLeader(selectedPlayerObjects, stat);
+                            isBestAmongSelected = bestPlayer && bestPlayer.id === player.id;
+                        }
+                        
+                        // Manage Top 10 toggle when auto-compare is active
+                        if (showStats && selectedPlayers.length >= 2) {
+                            // Auto-compare is active - turn off and lock Top 10 toggle
+                            const highlightToggle = document.getElementById('highlight-toggle');
+                            if (highlightToggle && highlightToggle.checked) {
+                                highlightToggle.checked = false;
+                                showConditionalHighlight = false;
+                            }
+                            // Disable the toggle to prevent user interaction
+                            if (highlightToggle) {
+                                highlightToggle.disabled = true;
+                            }
+                        } else if (showStats && selectedPlayers.length < 2) {
+                            // Auto-compare is not active - re-enable Top 10 toggle
+                            const highlightToggle = document.getElementById('highlight-toggle');
+                            if (highlightToggle) {
+                                highlightToggle.disabled = false;
+                            }
+                        }
+                        
+                        // Make zero values light grey
+                        if (displayValue === 0 || displayValue === '0' || displayValue === '0.00') {
+                            displayColor = '#9CA3AF'; // Light grey for zero values
+                        }
+                        
+                        // Create auto-compare pill style for best performer
+                        const autoCompareStyle = isBestAmongSelected ? `class="compare-player-pill" style="display: inline-block; padding: 3px 8px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap;"` : '';
                         
                         fixtureCells.push(`
                             <td class="fixture-cell">
-                                <div class="fixture" style="background-color: #f8fafc; border: 1px solid #e2e8f0; cursor: default;">
-                                    <div style="font-weight: bold; font-size: 0.8rem; color: ${statData.color};">${isLeader ? `<span ${leaderStyle}>${statData.value}</span>` : statData.value}</div>
-                                    <div style="font-size: 0.7rem; opacity: 0.8;">${statLabel}</div>
-                                </div>
+                                ${(stat === 'xG_delta' || stat === 'xA_delta') ? 
+                                    `<span style="font-weight: 500; font-size: 0.8rem; color: ${displayColor};">${displayValue}</span>` : 
+                                    isBestAmongSelected ? 
+                                        `<span ${autoCompareStyle}>${displayValue}</span>` :
+                                        (isTop10 && showConditionalHighlight) ? 
+                                            `<span ${top10Style}>${displayValue}</span>` : 
+                                            `<span style="font-weight: 500; font-size: 0.8rem; color: ${displayColor};">${displayValue}</span>`
+                                }
                             </td>
                         `);
                     });
@@ -5412,9 +6098,8 @@
                     }
                 }
                 
-                // Get the selected stat
-                const statFilter = document.getElementById('stat-filter');
-                const selectedStat = statFilter.value;
+                // Get the selected stat (default to total_points since stat-filter is removed)
+                const selectedStat = 'total_points';
                 
                 // Calculate the stat value
                 let statValue = 0;
@@ -5435,6 +6120,12 @@
                     statValue = showPer90 ? (minutes > 0 ? parseFloat((parseFloat(player.expected_goals || 0) * 90 / minutes).toFixed(2)) : 0) : parseFloat(player.expected_goals || 0).toFixed(1);
                 } else if (selectedStat === 'expected_assists') {
                     statValue = showPer90 ? (minutes > 0 ? parseFloat((parseFloat(player.expected_assists || 0) * 90 / minutes).toFixed(2)) : 0) : parseFloat(player.expected_assists || 0).toFixed(1);
+                } else if (selectedStat === 'xG_delta') {
+                    const statData = getStatValue(player, 'xG_delta');
+                    statValue = statData.value;
+                } else if (selectedStat === 'xA_delta') {
+                    const statData = getStatValue(player, 'xA_delta');
+                    statValue = statData.value;
                 } else if (selectedStat === 'clean_sheets') {
                     statValue = showPer90 ? (minutes > 0 ? parseFloat(((player.clean_sheets || 0) * 90 / minutes).toFixed(2)) : 0) : (player.clean_sheets || 0);
                 } else if (selectedStat === 'goals_conceded') {
@@ -5471,7 +6162,7 @@
                 const isTop10 = top10PlayerIds.includes(player.id);
                 const ranking = playerRanking[player.id];
                 const top10Class = (isTop10 && showConditionalHighlight) ? `top-player-pill top-rank-${ranking}` : '';
-                const top10Style = (isTop10 && showConditionalHighlight) ? `class="top-player-pill top-rank-${ranking}" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
+                const top10Style = (isTop10 && showConditionalHighlight) ? `class="top-player-pill top-rank-${ranking}" style="display: inline-block; padding: 3px 8px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
                 
                 // Get team badge URL
                 const badgeUrl = getTeamBadgeUrl(playerTeam?.name || '');
@@ -5492,7 +6183,7 @@
                     </td>
                     <td><span style="display: inline-block; padding: 2px 8px; background-color: #f3f4f6; color: #374151; border-radius: 12px; font-size: 0.75rem; font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);">${position}</span></td>
                     <td class="price" ${compareModeStyle}>${(parseFloat(player.now_cost) / 10).toFixed(1)}</td>
-                    <td class="points" ${compareModeStyle}>${isTop10 && showConditionalHighlight ? `<span ${top10Style}>${statValue}</span>` : statValue}</td>
+                    ${showStats ? `<td class="points" ${compareModeStyle}>${(selectedStat === 'xG_delta' || selectedStat === 'xA_delta') ? `<span style="color: ${getStatValue(player, selectedStat).color}; font-weight: 600;">${statValue}</span>` : (isTop10 && showConditionalHighlight) ? `<span ${top10Style}>${statValue}</span>` : statValue}</td>` : ''}
                     ${fixtureCells.join('')}
                 `;
                 
@@ -5506,7 +6197,21 @@
             // Load historical points if toggle is enabled
             if (showHistory) {
                 console.log('Loading historical points for players view');
-                // Load historical points for all visible fixtures
+                
+                // First, show loading indicators immediately for better UX
+                for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
+                    paginatedPlayers.forEach(player => {
+                        const position = positions[player.element_type] || 'UNK';
+                        const playerFixtures = getPlayerFixtures(player.team_id, gameweeks, position);
+                        const fixture = playerFixtures.find(f => f.gameweek === gw);
+                        if (fixture) {
+                            // Show loading indicator immediately
+                            updateFixtureDisplay(gw, '...', player.web_name);
+                        }
+                    });
+                }
+                
+                // Then load historical points for all visible fixtures
                 for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
                     paginatedPlayers.forEach(player => {
                         const position = positions[player.element_type] || 'UNK';
@@ -5557,19 +6262,14 @@
             // Update team table headers based on current type
             updateTeamTableHeaders();
             
-            // Remove existing fixture headers and comparison headers
-            const existingFixtureHeaders = tableHeader.querySelectorAll('th:not([data-sort])');
-            existingFixtureHeaders.forEach(th => {
-                if (th.textContent.startsWith('GW') || th.textContent === 'Goals' || th.textContent === 'Assists' || th.textContent === 'xG Δ' || th.textContent === 'xA' || th.textContent === 'CS' || th.textContent === 'GC' || th.textContent === 'Bonus' || th.textContent === 'Saves') {
-                    th.remove();
-                }
-            });
-            
-            // Create fixture column headers (compare mode temporarily disabled)
+            // Create fixture column headers if not in stats mode
+            if (!showStats) {
+                // Fixture mode: show gameweek headers
             for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
                 const th = document.createElement('th');
                 th.textContent = `GW${gw}`;
                 tableHeader.appendChild(th);
+                }
             }
             
             // Re-add sorting event listeners for all headers
@@ -5737,42 +6437,111 @@
                 // Create fixture cells or comparison stat cells
                 const fixtureCells = [];
                 
-                if (compareMode && selectedTeams.length >= 2) {
-                    // Comparison mode: show stat columns instead of fixtures
-                    const availableColumns = gameweekEnd - gameweekStart + 1;
-                    const comparisonStats = getPositionSpecificStats('team', availableColumns); // 'team' for team view
+                if (showStats) {
+                    // Stats mode: show stat columns for teams
+                    const teamStats = teamStatsData[currentTeamLocation]?.[team.id];
+                    const teamStatColumns = [
+                        { stat: 'goals_scored', label: 'Goals' },
+                        { stat: 'xg_diff', label: 'xG Δ' },
+                        { stat: 'goals_conceded', label: 'GC' },
+                        { stat: 'xgc_diff', label: 'xGC Δ' },
+                        { stat: 'clean_sheets', label: 'CS' },
+                        { stat: 'saves', label: 'Saves' }
+                    ];
                     
-                    // Get selected teams for leader comparison
-                    const selectedTeamObjects = selectedTeams.map(id => 
-                        teamsData.find(t => t.id === id)
-                    ).filter(t => t);
+                    // Calculate rankings for each team stat (all teams, not just top 10)
+                    const allTeamRankings = {};
+                    const top10TeamRankings = {};
+                    teamStatColumns.forEach(({ stat }) => {
+                        const statValues = [];
+                        teamsData.forEach(t => {
+                            const tStats = teamStatsData[currentTeamLocation]?.[t.id];
+                            if (tStats) {
+                                let value = 0;
+                                if (stat === 'xg_diff') {
+                                    const goals = tStats.goals_scored || 0;
+                                    const xg = tStats.expected_goals || 0;
+                                    value = goals - xg;
+                                } else if (stat === 'xgc_diff') {
+                                    const gc = tStats.goals_conceded || 0;
+                                    const xgc = tStats.expected_goals_conceded || 0;
+                                    value = xgc - gc; // Positive means conceding more than expected (bad)
+                                } else {
+                                    value = tStats[stat] || 0;
+                                }
+                                
+                                if (value > 0) {
+                                    statValues.push({ team: t, value: value });
+                                }
+                            }
+                        });
+                        
+                        // Sort by value (higher is better, except for goals_conceded and xgc_diff)
+                        const lowerIsBetter = ['goals_conceded', 'xgc_diff'];
+                        statValues.sort((a, b) => {
+                            if (lowerIsBetter.includes(stat)) {
+                                return a.value - b.value; // Lower is better
+                            } else {
+                                return b.value - a.value; // Higher is better
+                            }
+                        });
+                        
+                        // Create ranking map for ALL teams
+                        statValues.forEach((item, index) => {
+                            if (!allTeamRankings[stat]) allTeamRankings[stat] = {};
+                            allTeamRankings[stat][item.team.id] = index + 1;
+                        });
+                        
+                        // Create ranking map for top 10 (for highlighting)
+                        statValues.slice(0, 10).forEach((item, index) => {
+                            if (!top10TeamRankings[stat]) top10TeamRankings[stat] = {};
+                            top10TeamRankings[stat][item.team.id] = index + 1;
+                        });
+                    });
                     
-                    comparisonStats.forEach(stat => {
-                        const teamStats = teamStatsData[currentTeamLocation]?.[team.id];
-                        const statValue = teamStats ? (teamStats[stat] || 0) : 0;
-                        const isLeader = findStatLeader(selectedTeamObjects, stat)?.id === team.id;
+                    teamStatColumns.forEach(({ stat, label }) => {
+                        let statValue = 0;
+                        let color = '#000000';
                         
-                        // Create stat label
-                        const statLabels = {
-                            'goals_scored': 'Goals',
-                            'assists': 'Assists',
-                            'expected_goals': 'xG',
-                            'expected_assists': 'xA',
-                            'clean_sheets': 'CS',
-                            'goals_conceded': 'GC',
-                            'bonus': 'Bonus',
-                            'saves': 'Saves'
-                        };
+                        if (stat === 'xg_diff') {
+                            const goals = teamStats ? (teamStats.goals_scored || 0) : 0;
+                            const xg = teamStats ? (teamStats.expected_goals || 0) : 0;
+                            statValue = goals - xg;
+                            color = statValue > 0 ? '#43A15F' : statValue < 0 ? '#B55757' : '#000000';
+                            const sign = statValue > 0 ? '+' : '';
+                            statValue = `${sign}${parseFloat(statValue.toFixed(1))}`;
+                        } else if (stat === 'xgc_diff') {
+                            const gc = teamStats ? (teamStats.goals_conceded || 0) : 0;
+                            const xgc = teamStats ? (teamStats.expected_goals_conceded || 0) : 0;
+                            statValue = xgc - gc; // Positive means conceding more than expected (bad)
+                            color = statValue < 0 ? '#43A15F' : statValue > 0 ? '#B55757' : '#000000';
+                            const sign = statValue < 0 ? '+' : '';
+                            statValue = `${sign}${parseFloat(statValue.toFixed(1))}`;
+                        } else {
+                            statValue = teamStats ? (teamStats[stat] || 0) : 0;
+                        }
                         
-                        const statLabel = statLabels[stat] || stat;
-                        const leaderStyle = isLeader ? 'class="top-player-pill" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"' : '';
+                        const isTop10 = top10TeamRankings[stat] && top10TeamRankings[stat][team.id];
+                        const ranking = allTeamRankings[stat] && allTeamRankings[stat][team.id] ? allTeamRankings[stat][team.id] : null;
+                        const top10Style = (isTop10 && showConditionalHighlight) ? `class="top-player-pill top-rank-${ranking}" style="display: inline-block; padding: 3px 8px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
+                        
+                        // If rank mode is enabled, show ranking instead of value
+                        let displayValue = statValue;
+                        let displayColor = color;
+                        
+                        if (showRankMode && ranking !== null) {
+                            displayValue = ranking;
+                            displayColor = '#000000'; // Black for rankings
+                        }
+                        
+                        // Make zero values light grey
+                        if (displayValue === 0 || displayValue === '0' || displayValue === '0.00' || displayValue === '+0.0' || displayValue === '-0.0') {
+                            displayColor = '#9CA3AF'; // Light grey for zero values
+                        }
                         
                         fixtureCells.push(`
                             <td class="fixture-cell">
-                                <div class="fixture" style="background-color: #f8fafc; border: 1px solid #e2e8f0; cursor: default;">
-                                    <div style="font-weight: bold; font-size: 0.8rem;">${isLeader ? `<span ${leaderStyle}>${statValue}</span>` : statValue}</div>
-                                    <div style="font-size: 0.7rem; opacity: 0.8;">${statLabel}</div>
-                                </div>
+                                ${(stat === 'xg_diff' || stat === 'xgc_diff') ? `<span style="font-weight: 500; font-size: 0.8rem; color: ${displayColor};">${displayValue}</span>` : (isTop10 && showConditionalHighlight) ? `<span ${top10Style}>${displayValue}</span>` : `<span style="font-weight: 500; font-size: 0.8rem; color: ${displayColor};">${displayValue}</span>`}
                             </td>
                         `);
                     });
@@ -6105,11 +6874,8 @@
                 console.log(`Team ${teamId} removed from selection. Selected teams:`, selectedTeams);
             }
             
-            // Show/hide compare button based on selection count
-            const compareBtn = document.getElementById('compare-btn');
-            if (compareBtn) {
-                compareBtn.style.display = selectedTeams.length >= 2 ? 'inline-block' : 'none';
-            }
+            // Check if reset button should be shown/hidden based on selection
+            checkFiltersModified();
             
             // Re-render the table to update the order and styling
             await renderTeamsTable();
@@ -6128,11 +6894,29 @@
                 console.log(`Player ${playerId} removed from selection. Selected players:`, selectedPlayers);
             }
             
-            // Show/hide compare button based on selection count
-            const compareBtn = document.getElementById('compare-btn');
-            if (compareBtn) {
-                compareBtn.style.display = selectedPlayers.length >= 2 ? 'inline-block' : 'none';
+            // Manage Top 10 toggle based on selection count
+            if (showStats) {
+                const highlightToggle = document.getElementById('highlight-toggle');
+                if (selectedPlayers.length >= 2) {
+                    // Auto-compare is active - turn off and lock Top 10 toggle
+                    if (highlightToggle && highlightToggle.checked) {
+                        highlightToggle.checked = false;
+                        showConditionalHighlight = false;
+                    }
+                    // Disable the toggle to prevent user interaction
+                    if (highlightToggle) {
+                        highlightToggle.disabled = true;
+                    }
+                } else {
+                    // Auto-compare is not active - re-enable Top 10 toggle
+                    if (highlightToggle) {
+                        highlightToggle.disabled = false;
+                    }
+                }
             }
+            
+            // Check if reset button should be shown/hidden based on selection
+            checkFiltersModified();
             
             // Re-render the table to update the order and styling
             await renderPlayersTable();
@@ -6764,11 +7548,16 @@
             // Reset all filters and toggles when switching between views
             // This is a lighter version of resetFilters() that doesn't reload data
             
-            // Reset gameweek range
-            const gameweekStart = document.getElementById('gameweek-start');
-            const gameweekEnd = document.getElementById('gameweek-end');
-            if (gameweekStart) gameweekStart.value = '1';
-            if (gameweekEnd) gameweekEnd.value = '5';
+            // Reset gameweek range for both players and teams views
+            const gameweekStartPlayers = document.getElementById('gameweek-start-players');
+            const gameweekEndPlayers = document.getElementById('gameweek-end-players');
+            const gameweekStartTeams = document.getElementById('gameweek-start-teams');
+            const gameweekEndTeams = document.getElementById('gameweek-end-teams');
+            
+            if (gameweekStartPlayers) gameweekStartPlayers.value = '1';
+            if (gameweekEndPlayers) gameweekEndPlayers.value = '5';
+            if (gameweekStartTeams) gameweekStartTeams.value = '1';
+            if (gameweekEndTeams) gameweekEndTeams.value = '5';
             
             // Reset position buttons to ALL (only if they exist)
             selectedPositions = [];
@@ -6779,9 +7568,7 @@
                 if (allPositionBtn) allPositionBtn.classList.add('active');
             }
             
-            // Reset stat filter (only if it exists)
-            const statFilter = document.getElementById('stat-filter');
-            if (statFilter) statFilter.value = 'total_points';
+
             
             // Reset team view filters (only if they exist)
             const locationButtons = document.querySelectorAll('.filter-btn[data-location]');
@@ -6844,7 +7631,7 @@
             const per90Toggle = document.getElementById('per90-toggle');
             if (per90Toggle) per90Toggle.checked = false;
             
-            showConditionalHighlight = true;
+            showConditionalHighlight = false;
             showPer90 = false;
             
             // Reset rank/history filter to "None" (only if it exists)
@@ -6873,8 +7660,6 @@
             const gameweekStartTeams = document.getElementById('gameweek-start-teams').value;
             const gameweekEndTeams = document.getElementById('gameweek-end-teams').value;
             const searchInput = document.getElementById('search-input').value;
-            const statFilter = document.getElementById('stat-filter');
-            
             // Check if position filters are modified (not ALL selected)
             const allPositionBtn = document.querySelector('.filter-btn[data-position=""]');
             const isPositionModified = !allPositionBtn || !allPositionBtn.classList.contains('active');
@@ -6898,7 +7683,10 @@
             // Check if toggles are modified (per90 is now part of display filter)
             const isToggleModified = false; // No separate toggles anymore
             
-            // Determine if any filter is modified
+            // Check if any players or teams are selected
+            const hasSelectedItems = selectedPlayers.length > 0 || selectedTeams.length > 0;
+            
+            // Determine if any filter is modified or items are selected
             const isModified = gameweekStartPlayers !== '1' || 
                               gameweekEndPlayers !== '5' || 
                               gameweekStartTeams !== '1' || 
@@ -6910,7 +7698,7 @@
                               isRankModified || 
                               isStatModified || 
                               isToggleModified ||
-                              (statFilter && statFilter.value !== 'total_points');
+                              hasSelectedItems;
             
             // Show/hide reset button only if there's an actual change from the previous state
             const resetBtn = document.getElementById('reset-btn');
@@ -6918,12 +7706,15 @@
                 if (isModified && !filtersModified) {
                     // Filters just became modified - show the button
                     resetBtn.style.display = 'inline-block';
+                    resetBtn.classList.add('active');
                 } else if (!isModified && filtersModified) {
                     // Filters just became unmodified - hide the button
                     resetBtn.style.display = 'none';
+                    resetBtn.classList.remove('active');
                 } else if (!isModified && !filtersModified) {
                     // Ensure button is hidden when filters are not modified
                     resetBtn.style.display = 'none';
+                    resetBtn.classList.remove('active');
                 }
             }
             
@@ -6946,11 +7737,7 @@
                 allPositionBtn.classList.add('active');
             }
             
-            // Reset stat filter
-            const statFilter = document.getElementById('stat-filter');
-            if (statFilter) {
-                statFilter.value = 'total_points';
-            }
+
             
 
             
@@ -7004,7 +7791,7 @@
             }
             
             // Reset toggles
-            showConditionalHighlight = true; // Always on by default
+            showConditionalHighlight = false; // Off by default
             showPer90 = false;
             showRankMode = false;
             
@@ -7035,6 +7822,7 @@
             const resetBtn = document.getElementById('reset-btn');
             if (resetBtn) {
                 resetBtn.style.display = 'none';
+                resetBtn.classList.remove('active');
             }
             filtersModified = false;
             
@@ -7043,6 +7831,7 @@
                 const resetBtn = document.getElementById('reset-btn');
                 if (resetBtn) {
                     resetBtn.style.display = 'none';
+                    resetBtn.classList.remove('active');
                 }
                 filtersModified = false;
             }, 100);
@@ -7091,52 +7880,7 @@
         
 
         
-        async function updateStatColumn() {
-            const statFilter = document.getElementById('stat-filter');
-            const statHeader = document.getElementById('stat-header');
-            const selectedStat = statFilter.value;
-            
-            // Only update if we're in players view and the header exists
-            if (currentView === 'players' && statHeader) {
-                // Update header text for players view only
-                const statLabels = {
-                    'total_points': 'Points',
-                    'goals_scored': 'Goals',
-                    'assists': 'Assists',
-                    'goals_assists': 'G+A',
-                    'expected_goals': 'xG',
-                    'expected_assists': 'xA',
-                    'clean_sheets': 'Clean Sheets',
-                    'goals_conceded': 'Goals Conceded',
-                    'bonus': 'Bonus',
-                    'saves': 'Saves'
-                };
-                
-                statHeader.textContent = statLabels[selectedStat] || 'Points';
-                statHeader.dataset.sort = selectedStat;
-            }
-            
-            // Update current sort if it was on the stat column
-            if (currentSort.field === 'total_points' || 
-                currentSort.field === 'atk_h_rank' ||
-                currentSort.field === 'atk_a_rank' ||
-                currentSort.field === 'def_h_rank' ||
-                currentSort.field === 'def_a_rank' ||
-                currentSort.field === 'goals_scored' || 
-                currentSort.field === 'assists' || 
-                currentSort.field === 'goals_assists' || 
-                currentSort.field === 'expected_goals' || 
-                currentSort.field === 'expected_assists' ||
-                currentSort.field === 'clean_sheets' ||
-                currentSort.field === 'goals_conceded' ||
-                currentSort.field === 'bonus' ||
-                currentSort.field === 'saves') {
-                currentSort.field = selectedStat;
-            }
-            
-            // Reload data to update the view
-            loadData();
-        }
+
         
         function updateTeamTableHeaders() {
             const tableHeader = document.getElementById('team-table-header');
@@ -7419,53 +8163,50 @@
                     }
                 }
                 
+                // Ensure filters container is hidden by default
+                const filtersContainer = document.getElementById('filters-container');
+                if (filtersContainer) {
+                    filtersContainer.classList.remove('expanded');
+                }
+                
                 filtersModified = false;
                 });
 
         // Comparison mode functionality
-        let compareMode = false;
         
         // Store original header state
         let originalHeaderState = null;
         
-        function toggleCompareMode() {
-            // Temporarily disabled - keeping selection experience but not implementing compare functionality
-            console.log('Compare mode temporarily disabled - selection experience preserved');
-            
-            // Keep the button state management for visual feedback
-            const compareBtn = document.getElementById('compare-btn');
-            if (compareBtn) {
-                compareBtn.classList.toggle('active');
-                compareBtn.textContent = compareBtn.classList.contains('active') ? 'Exit Compare' : 'Compare';
-            }
-            
-            // Toggle compare mode state for button management
-            compareMode = !compareMode;
-        }
+
         
         function getPositionSpecificStats(position, availableColumns) {
             const stats = [];
             
             if (currentView === 'teams' || position === 'team') {
-                // For teams, get stats that don't conflict with existing table columns
+                // For teams, get comprehensive stats for comparison
                 const allTeamStats = ['goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus'];
                 const filteredStats = filterOutExistingColumns(allTeamStats);
                 return filteredStats.slice(0, availableColumns);
             }
             
-            // For players, use position-specific stats
-            if (position === 'FWD' || position === 'MID') {
-                const fwdMidStats = ['goals_scored', 'expected_goals', 'assists', 'bonus'];
-                return fwdMidStats.slice(0, availableColumns);
+            // For players, use comprehensive position-specific stats for comparison
+            if (position === 'FWD') {
+                const fwdStats = ['goals_scored', 'expected_goals', 'assists', 'expected_assists', 'bonus', 'total_points'];
+                return fwdStats.slice(0, availableColumns);
+            } else if (position === 'MID') {
+                const midStats = ['goals_scored', 'expected_goals', 'assists', 'expected_assists', 'bonus', 'total_points'];
+                return midStats.slice(0, availableColumns);
             } else if (position === 'DEF') {
-                const defStats = ['clean_sheets', 'goals_conceded', 'bonus', 'goals_scored', 'expected_goals', 'assists'];
+                const defStats = ['clean_sheets', 'goals_conceded', 'goals_scored', 'expected_goals', 'assists', 'bonus', 'total_points'];
                 return defStats.slice(0, availableColumns);
             } else if (position === 'GKP') {
-                const gkpStats = ['clean_sheets', 'goals_conceded', 'saves', 'bonus'];
+                const gkpStats = ['clean_sheets', 'goals_conceded', 'saves', 'bonus', 'total_points'];
                 return gkpStats.slice(0, availableColumns);
             }
             
-            return [];
+            // Default comprehensive stats for any position
+            const defaultStats = ['goals_scored', 'expected_goals', 'assists', 'expected_assists', 'clean_sheets', 'goals_conceded', 'saves', 'bonus', 'total_points'];
+            return defaultStats.slice(0, availableColumns);
         }
         
         function filterOutExistingColumns(stats) {
@@ -7516,6 +8257,32 @@
             } else if (stat === 'expected_assists') {
                 return {
                     value: parseFloat((player.expected_assists || 0).toFixed(1)),
+                    color: '#000000'
+                };
+            } else if (stat === 'xG_delta') {
+                const delta = calculateXGDelta(player);
+                const color = delta > 0 ? '#43A15F' : delta < 0 ? '#B55757' : '#000000'; // Match team tab colors
+                const sign = delta > 0 ? '+' : '';
+                return {
+                    value: `${sign}${parseFloat(delta.toFixed(1))}`,
+                    color: color
+                };
+            } else if (stat === 'xA_delta') {
+                const assists = player.assists || 0;
+                const xa = parseFloat(player.expected_assists || 0);
+                const delta = parseFloat((assists - xa).toFixed(1));
+                const color = delta > 0 ? '#43A15F' : delta < 0 ? '#B55757' : '#000000'; // Match team tab colors
+                const sign = delta > 0 ? '+' : '';
+                return {
+                    value: `${sign}${delta}`,
+                    color: color
+                };
+            } else if (stat === 'goals_assists') {
+                const goals = player.goals_scored || 0;
+                const assists = player.assists || 0;
+                const gi = goals + assists;
+                return {
+                    value: gi,
                     color: '#000000'
                 };
             }
@@ -7576,34 +8343,43 @@
         window.addEventListener('resize', handleViewportResize);
 
         // Global variable to track rank display state
-        let showRanks = false;
-        let showHistory = false;
-        let showConditionalHighlight = true;
-        let showPer90 = false;
-        let showRankMode = false;
 
         function handleRankFilter(selectedRank) {
             console.log('handleRankFilter called with:', selectedRank);
             
+            // Cancel any ongoing processing if filter changed
+            if (currentFilter !== selectedRank && (currentFilter === 'last' || selectedRank === 'last')) {
+                console.log('Filter changed, canceling ongoing historical data processing');
+                batchLoadingQueue = []; // Clear the queue
+                if (batchLoadingTimeout) {
+                    clearTimeout(batchLoadingTimeout);
+                    batchLoadingTimeout = null;
+                }
+                // Progress indicator removed - no loading experience needed
+            }
+            
+            // Update current filter
+            currentFilter = selectedRank;
+            
             // Remove active class from all rank filter buttons
-            document.querySelectorAll('.rank-filter-container .filter-btn').forEach(btn => {
+            document.querySelectorAll('.filter-btn[data-rank]').forEach(btn => {
                 btn.classList.remove('active');
                 console.log('Removed active from:', btn.dataset.rank);
             });
             
             // Add active class to the clicked button
-            const clickedButton = document.querySelector(`.rank-filter-container .filter-btn[data-rank="${selectedRank}"]`);
+            const clickedButton = document.querySelector(`.filter-btn[data-rank="${selectedRank}"]`);
             if (clickedButton) {
                 clickedButton.classList.add('active');
                 console.log('Added active to:', selectedRank);
             }
             
             // Verify only one button is active
-            const activeButtons = document.querySelectorAll('.rank-filter-container .filter-btn.active');
+            const activeButtons = document.querySelectorAll('.filter-btn[data-rank].active');
             console.log('Active rank filter buttons after click:', activeButtons.length);
             if (activeButtons.length > 1) {
                 console.error('Multiple rank filter buttons active! Fixing...');
-                document.querySelectorAll('.rank-filter-container .filter-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.filter-btn[data-rank]').forEach(btn => btn.classList.remove('active'));
                 if (clickedButton) clickedButton.classList.add('active');
             }
             
@@ -7630,14 +8406,26 @@
                 showPer90 = true;
             }
             
+            // Clear cache when switching between different data types
+            if (selectedRank === 'last' || selectedRank === 'rank') {
+                console.log('Clearing cache for new data type');
+                historicalDataCache.clear();
+                rankDataCache.clear();
+            }
+            
             // Update display description
             const descriptionElement = document.getElementById('display-description');
+            console.log('Description element found:', descriptionElement);
             if (descriptionElement) {
                 let description = '';
                 if (selectedRank === 'rank') {
-                    description = 'Converts values to player / team rankings';
+                    if (showStats) {
+                        description = 'Shows player rank by category';
+                    } else {
+                        description = 'Shows opponent team rank';
+                    }
                 } else if (selectedRank === 'last') {
-                    description = 'Shows last season\'s performance vs opponent';
+                    description = 'Shows 2024/25 player points vs opponent';
                 } else if (selectedRank === 'per90') {
                     description = 'Converts totals to per 90 minute rates';
                 }
@@ -7645,9 +8433,15 @@
                 if (description) {
                     descriptionElement.textContent = description;
                     descriptionElement.style.display = 'block';
+                    descriptionElement.style.color = '#64748B'; // Medium gray color - more visible
+                    descriptionElement.style.fontSize = '12px'; // 12px font size (2px bigger)
+                    descriptionElement.style.fontStyle = 'italic';
+                    console.log('Set description to:', description, 'with medium gray color');
                 } else {
                     descriptionElement.style.display = 'none';
                 }
+            } else {
+                console.log('Description element not found!');
             }
             
             console.log('Rank filter changed:', selectedRank, 'showRanks:', showRanks, 'showHistory:', showHistory);
@@ -7655,61 +8449,309 @@
             checkFiltersModified();
         }
 
+        function handleStatsToggle(selectedMode) {
+            console.log('handleStatsToggle called with:', selectedMode);
+            
+            // Update current stats mode
+            showStats = selectedMode === 'on';
+            
+            // Remove active class from all stats toggle buttons
+            document.querySelectorAll('.filter-btn[data-stats]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to the clicked button
+            const clickedButton = document.querySelector(`.filter-btn[data-stats="${selectedMode}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            console.log('Stats toggle changed:', selectedMode, 'showStats:', showStats);
+            
+            // Show/hide highlighting toggle based on stats mode AND current view (only for players view)
+            const highlightingToggle = document.getElementById('highlighting-toggle');
+            if (highlightingToggle) {
+                const shouldShow = showStats && currentView === 'players';
+                highlightingToggle.style.display = shouldShow ? 'block' : 'none';
+                
+                // Manage Top 10 toggle when switching to/from stats view
+                if (showStats && selectedPlayers.length >= 2) {
+                    // Auto-compare is active - turn off and lock Top 10 toggle
+                    const highlightToggle = document.getElementById('highlight-toggle');
+                    if (highlightToggle && highlightToggle.checked) {
+                        highlightToggle.checked = false;
+                        showConditionalHighlight = false;
+                    }
+                    // Disable the toggle to prevent user interaction
+                    if (highlightToggle) {
+                        highlightToggle.disabled = true;
+                    }
+                } else if (!showStats) {
+                    // Switching to fixtures view - re-enable Top 10 toggle
+                    const highlightToggle = document.getElementById('highlight-toggle');
+                    if (highlightToggle) {
+                        highlightToggle.disabled = false;
+                    }
+                }
+            }
+            
+            // Handle Last display button state
+            const lastButton = document.querySelector('button[onclick="handleRankFilter(\'last\')"]');
+            if (lastButton) {
+                if (showStats) {
+                    // Disable and grey out Last button in Stats view
+                    lastButton.disabled = true;
+                    lastButton.style.opacity = '0.5';
+                    lastButton.style.cursor = 'not-allowed';
+                    // If Last was active, switch to None
+                    if (showHistory) {
+                        showHistory = false;
+                        showRanks = false;
+                        showRankMode = false;
+                        lastButton.classList.remove('active');
+                        const noneButton = document.querySelector('button[onclick="handleRankFilter(\'none\')"]');
+                        if (noneButton) noneButton.classList.add('active');
+                    }
+                } else {
+                    // Enable Last button in Fixtures view
+                    lastButton.disabled = false;
+                    lastButton.style.opacity = '1';
+                    lastButton.style.cursor = 'pointer';
+                }
+            }
+            
+            // Handle Per 90 display button state
+            const per90Button = document.querySelector('button[onclick="handleRankFilter(\'per90\')"]');
+            if (per90Button) {
+                if (showStats) {
+                    // Enable Per 90 button in Stats view
+                    per90Button.disabled = false;
+                    per90Button.style.opacity = '1';
+                    per90Button.style.cursor = 'pointer';
+                } else {
+                    // Disable Per 90 button in Fixtures view (not applicable)
+                    per90Button.disabled = true;
+                    per90Button.style.opacity = '0.5';
+                    per90Button.style.cursor = 'not-allowed';
+                    // If Per 90 was active, switch to normal mode
+                    if (showPer90) {
+                        showPer90 = false;
+                        per90Button.classList.remove('active');
+                    }
+                }
+            }
+            
+            // Update None/Total button text based on view mode
+            const noneButton = document.querySelector('button[onclick="handleRankFilter(\'none\')"]');
+            if (noneButton) {
+                if (showStats) {
+                    noneButton.textContent = 'Total';
+                } else {
+                    noneButton.textContent = 'None';
+                }
+            }
+            
+            // Handle Gameweek Range controls state
+            const playersGameweekRange = document.getElementById('players-gameweek-range');
+            const teamsGameweekRange = document.getElementById('teams-gameweek-range');
+            
+            if (playersGameweekRange) {
+                const inputs = playersGameweekRange.querySelectorAll('input[type="number"]');
+                const buttons = playersGameweekRange.querySelectorAll('button');
+                
+                if (showStats) {
+                    // Disable and grey out gameweek range controls in Stats view
+                    inputs.forEach(input => {
+                        input.disabled = true;
+                        input.style.opacity = '0.5';
+                        input.style.cursor = 'not-allowed';
+                    });
+                    buttons.forEach(button => {
+                        button.disabled = true;
+                        button.style.opacity = '0.5';
+                        button.style.cursor = 'not-allowed';
+                    });
+                    playersGameweekRange.style.opacity = '0.5';
+                } else {
+                    // Enable gameweek range controls in Fixtures view
+                    inputs.forEach(input => {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                        input.style.cursor = 'auto';
+                    });
+                    buttons.forEach(button => {
+                        button.disabled = false;
+                        button.style.opacity = '1';
+                        button.style.cursor = 'pointer';
+                    });
+                    playersGameweekRange.style.opacity = '1';
+                }
+            }
+            
+            if (teamsGameweekRange) {
+                const inputs = teamsGameweekRange.querySelectorAll('input[type="number"]');
+                const buttons = teamsGameweekRange.querySelectorAll('button');
+                
+                if (showStats) {
+                    // Disable and grey out gameweek range controls in Stats view
+                    inputs.forEach(input => {
+                        input.disabled = true;
+                        input.style.opacity = '0.5';
+                        input.style.cursor = 'not-allowed';
+                    });
+                    buttons.forEach(button => {
+                        button.disabled = true;
+                        button.style.opacity = '0.5';
+                        button.style.cursor = 'not-allowed';
+                    });
+                    teamsGameweekRange.style.opacity = '0.5';
+                } else {
+                    // Enable gameweek range controls in Fixtures view
+                    inputs.forEach(input => {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                        input.style.cursor = 'auto';
+                    });
+                    buttons.forEach(button => {
+                        button.disabled = false;
+                        button.style.opacity = '1';
+                        button.style.cursor = 'pointer';
+                    });
+                    teamsGameweekRange.style.opacity = '1';
+                }
+            }
+            
+            // Clear any existing table content to ensure clean re-render
+            const playerTbody = document.getElementById('player-tbody');
+            const teamTbody = document.getElementById('team-tbody');
+            if (playerTbody) playerTbody.innerHTML = '';
+            if (teamTbody) teamTbody.innerHTML = '';
+            
+            renderTable();
+        }
+
+        function handleHighlightToggle(isChecked) {
+            console.log('handleHighlightToggle called with:', isChecked);
+            
+            // Update current highlighting mode
+            showConditionalHighlight = isChecked;
+            
+            console.log('Highlight toggle changed:', isChecked, 'showConditionalHighlight:', showConditionalHighlight);
+            renderTable();
+        }
 
 
 
+
+
+        // Batch loading for historical data to reduce API calls
+        let batchLoadingQueue = [];
+        let batchLoadingTimeout = null;
+        let currentFilter = 'none'; // Track current filter to cancel processing if changed
 
         async function loadPlayerHistoricalPoints(playerName, opponent, isHome, gameweek) {
+            // Check cache first (most efficient)
+            const cacheKey = `${playerName}_${opponent}_${isHome}`;
+            if (historicalDataCache.has(cacheKey)) {
+                const cachedData = historicalDataCache.get(cacheKey);
+                updateFixtureDisplay(gameweek, cachedData, playerName);
+                return;
+            }
+            
             // Check if opponent is newly promoted (no historical data)
             const newlyPromotedTeams = ['BUR', 'LEE', 'SUN'];
             if (newlyPromotedTeams.includes(opponent)) {
+                historicalDataCache.set(cacheKey, 'N/A');
                 updateFixtureDisplay(gameweek, 'N/A', playerName);
                 return;
             }
             
+            // Add to batch queue instead of making immediate API call
+            batchLoadingQueue.push({
+                playerName,
+                opponent,
+                isHome,
+                gameweek,
+                cacheKey
+            });
+            
+            // Clear existing timeout and set new one
+            if (batchLoadingTimeout) {
+                clearTimeout(batchLoadingTimeout);
+            }
+            
+            batchLoadingTimeout = setTimeout(() => {
+                processBatchHistoricalData();
+            }, 50); // Small delay to batch requests
+        }
+        
+        async function processBatchHistoricalData() {
+            if (batchLoadingQueue.length === 0) return;
+            
+            // Check if filter has changed since this batch was queued
+            if (currentFilter !== 'last') {
+                console.log('Filter changed during processing, stopping batch');
+                batchLoadingQueue = []; // Clear remaining queue
+                return;
+            }
+            
+            const batch = batchLoadingQueue.splice(0, 10); // Process 10 at a time
+            console.log(`Processing batch of ${batch.length} historical data requests (${batchLoadingQueue.length} remaining)`);
+            
+            // Progress indicator removed - no loading experience needed
+            
+            const promises = batch.map(async (item) => {
             try {
                 // Find opponent team ID
-                const opponentTeam = teamsData.find(t => t.short_name === opponent);
+                    const opponentTeam = teamsData.find(t => t.short_name === item.opponent);
                 if (!opponentTeam) {
-                    console.log(`No opponent team found for: ${opponent}`);
-                    updateFixtureDisplay(gameweek, 'N/A', playerName);
+                        historicalDataCache.set(item.cacheKey, 'N/A');
+                        updateFixtureDisplay(item.gameweek, 'N/A', item.playerName);
                     return;
                 }
                 
-                console.log(`Fetching historical data for ${playerName} vs ${opponent} (${opponentTeam.id}) - Home: ${isHome}`);
-                
-                // Fetch historical data using the same endpoint as the matchup popup
-                const response = await fetch(`${API_BASE_URL}/api/player-fixture-history?player_name=${encodeURIComponent(playerName)}&opponent_team_id=${opponentTeam.id}`);
+                    // Fetch historical data
+                    const response = await fetch(`${API_BASE_URL}/api/player-fixture-history?player_name=${encodeURIComponent(item.playerName)}&opponent_team_id=${opponentTeam.id}`);
                 const data = await response.json();
-                
-                console.log('Historical data response:', data);
                 
                 if (data.fixtures && data.fixtures.length > 0) {
                     // Find the fixture for the specific location (home/away)
-                    const locationFixture = data.fixtures.find(f => f.was_home === isHome);
+                        const locationFixture = data.fixtures.find(f => f.was_home === item.isHome);
                     if (locationFixture) {
                         const points = locationFixture.total_points || '0';
-                        console.log(`Found fixture for ${playerName} vs ${opponent} (${isHome ? 'Home' : 'Away'}): ${points} points`);
-                        updateFixtureDisplay(gameweek, points, playerName);
+                            historicalDataCache.set(item.cacheKey, points);
+                            updateFixtureDisplay(item.gameweek, points, item.playerName);
                     } else {
-                        console.log(`No ${isHome ? 'home' : 'away'} fixture found for ${playerName} vs ${opponent}`);
-                        updateFixtureDisplay(gameweek, 'N/A', playerName);
+                            historicalDataCache.set(item.cacheKey, 'N/A');
+                            updateFixtureDisplay(item.gameweek, 'N/A', item.playerName);
                     }
                 } else {
-                    console.log('No fixtures found in historical data');
-                    updateFixtureDisplay(gameweek, 'N/A', playerName);
+                        historicalDataCache.set(item.cacheKey, 'N/A');
+                        updateFixtureDisplay(item.gameweek, 'N/A', item.playerName);
                 }
             } catch (error) {
                 console.error('Error fetching historical points:', error);
-                updateFixtureDisplay(gameweek, 'N/A', playerName);
+                    historicalDataCache.set(item.cacheKey, 'N/A');
+                    updateFixtureDisplay(item.gameweek, 'N/A', item.playerName);
+                }
+            });
+            
+            await Promise.all(promises);
+            
+            // Progress indicator removed - no loading experience needed
+            
+            // Process remaining items in queue
+            if (batchLoadingQueue.length > 0) {
+                setTimeout(processBatchHistoricalData, 100);
             }
         }
 
         function updateFixtureDisplay(gameweek, points, playerName) {
             // Find the specific cell for this player and gameweek
             const rows = document.querySelectorAll('#player-tbody tr');
+            
             rows.forEach(row => {
-                const playerNameCell = row.querySelector('td:first-child strong');
+                const playerNameCell = row.querySelector('td:nth-child(2) strong');
                 if (playerNameCell && playerNameCell.textContent === playerName) {
                     const fixtureCell = row.querySelector(`[data-fixture="${gameweek}"]`);
                     if (fixtureCell) {
@@ -7717,7 +8759,7 @@
                         const resultDiv = fixtureCell.querySelector('div[style*="font-size: 0.7rem"]');
                         if (resultDiv) {
                             resultDiv.textContent = points;
-                            console.log(`Updated ${playerName} GW${gameweek} to show: ${points}`);
+                            resultDiv.style.opacity = '1'; // Make sure it's visible
                         }
                     }
                 }
@@ -7780,12 +8822,29 @@
         }
 
         function loadPlayerRankData(playerName, fixture, gameweek) {
+            // Check cache first for rank data
+            const cacheKey = `rank_${playerName}_${fixture.opponent}_${fixture.isHome}`;
+            if (rankDataCache.has(cacheKey)) {
+                const cachedRank = rankDataCache.get(cacheKey);
+                console.log(`Using cached rank data for ${playerName} vs ${fixture.opponent}`);
+                updatePlayerRankDisplay(gameweek, cachedRank, playerName);
+                return;
+            }
+            
             // Extract rank information from debug string
+            console.log(`Debug string for ${playerName} vs ${fixture.opponent}:`, fixture.debug);
             const debugMatch = fixture.debug.match(/(STR|ATK|DEF)(\d+)vs(STR|ATK|DEF)(\d+)\((-?\d+)\)/);
             if (debugMatch) {
                 const [_, playerMetric, playerRank, opponentMetric, opponentRank, advantage] = debugMatch;
+                console.log(`Found rank data: ${playerMetric}${playerRank} vs ${opponentMetric}${opponentRank} (${advantage})`);
+                
+                // Cache the result
+                rankDataCache.set(cacheKey, opponentRank);
+                
                 updatePlayerRankDisplay(gameweek, opponentRank, playerName);
             } else {
+                console.log(`No rank data found in debug string for ${playerName}`);
+                rankDataCache.set(cacheKey, 'N/A');
                 updatePlayerRankDisplay(gameweek, 'N/A', playerName);
             }
         }
@@ -7793,17 +8852,26 @@
         function updatePlayerRankDisplay(gameweek, rank, playerName) {
             // Find the specific cell for this player and gameweek
             const rows = document.querySelectorAll('#player-tbody tr');
+            console.log(`Looking for ${playerName} in ${rows.length} rows`);
             rows.forEach(row => {
-                const playerNameCell = row.querySelector('td:first-child strong');
+                const playerNameCell = row.querySelector('td:nth-child(2) strong');
                 if (playerNameCell && playerNameCell.textContent === playerName) {
+                    console.log(`Found player row for ${playerName}`);
                     const fixtureCell = row.querySelector(`[data-fixture="${gameweek}"]`);
                     if (fixtureCell) {
+                        console.log(`Found fixture cell for GW${gameweek}`);
                         // Find the second div (the one underneath the abbreviation)
                         const resultDiv = fixtureCell.querySelector('div[style*="font-size: 0.7rem"]');
                         if (resultDiv) {
                             resultDiv.textContent = rank;
+                            resultDiv.style.opacity = '1'; // Make sure it's visible
                             console.log(`Updated ${playerName} GW${gameweek} to show rank: ${rank}`);
+                        } else {
+                            console.log(`Could not find result div for ${playerName} GW${gameweek} rank`);
+                            console.log('Available divs in fixture cell:', fixtureCell.querySelectorAll('div'));
                         }
+                    } else {
+                        console.log(`Could not find fixture cell for ${playerName} GW${gameweek} rank`);
                     }
                 }
             });
@@ -7842,6 +8910,7 @@
                         const resultDiv = fixtureCell.querySelector('div[style*="font-size: 0.7rem"]');
                         if (resultDiv) {
                             resultDiv.textContent = rank;
+                            resultDiv.style.opacity = '1'; // Make sure it's visible
                             console.log(`Updated team ${teamId} GW${gameweek} to show rank: ${rank}`);
                         }
                     }
@@ -7859,6 +8928,7 @@
                         const resultDiv = fixtureCell.querySelector('div[style*="font-size: 0.7rem"]');
                         if (resultDiv) {
                             resultDiv.textContent = result;
+                            resultDiv.style.opacity = '1'; // Make sure it's visible
                             console.log(`Updated team ${teamId} GW${gameweek} to show: ${result}`);
                         }
                     }
@@ -8340,6 +9410,29 @@
 
         function getSelectedLocation() {
             return selectedLocation;
+        }
+
+        function handleTeamTypeFilter(selectedType) {
+            console.log('handleTeamTypeFilter called with:', selectedType);
+            
+            // Remove active class from all team type buttons
+            document.querySelectorAll('.filter-btn[data-type]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to the clicked button
+            const clickedButton = document.querySelector(`.filter-btn[data-type="${selectedType}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Update team table headers based on new type
+            updateTeamTableHeaders();
+            
+            // Reload team data to reflect the new type
+            if (currentView === 'teams') {
+                renderTeamsTable();
+            }
         }
 
 
