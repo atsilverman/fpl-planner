@@ -289,11 +289,12 @@
             }
             
             .display-description {
-                font-size: 12px;
-                color: #6b7280;
+                font-size: 10px;
+                color: #9ca3af;
                 font-style: italic;
-                margin-top: 4px;
+                margin-top: 2px;
                 margin-left: 8px;
+                opacity: 0.7;
             }
             
             .filter-btn {
@@ -5017,16 +5018,12 @@
                         // Apply search filter first
             let searchFilteredPlayers = filterBySearch(playersData);
             
-            // Calculate rankings first if needed for sorting
+            // Calculate rankings for display only (no sorting)
             let playerRanking = {};
             if (showRankMode) {
-                // Get the selected stat for ranking - use the current sort field if it's a stat field
-                let selectedStat = currentSort.field;
-                if (!['total_points', 'goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus', 'saves', 'goals_assists'].includes(selectedStat)) {
-                    // Fall back to the stat filter value if current sort field is not a stat
-                    const statFilter = document.getElementById('stat-filter');
-                    selectedStat = statFilter.value;
-                }
+                // Get the selected stat for ranking
+                const statFilter = document.getElementById('stat-filter');
+                const selectedStat = statFilter.value;
                 
                 // Calculate stat values for ranking
                 const statValues = [];
@@ -5099,12 +5096,7 @@
                         aVal = aMinutes > 0 ? parseFloat(((a[currentSort.field] || 0) * 90 / aMinutes).toFixed(2)) : 0;
                         bVal = bMinutes > 0 ? parseFloat(((b[currentSort.field] || 0) * 90 / bMinutes).toFixed(2)) : 0;
                     }
-                } else if (showRankMode && ['total_points', 'goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus', 'saves'].includes(currentSort.field)) {
-                    // Sort by rank values when in rank mode
-                    const aRank = playerRanking[a.id] || 999;
-                    const bRank = playerRanking[b.id] || 999;
-                    aVal = aRank;
-                    bVal = bRank;
+
                 } else if (currentSort.field === 'goals_assists') {
                     // Sort by goals + assists
                     aVal = (a.goals_scored || 0) + (a.assists || 0);
