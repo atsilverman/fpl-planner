@@ -4217,7 +4217,7 @@
             <table id="player-table" class="player-table" style="display: none;">
                 <thead>
                     <tr id="table-header">
-                        <th>Team</th>
+                        <th></th>
                         <th class="sortable" data-sort="web_name">Player</th>
                         <th>Position</th>
                         <th class="sortable" data-sort="now_cost">Price</th>
@@ -4779,6 +4779,32 @@
             // Reset pagination
             currentPage = 1;
             
+            // Reset compare mode when switching views
+            if (compareMode) {
+                compareMode = false;
+                const compareBtn = document.getElementById('compare-btn');
+                if (compareBtn) {
+                    compareBtn.classList.remove('active');
+                    compareBtn.textContent = 'Compare';
+                    compareBtn.style.display = 'none';
+                }
+                // Restore original header state if it exists
+                const tableHeader = document.getElementById('table-header');
+                if (tableHeader && originalHeaderState) {
+                    tableHeader.innerHTML = originalHeaderState;
+                }
+            }
+            
+            // Always clear selections when switching views
+            selectedPlayers = [];
+            selectedTeams = [];
+            
+            // Ensure compare button is hidden
+            const compareBtn = document.getElementById('compare-btn');
+            if (compareBtn) {
+                compareBtn.style.display = 'none';
+            }
+            
             // Show/hide pagination based on view (teams view doesn't need pagination)
             const paginationContainer = document.querySelector('.pagination-container');
             if (paginationContainer) {
@@ -5022,44 +5048,21 @@
             
             tbody.innerHTML = '';
             
-            // Remove existing fixture headers
+            // Remove existing fixture headers and comparison stat headers
             const existingFixtureHeaders = tableHeader.querySelectorAll('th:not([data-sort])');
             existingFixtureHeaders.forEach(th => {
-                if (th.textContent.startsWith('GW')) {
+                const text = th.textContent.trim();
+                // Remove GW headers and comparison stat headers, but preserve Position header
+                if (text.startsWith('GW') || ['Goals', 'Assists', 'xG Δ', 'xA', 'CS', 'GC', 'Bonus', 'Saves'].includes(text)) {
                     th.remove();
                 }
             });
             
-            // Create fixture column headers or comparison stat headers
-            if (compareMode && selectedPlayers.length >= 2) {
-                // Get the first selected player to determine position for stat selection
-                const firstSelectedPlayer = playersData.find(p => p.id === selectedPlayers[0]);
-                const position = firstSelectedPlayer ? positions[firstSelectedPlayer.element_type] || 'UNK' : 'UNK';
-                const availableColumns = gameweekEnd - gameweekStart + 1;
-                const comparisonStats = getPositionSpecificStats(position, availableColumns);
-                
-                comparisonStats.forEach(stat => {
-                    const th = document.createElement('th');
-                    const statLabels = {
-                        'goals_scored': 'Goals',
-                        'assists': 'Assists',
-                        'expected_goals': 'xG Δ',
-                        'expected_assists': 'xA',
-                        'clean_sheets': 'CS',
-                        'goals_conceded': 'GC',
-                        'bonus': 'Bonus',
-                        'saves': 'Saves'
-                    };
-                    th.textContent = statLabels[stat] || stat;
-                    tableHeader.appendChild(th);
-                });
-            } else {
-                // Create fixture column headers (no sorting)
-                for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
-                    const th = document.createElement('th');
-                    th.textContent = `GW${gw}`;
-                    tableHeader.appendChild(th);
-                }
+            // Create fixture column headers (compare mode temporarily disabled)
+            for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
+                const th = document.createElement('th');
+                th.textContent = `GW${gw}`;
+                tableHeader.appendChild(th);
             }
             
             // Re-add sorting event listeners for all headers (remove existing first)
@@ -5475,13 +5478,18 @@
                 const badgeHtml = badgeUrl ? `<img src="${badgeUrl}" alt="${playerTeam?.name || ''}" class="team-badge" onerror="this.style.display='none'">` : '';
                 
                 // Add white background styling for Points and Price when in compare mode
-                const compareModeStyle = compareMode && selectedPlayers.length >= 2 ? 'style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 4px;"' : '';
+                const compareModeStyle = ''; // Compare mode temporarily disabled
                 
                 row.innerHTML = `
                     <td class="badge-cell">
                         ${badgeHtml}
                     </td>
-                    <td ${compareModeStyle}><strong>${player.web_name}</strong></td>
+                    <td ${compareModeStyle}>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <strong>${player.web_name}</strong>
+                            <span style="font-size: 0.75rem; color: #6b7280; font-weight: 300;">${playerTeam?.short_name || ''}</span>
+                        </div>
+                    </td>
                     <td><span style="display: inline-block; padding: 2px 8px; background-color: #f3f4f6; color: #374151; border-radius: 12px; font-size: 0.75rem; font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);">${position}</span></td>
                     <td class="price" ${compareModeStyle}>${(parseFloat(player.now_cost) / 10).toFixed(1)}</td>
                     <td class="points" ${compareModeStyle}>${isTop10 && showConditionalHighlight ? `<span ${top10Style}>${statValue}</span>` : statValue}</td>
@@ -5557,34 +5565,11 @@
                 }
             });
             
-            // Create fixture column headers or comparison stat headers
-            if (compareMode && selectedTeams.length >= 2) {
-                // For teams, use all available stats
-                const availableColumns = gameweekEnd - gameweekStart + 1;
-                const comparisonStats = getPositionSpecificStats('team', availableColumns);
-                
-                comparisonStats.forEach(stat => {
-                    const th = document.createElement('th');
-                    const statLabels = {
-                        'goals_scored': 'Goals',
-                        'assists': 'Assists',
-                        'expected_goals': 'xG',
-                        'expected_assists': 'xA',
-                        'clean_sheets': 'CS',
-                        'goals_conceded': 'GC',
-                        'bonus': 'Bonus',
-                        'saves': 'Saves'
-                    };
-                    th.textContent = statLabels[stat] || stat;
-                    tableHeader.appendChild(th);
-                });
-            } else {
-                // Create fixture column headers (no sorting)
-                for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
-                    const th = document.createElement('th');
-                    th.textContent = `GW${gw}`;
-                    tableHeader.appendChild(th);
-                }
+            // Create fixture column headers (compare mode temporarily disabled)
+            for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
+                const th = document.createElement('th');
+                th.textContent = `GW${gw}`;
+                tableHeader.appendChild(th);
             }
             
             // Re-add sorting event listeners for all headers
@@ -5991,7 +5976,7 @@
                 const badgeHtml = badgeUrl ? `<img src="${badgeUrl}" alt="${team.name}" class="team-badge" onerror="this.style.display='none'">` : '';
                 
                 // Add white background styling for team name when in compare mode
-                const compareModeStyle = compareMode && selectedTeams.length >= 2 ? 'style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 4px;"' : '';
+                const compareModeStyle = ''; // Compare mode temporarily disabled
                 
                 row.innerHTML = `
                     <td class="badge-cell">
@@ -7440,35 +7425,32 @@
         // Comparison mode functionality
         let compareMode = false;
         
+        // Store original header state
+        let originalHeaderState = null;
+        
         function toggleCompareMode() {
-            compareMode = !compareMode;
+            // Temporarily disabled - keeping selection experience but not implementing compare functionality
+            console.log('Compare mode temporarily disabled - selection experience preserved');
+            
+            // Keep the button state management for visual feedback
             const compareBtn = document.getElementById('compare-btn');
             if (compareBtn) {
-                compareBtn.classList.toggle('active', compareMode);
-                compareBtn.textContent = compareMode ? 'Exit Compare' : 'Compare';
+                compareBtn.classList.toggle('active');
+                compareBtn.textContent = compareBtn.classList.contains('active') ? 'Exit Compare' : 'Compare';
             }
             
-            // Force a complete table reset when exiting compare mode
-            if (!compareMode) {
-                // Clear any existing table headers and re-render completely
-                const tableHeader = document.getElementById('table-header');
-                if (tableHeader) {
-                    // Remove all non-sortable headers (fixture/stat columns)
-                    const existingFixtureHeaders = tableHeader.querySelectorAll('th:not([data-sort])');
-                    existingFixtureHeaders.forEach(th => th.remove());
-                }
-            }
-            
-            renderTable();
+            // Toggle compare mode state for button management
+            compareMode = !compareMode;
         }
         
         function getPositionSpecificStats(position, availableColumns) {
             const stats = [];
             
             if (currentView === 'teams' || position === 'team') {
-                // For teams, use all available stats
+                // For teams, get stats that don't conflict with existing table columns
                 const allTeamStats = ['goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus'];
-                return allTeamStats.slice(0, availableColumns);
+                const filteredStats = filterOutExistingColumns(allTeamStats);
+                return filteredStats.slice(0, availableColumns);
             }
             
             // For players, use position-specific stats
@@ -7484,6 +7466,38 @@
             }
             
             return [];
+        }
+        
+        function filterOutExistingColumns(stats) {
+            if (currentView !== 'teams') {
+                return stats; // Only apply filtering for teams view
+            }
+            
+            const tableHeader = document.getElementById('team-table-header');
+            if (!tableHeader) {
+                return stats;
+            }
+            
+            // Get existing column headers
+            const existingHeaders = Array.from(tableHeader.querySelectorAll('th')).map(th => th.textContent.trim());
+            
+            // Map of stat keys to their display names
+            const statToDisplayName = {
+                'goals_scored': 'G',
+                'assists': 'A',
+                'expected_goals': 'xG Δ',
+                'expected_assists': 'xA',
+                'clean_sheets': 'CS',
+                'goals_conceded': 'GC',
+                'bonus': 'Bonus',
+                'saves': 'Saves'
+            };
+            
+            // Filter out stats that already exist as columns
+            return stats.filter(stat => {
+                const displayName = statToDisplayName[stat];
+                return !existingHeaders.includes(displayName);
+            });
         }
         
         function calculateXGDelta(player) {
