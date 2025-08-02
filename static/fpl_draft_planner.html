@@ -515,7 +515,7 @@
         }
         
         .btn-compare {
-            background: #8b5cf6;
+            background: var(--primary-color);
             color: white;
             border: none;
             border-radius: 8px;
@@ -526,11 +526,11 @@
         }
         
         .btn-compare:hover {
-            background: #7c3aed;
+            background: var(--primary-hover);
         }
         
         .btn-compare.active {
-            background: #5b21b6;
+            background: var(--button-hover);
         }
 
         .view-toggle-container {
@@ -660,18 +660,18 @@
 
         /* Team Badge Styles */
 .team-badge {
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
     vertical-align: middle;
     display: block;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.badge-cell {
-    width: 32px;
-    text-align: center;
-    padding: 8px 2px;
+        .badge-cell {
+            width: 28px;
+            text-align: center;
+            padding: 4px 2px;
         }
 
         .filters-container {
@@ -1764,9 +1764,9 @@
         /* Player table column widths - make position, price, and points narrower */
         .player-table th:nth-child(2),
         .player-table td:nth-child(2) {
-            min-width: 60px;
-            max-width: 80px;
-            text-align: center;
+            min-width: 120px;
+            max-width: 160px;
+            text-align: left;
         }
 
         .player-table th:nth-child(3),
@@ -4217,7 +4217,7 @@
             <table id="player-table" class="player-table" style="display: none;">
                 <thead>
                     <tr id="table-header">
-                        <th></th>
+                        <th>Team</th>
                         <th class="sortable" data-sort="web_name">Player</th>
                         <th>Position</th>
                         <th class="sortable" data-sort="now_cost">Price</th>
@@ -5481,7 +5481,7 @@
                     <td class="badge-cell">
                         ${badgeHtml}
                     </td>
-                    <td ${compareModeStyle}><strong>${player.web_name}</strong> <span style="color: #6b7280; font-weight: normal; font-size: 0.85em;"> ${playerTeam?.short_name || ''}</span></td>
+                    <td ${compareModeStyle}><strong>${player.web_name}</strong></td>
                     <td><span style="display: inline-block; padding: 2px 8px; background-color: #f3f4f6; color: #374151; border-radius: 12px; font-size: 0.75rem; font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);">${position}</span></td>
                     <td class="price" ${compareModeStyle}>${(parseFloat(player.now_cost) / 10).toFixed(1)}</td>
                     <td class="points" ${compareModeStyle}>${isTop10 && showConditionalHighlight ? `<span ${top10Style}>${statValue}</span>` : statValue}</td>
@@ -7447,6 +7447,18 @@
                 compareBtn.classList.toggle('active', compareMode);
                 compareBtn.textContent = compareMode ? 'Exit Compare' : 'Compare';
             }
+            
+            // Force a complete table reset when exiting compare mode
+            if (!compareMode) {
+                // Clear any existing table headers and re-render completely
+                const tableHeader = document.getElementById('table-header');
+                if (tableHeader) {
+                    // Remove all non-sortable headers (fixture/stat columns)
+                    const existingFixtureHeaders = tableHeader.querySelectorAll('th:not([data-sort])');
+                    existingFixtureHeaders.forEach(th => th.remove());
+                }
+            }
+            
             renderTable();
         }
         
