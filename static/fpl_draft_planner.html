@@ -4635,12 +4635,7 @@
                     console.log('Overall rankings loaded:', teamStatsData.overall);
                 }
                 
-                // Set initial statistic header text
-                const statHeader = document.getElementById('team-stat-header');
-                const activeStatBtn = document.querySelector('.filter-btn[data-stat].active');
-                if (activeStatBtn && statHeader) {
-                    statHeader.textContent = activeStatBtn.textContent;
-                }
+
                 
                 // Set initial pagination visibility (hidden for teams view)
                 const paginationContainer = document.querySelector('.pagination-container');
@@ -4687,6 +4682,12 @@
                 filterIcon.classList.remove('close');
             }
             
+            // Reset filter button text and state
+            const customizeBtn = document.getElementById('customize-btn');
+            if (customizeBtn) {
+                customizeBtn.textContent = 'Filter';
+            }
+            
 
             
             // Show/hide per 90 toggle (only for players view)
@@ -4709,6 +4710,25 @@
             
             // Reset all filters and toggles when switching views
             resetFiltersOnViewSwitch();
+            
+            // Reset display filter to "None" when switching views
+            const rankFilterButtons = document.querySelectorAll('.rank-filter-container .filter-btn');
+            rankFilterButtons.forEach(btn => btn.classList.remove('active'));
+            const noneBtn = document.querySelector('.rank-filter-container .filter-btn[data-rank="none"]');
+            if (noneBtn) {
+                noneBtn.classList.add('active');
+            }
+            showRanks = false;
+            showHistory = false;
+            showRankMode = false;
+            showPer90 = false;
+            
+            // Reset stat header to default when switching views
+            const statHeader = document.getElementById('stat-header');
+            if (statHeader) {
+                statHeader.textContent = 'Points';
+                statHeader.dataset.sort = 'total_points';
+            }
             
             // Clear search when switching views
             const searchInput = document.getElementById('search-input');
@@ -5835,12 +5855,7 @@
 
         function updateTeamStats() {
             console.log('updateTeamStats called with currentTeamLocation:', currentTeamLocation);
-            // Update the statistic header text
-            const statHeader = document.getElementById('team-stat-header');
-            const activeStatBtn = document.querySelector('.filter-btn[data-stat].active');
-            if (activeStatBtn && statHeader) {
-                statHeader.textContent = activeStatBtn.textContent;
-            }
+
             
             // Load new stats if not already loaded
             if (!teamStatsData[currentTeamLocation]) {
@@ -6835,26 +6850,25 @@
             const statHeader = document.getElementById('stat-header');
             const selectedStat = statFilter.value;
             
-            // Update header text
-            const statLabels = {
-                'total_points': currentView === 'players' ? 'Points' : 'Team Strength',
-                'atk_h_rank': 'Home Attack Rank',
-                'atk_a_rank': 'Away Attack Rank',
-                'def_h_rank': 'Home Defense Rank',
-                'def_a_rank': 'Away Defense Rank',
-                'goals_scored': 'Goals',
-                'assists': 'Assists',
-                'goals_assists': 'G+A',
-                'expected_goals': 'xG',
-                'expected_assists': 'xA',
-                'clean_sheets': 'Clean Sheets',
-                'goals_conceded': 'Goals Conceded',
-                'bonus': 'Bonus',
-                'saves': 'Saves'
-            };
-            
-            statHeader.textContent = statLabels[selectedStat];
-            statHeader.dataset.sort = selectedStat;
+            // Only update if we're in players view and the header exists
+            if (currentView === 'players' && statHeader) {
+                // Update header text for players view only
+                const statLabels = {
+                    'total_points': 'Points',
+                    'goals_scored': 'Goals',
+                    'assists': 'Assists',
+                    'goals_assists': 'G+A',
+                    'expected_goals': 'xG',
+                    'expected_assists': 'xA',
+                    'clean_sheets': 'Clean Sheets',
+                    'goals_conceded': 'Goals Conceded',
+                    'bonus': 'Bonus',
+                    'saves': 'Saves'
+                };
+                
+                statHeader.textContent = statLabels[selectedStat] || 'Points';
+                statHeader.dataset.sort = selectedStat;
+            }
             
             // Update current sort if it was on the stat column
             if (currentSort.field === 'total_points' || 
