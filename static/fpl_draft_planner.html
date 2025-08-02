@@ -4695,7 +4695,10 @@
             // Reset filter button text and state
             const customizeBtn = document.getElementById('customize-btn');
             if (customizeBtn) {
-                customizeBtn.textContent = 'Filter';
+                const filterText = customizeBtn.querySelector('.filter-text');
+                if (filterText) {
+                    filterText.textContent = 'Customize';
+                }
             }
             
 
@@ -7232,12 +7235,22 @@
                         // Initialize on page load
                 document.addEventListener('DOMContentLoaded', () => {
                     initializeApp();
-                    // Ensure reset button is hidden by default
-                    const resetBtn = document.getElementById('reset-btn');
-                    if (resetBtn) {
-                        resetBtn.style.display = 'none';
+                                    // Ensure reset button is hidden by default
+                const resetBtn = document.getElementById('reset-btn');
+                if (resetBtn) {
+                    resetBtn.style.display = 'none';
+                }
+                
+                // Ensure filter button shows "Customize" by default
+                const customizeBtn = document.getElementById('customize-btn');
+                if (customizeBtn) {
+                    const filterText = customizeBtn.querySelector('.filter-text');
+                    if (filterText) {
+                        filterText.textContent = 'Customize';
                     }
-                    filtersModified = false;
+                }
+                
+                filtersModified = false;
                 });
 
         // Add scroll indicator for mobile
