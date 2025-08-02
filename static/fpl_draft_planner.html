@@ -288,6 +288,14 @@
                 margin-bottom: 16px;
             }
             
+            .display-description {
+                font-size: 12px;
+                color: #6b7280;
+                font-style: italic;
+                margin-top: 4px;
+                margin-left: 8px;
+            }
+            
             .filter-btn {
                 min-height: 44px;
                 font-size: 14px;
@@ -4104,12 +4112,13 @@
                             </div>
                             
                             <!-- Display Options -->
-                                                                        <div class="filter-section rank-filter-container">
+                            <div class="filter-section rank-filter-container">
                                 <span class="filter-label">Display:</span>
                                 <button class="filter-btn active" data-rank="none" onclick="handleRankFilter('none')">None</button>
                                 <button class="filter-btn" data-rank="rank" onclick="handleRankFilter('rank')">Rank</button>
                                 <button class="filter-btn" data-rank="last" onclick="handleRankFilter('last')">Last</button>
                                 <button class="filter-btn" data-rank="per90" onclick="handleRankFilter('per90')">Per 90</button>
+                                <div id="display-description" class="display-description" style="display: none;"></div>
                             </div>
                             
 
@@ -4157,9 +4166,9 @@
                             <!-- Type Filter -->
                             <div class="filter-section">
                                 <span class="filter-label">Type:</span>
-                                <button class="filter-btn active" data-type="attack">Attack</button>
-                                <button class="filter-btn" data-type="defense">Defense</button>
-                                <button class="filter-btn" data-type="goalie">Goalie</button>
+                                <button class="filter-btn active" data-type="attack">ATK</button>
+                                <button class="filter-btn" data-type="defense">DEF</button>
+                                <button class="filter-btn" data-type="goalie">GPK</button>
                             </div>
                             
 
@@ -5011,9 +5020,13 @@
             // Calculate rankings first if needed for sorting
             let playerRanking = {};
             if (showRankMode) {
-                // Get the selected stat for ranking
-                const statFilter = document.getElementById('stat-filter');
-                const selectedStat = statFilter.value;
+                // Get the selected stat for ranking - use the current sort field if it's a stat field
+                let selectedStat = currentSort.field;
+                if (!['total_points', 'goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus', 'saves', 'goals_assists'].includes(selectedStat)) {
+                    // Fall back to the stat filter value if current sort field is not a stat
+                    const statFilter = document.getElementById('stat-filter');
+                    selectedStat = statFilter.value;
+                }
                 
                 // Calculate stat values for ranking
                 const statValues = [];
@@ -6831,6 +6844,17 @@
             showPer90 = false;
             showRankMode = false;
             
+            // Reset display filter to "None" and hide description
+            document.querySelectorAll('.rank-filter-container .filter-btn').forEach(btn => btn.classList.remove('active'));
+            const noneBtn = document.querySelector('.rank-filter-container .filter-btn[data-rank="none"]');
+            if (noneBtn) {
+                noneBtn.classList.add('active');
+            }
+            const descriptionElement = document.getElementById('display-description');
+            if (descriptionElement) {
+                descriptionElement.style.display = 'none';
+            }
+            
 
             
             // Reset search input
@@ -7303,7 +7327,25 @@
                 showPer90 = true;
             }
             
-
+            // Update display description
+            const descriptionElement = document.getElementById('display-description');
+            if (descriptionElement) {
+                let description = '';
+                if (selectedRank === 'rank') {
+                    description = 'Converts values to player / team rankings';
+                } else if (selectedRank === 'last') {
+                    description = 'Shows last season\'s performance vs opponent';
+                } else if (selectedRank === 'per90') {
+                    description = 'Converts totals to per 90 minute rates';
+                }
+                
+                if (description) {
+                    descriptionElement.textContent = description;
+                    descriptionElement.style.display = 'block';
+                } else {
+                    descriptionElement.style.display = 'none';
+                }
+            }
             
             console.log('Rank filter changed:', selectedRank, 'showRanks:', showRanks, 'showHistory:', showHistory);
             renderTable();
