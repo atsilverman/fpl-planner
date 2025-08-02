@@ -7477,15 +7477,20 @@
         function calculateXGDelta(player) {
             const goals = player.goals_scored || 0;
             const xg = parseFloat(player.expected_goals || 0);
-            return goals - xg;
+            return parseFloat((goals - xg).toFixed(1));
         }
         
         function getStatValue(player, stat) {
             if (stat === 'expected_goals') {
                 const delta = calculateXGDelta(player);
                 return {
-                    value: delta,
+                    value: parseFloat(delta.toFixed(1)),
                     color: '#000000' // Keep consistent black color
+                };
+            } else if (stat === 'expected_assists') {
+                return {
+                    value: parseFloat((player.expected_assists || 0).toFixed(1)),
+                    color: '#000000'
                 };
             }
             return {
