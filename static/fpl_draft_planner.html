@@ -258,7 +258,8 @@
             }
             
             .btn-customize,
-            .btn-reset-header {
+            .btn-reset-header,
+            .btn-compare {
                 min-height: 48px;
                 font-size: 16px;
                 padding: 12px 16px;
@@ -289,12 +290,14 @@
             }
             
             .display-description {
-                font-size: 9px;
-                color: #1e40af;
-                font-style: italic;
-                margin-top: 2px;
-                margin-left: 8px;
-                opacity: 0.8;
+                font-size: 9px !important;
+                color: #1e40af !important;
+                font-style: italic !important;
+                margin-top: 2px !important;
+                margin-left: 8px !important;
+                opacity: 0.8 !important;
+                font-weight: normal !important;
+                line-height: 1.2 !important;
             }
             
             .filter-btn {
@@ -509,6 +512,25 @@
             border-color: #b45309;
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+        
+        .btn-compare {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            margin-left: 8px;
+        }
+        
+        .btn-compare:hover {
+            background: #d97706;
+        }
+        
+        .btn-compare.active {
+            background: #92400e;
         }
 
         .view-toggle-container {
@@ -4045,6 +4067,9 @@
                     <button class="btn btn-reset-header" onclick="resetFilters()" id="reset-btn" style="display: none;">
                         Reset
                     </button>
+                    <button class="btn btn-compare" onclick="toggleCompareMode()" id="compare-btn" style="display: none;">
+                        Compare
+                    </button>
                     <div class="search-container">
                         <input type="text" id="search-input" placeholder="Search players/teams..." class="search-input" oninput="handleSearch()">
                         <div class="search-icon"></div>
@@ -4192,6 +4217,7 @@
             <table id="player-table" class="player-table" style="display: none;">
                 <thead>
                     <tr id="table-header">
+                        <th></th>
                         <th class="sortable" data-sort="web_name">Player</th>
                         <th>Position</th>
                         <th class="sortable" data-sort="now_cost">Price</th>
@@ -5377,8 +5403,15 @@
                 const top10Class = (isTop10 && showConditionalHighlight) ? `top-player-pill top-rank-${ranking}` : '';
                 const top10Style = (isTop10 && showConditionalHighlight) ? `class="top-player-pill top-rank-${ranking}" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
                 
+                // Get team badge URL
+                const badgeUrl = getTeamBadgeUrl(playerTeam?.name || '');
+                const badgeHtml = badgeUrl ? `<img src="${badgeUrl}" alt="${playerTeam?.name || ''}" class="team-badge" onerror="this.style.display='none'">` : '';
+                
                 row.innerHTML = `
-                    <td><strong>${player.web_name}</strong> <span style="color: #6b7280; font-weight: normal; font-size: 0.85em;"> ${playerTeam?.short_name || ''}</span></td>
+                    <td class="badge-cell">
+                        ${badgeHtml}
+                    </td>
+                    <td><strong>${player.web_name}</strong> <span style="color: #6b7280; font-weight: normal; font-size: 0.85em;"> ${playerTeam?.name || ''}</span></td>
                     <td><span style="display: inline-block; padding: 2px 8px; background-color: #f3f4f6; color: #374151; border-radius: 12px; font-size: 0.75rem; font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);">${position}</span></td>
                     <td class="price">${(parseFloat(player.now_cost) / 10).toFixed(1)}</td>
                     <td class="points">${isTop10 && showConditionalHighlight ? `<span ${top10Style}>${statValue}</span>` : statValue}</td>
@@ -5963,6 +5996,12 @@
                 // Remove player from selection
                 selectedPlayers.splice(index, 1);
                 console.log(`Player ${playerId} removed from selection. Selected players:`, selectedPlayers);
+            }
+            
+            // Show/hide compare button based on selection count
+            const compareBtn = document.getElementById('compare-btn');
+            if (compareBtn) {
+                compareBtn.style.display = selectedPlayers.length >= 2 ? 'inline-block' : 'none';
             }
             
             // Re-render the table to update the order and styling
@@ -7253,6 +7292,77 @@
                 filtersModified = false;
                 });
 
+        // Comparison mode functionality
+        let compareMode = false;
+        
+        function toggleCompareMode() {
+            compareMode = !compareMode;
+            const compareBtn = document.getElementById('compare-btn');
+            if (compareBtn) {
+                compareBtn.classList.toggle('active', compareMode);
+            }
+            renderTable();
+        }
+        
+        function getPositionSpecificStats(position, availableColumns) {
+            const stats = [];
+            
+            if (currentView === 'teams') {
+                // For teams, use all available stats
+                const allTeamStats = ['goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus'];
+                return allTeamStats.slice(0, availableColumns);
+            }
+            
+            // For players, use position-specific stats
+            if (position === 'FWD' || position === 'MID') {
+                const fwdMidStats = ['goals_scored', 'expected_goals', 'assists', 'bonus'];
+                return fwdMidStats.slice(0, availableColumns);
+            } else if (position === 'DEF') {
+                const defStats = ['clean_sheets', 'goals_conceded', 'bonus', 'goals_scored', 'expected_goals', 'assists'];
+                return defStats.slice(0, availableColumns);
+            } else if (position === 'GKP') {
+                const gkpStats = ['clean_sheets', 'goals_conceded', 'saves', 'bonus'];
+                return gkpStats.slice(0, availableColumns);
+            }
+            
+            return [];
+        }
+        
+        function calculateXGDelta(player) {
+            const goals = player.goals_scored || 0;
+            const xg = parseFloat(player.expected_goals || 0);
+            return goals - xg;
+        }
+        
+        function getStatValue(player, stat) {
+            if (stat === 'expected_goals') {
+                const delta = calculateXGDelta(player);
+                return {
+                    value: delta,
+                    color: delta > 0 ? '#10b981' : delta < 0 ? '#ef4444' : '#6b7280'
+                };
+            }
+            return {
+                value: player[stat] || 0,
+                color: '#000000'
+            };
+        }
+        
+        function findStatLeader(selectedItems, stat) {
+            let leader = null;
+            let maxValue = -Infinity;
+            
+            selectedItems.forEach(item => {
+                const statData = getStatValue(item, stat);
+                if (statData.value > maxValue) {
+                    maxValue = statData.value;
+                    leader = item;
+                }
+            });
+            
+            return leader;
+        }
+        
         // Add scroll indicator for mobile
         function addScrollIndicator() {
             if (window.innerWidth <= 768) {
