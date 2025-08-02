@@ -5125,9 +5125,9 @@
             const top10 = statValues.slice(0, 10);
             const top10PlayerIds = top10.map(item => item.player.id);
             
-            // Create ranking map for quick lookup
+            // Create ranking map for quick lookup (all players, not just top 10)
             const playerRanking = {};
-            top10.forEach((item, index) => {
+            statValues.forEach((item, index) => {
                 playerRanking[item.player.id] = index + 1;
             });
 
