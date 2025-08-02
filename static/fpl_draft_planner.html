@@ -5008,6 +5008,62 @@
                         // Apply search filter first
             let searchFilteredPlayers = filterBySearch(playersData);
             
+            // Calculate rankings first if needed for sorting
+            let playerRanking = {};
+            if (showRankMode) {
+                // Get the selected stat for ranking
+                const statFilter = document.getElementById('stat-filter');
+                const selectedStat = statFilter.value;
+                
+                // Calculate stat values for ranking
+                const statValues = [];
+                searchFilteredPlayers.forEach(player => {
+                    let statValue = 0;
+                    const minutes = player.minutes || 0;
+                    
+                    if (selectedStat === 'total_points') {
+                        statValue = player.total_points || 0;
+                    } else if (selectedStat === 'goals_scored') {
+                        statValue = player.goals_scored || 0;
+                    } else if (selectedStat === 'assists') {
+                        statValue = player.assists || 0;
+                    } else if (selectedStat === 'goals_assists') {
+                        statValue = (player.goals_scored || 0) + (player.assists || 0);
+                    } else if (selectedStat === 'expected_goals') {
+                        statValue = parseFloat(player.expected_goals || 0);
+                    } else if (selectedStat === 'expected_assists') {
+                        statValue = parseFloat(player.expected_assists || 0);
+                    } else if (selectedStat === 'clean_sheets') {
+                        statValue = player.clean_sheets || 0;
+                    } else if (selectedStat === 'goals_conceded') {
+                        statValue = player.goals_conceded || 0;
+                    } else if (selectedStat === 'bonus') {
+                        statValue = player.bonus || 0;
+                    } else if (selectedStat === 'saves') {
+                        statValue = player.saves || 0;
+                    }
+                    
+                    if (statValue > 0) {
+                        statValues.push({ player, statValue });
+                    }
+                });
+                
+                // Sort by stat value for ranking
+                const lowerIsBetter = ['goals_conceded'];
+                statValues.sort((a, b) => {
+                    if (lowerIsBetter.includes(selectedStat)) {
+                        return a.statValue - b.statValue; // Lower is better
+                    } else {
+                        return b.statValue - a.statValue; // Higher is better
+                    }
+                });
+                
+                // Create ranking map
+                statValues.forEach((item, index) => {
+                    playerRanking[item.player.id] = index + 1;
+                });
+            }
+            
             // Sort players data
             const sortedPlayers = [...searchFilteredPlayers].sort((a, b) => {
                 let aVal = a[currentSort.field];
@@ -5030,6 +5086,12 @@
                         aVal = aMinutes > 0 ? parseFloat(((a[currentSort.field] || 0) * 90 / aMinutes).toFixed(2)) : 0;
                         bVal = bMinutes > 0 ? parseFloat(((b[currentSort.field] || 0) * 90 / bMinutes).toFixed(2)) : 0;
                     }
+                } else if (showRankMode && ['total_points', 'goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus', 'saves'].includes(currentSort.field)) {
+                    // Sort by rank values when in rank mode
+                    const aRank = playerRanking[a.id] || 999;
+                    const bRank = playerRanking[b.id] || 999;
+                    aVal = aRank;
+                    bVal = bRank;
                 } else if (currentSort.field === 'goals_assists') {
                     // Sort by goals + assists
                     aVal = (a.goals_scored || 0) + (a.assists || 0);
@@ -5055,15 +5117,12 @@
                 console.log(`Per 90 enabled: Filtered out players with < 900 minutes. Showing ${playersForStats.length} of ${sortedPlayers.length} players`);
             }
 
-            // Get the selected stat for top 20 ranking
+            // Get the selected stat for top 10 ranking
             const statFilter = document.getElementById('stat-filter');
             const selectedStat = statFilter.value;
             
-            // Create top 20 ranking based on selected stat
-            const top20Players = [];
+            // Calculate stat values for display and top 10 highlighting
             const statValues = [];
-            
-            // Collect all stat values
             playersForStats.forEach(player => {
                 let statValue = 0;
                 const minutes = player.minutes || 0;
@@ -5107,12 +5166,11 @@
                 }
             });
             
-            // Get top 10 players
+            // Get top 10 players for highlighting
             const top10 = statValues.slice(0, 10);
             const top10PlayerIds = top10.map(item => item.player.id);
             
-            // Create ranking map for quick lookup (all players, not just top 10)
-            const playerRanking = {};
+            // Update playerRanking for display purposes
             statValues.forEach((item, index) => {
                 playerRanking[item.player.id] = index + 1;
             });
