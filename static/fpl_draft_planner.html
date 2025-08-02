@@ -5030,11 +5030,36 @@
                 }
             });
             
-            // Create fixture column headers (no sorting)
-            for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
-                const th = document.createElement('th');
-                th.textContent = `GW${gw}`;
-                tableHeader.appendChild(th);
+            // Create fixture column headers or comparison stat headers
+            if (compareMode && selectedPlayers.length >= 2) {
+                // Get the first selected player to determine position for stat selection
+                const firstSelectedPlayer = playersData.find(p => p.id === selectedPlayers[0]);
+                const position = firstSelectedPlayer ? positions[firstSelectedPlayer.element_type] || 'UNK' : 'UNK';
+                const availableColumns = gameweekEnd - gameweekStart + 1;
+                const comparisonStats = getPositionSpecificStats(position, availableColumns);
+                
+                comparisonStats.forEach(stat => {
+                    const th = document.createElement('th');
+                    const statLabels = {
+                        'goals_scored': 'Goals',
+                        'assists': 'Assists',
+                        'expected_goals': 'xG Δ',
+                        'expected_assists': 'xA',
+                        'clean_sheets': 'CS',
+                        'goals_conceded': 'GC',
+                        'bonus': 'Bonus',
+                        'saves': 'Saves'
+                    };
+                    th.textContent = statLabels[stat] || stat;
+                    tableHeader.appendChild(th);
+                });
+            } else {
+                // Create fixture column headers (no sorting)
+                for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
+                    const th = document.createElement('th');
+                    th.textContent = `GW${gw}`;
+                    tableHeader.appendChild(th);
+                }
             }
             
             // Re-add sorting event listeners for all headers (remove existing first)
@@ -5044,7 +5069,7 @@
                 th.addEventListener('click', th._sortHandler);
             });
             
-                        // Apply search filter first
+            // Apply search filter first
             let searchFilteredPlayers = filterBySearch(playersData);
             
             // Calculate rankings for display only (no sorting)
@@ -5302,43 +5327,85 @@
                 // Get player's upcoming fixtures
                 const playerFixtures = getPlayerFixtures(player.team_id, gameweeks, position);
                 
-                // Create fixture cells
+                // Create fixture cells or comparison stat cells
                 const fixtureCells = [];
-                for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
-                    const fixture = playerFixtures.find(f => f.gameweek === gw);
-                    if (fixture) {
-                        // Escape any single quotes in player names to prevent JS errors
-                        const escapedPlayerName = player.web_name.replace(/'/g, "\\'");
-                        const escapedOpponent = fixture.opponent.replace(/'/g, "\\'");
-                        const escapedDebug = (fixture.debug || '').replace(/'/g, "\\'");
+                
+                if (compareMode && selectedPlayers.length >= 2) {
+                    // Comparison mode: show stat columns instead of fixtures
+                    const availableColumns = gameweekEnd - gameweekStart + 1;
+                    const comparisonStats = getPositionSpecificStats(position, availableColumns);
+                    
+                    // Get selected players for leader comparison
+                    const selectedPlayerObjects = selectedPlayers.map(id => 
+                        playersData.find(p => p.id === id)
+                    ).filter(p => p);
+                    
+                    comparisonStats.forEach(stat => {
+                        const statData = getStatValue(player, stat);
+                        const isLeader = findStatLeader(selectedPlayerObjects, stat)?.id === player.id;
                         
-                        // Always show opponent abbreviation on top
-                        const displayText = fixture.isHome ? fixture.opponent.toUpperCase() : fixture.opponent.toLowerCase();
+                        // Create stat label
+                        const statLabels = {
+                            'goals_scored': 'Goals',
+                            'assists': 'Assists',
+                            'expected_goals': 'xG Δ',
+                            'expected_assists': 'xA',
+                            'clean_sheets': 'CS',
+                            'goals_conceded': 'GC',
+                            'bonus': 'Bonus',
+                            'saves': 'Saves'
+                        };
                         
-                        // Check if we're in 2025/26 season (TBD mode)
-                        if (currentSeason === '2025') {
-                            fixtureCells.push(`
-                                <td class="fixture-cell" data-fixture="${fixture.gameweek}">
-                                    <div class="fixture fixture-tbd" style="background-color: #f3f4f6; color: #6b7280; cursor: default;">
-                                        <div style="font-weight: bold; font-size: 0.8rem;">TBD</div>
-                                        <div style="font-size: 0.7rem; opacity: 0.8;">2025/26</div>
-                                    </div>
-                                </td>
-                            `);
+                        const statLabel = statLabels[stat] || stat;
+                        const leaderStyle = isLeader ? 'class="top-player-pill" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"' : '';
+                        
+                        fixtureCells.push(`
+                            <td class="fixture-cell">
+                                <div class="fixture" style="background-color: #f8fafc; border: 1px solid #e2e8f0; cursor: default;">
+                                    <div style="font-weight: bold; font-size: 0.8rem; color: ${statData.color};">${isLeader ? `<span ${leaderStyle}>${statData.value}</span>` : statData.value}</div>
+                                    <div style="font-size: 0.7rem; opacity: 0.8;">${statLabel}</div>
+                                </div>
+                            </td>
+                        `);
+                    });
+                } else {
+                    // Normal mode: show fixture columns
+                    for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
+                        const fixture = playerFixtures.find(f => f.gameweek === gw);
+                        if (fixture) {
+                            // Escape any single quotes in player names to prevent JS errors
+                            const escapedPlayerName = player.web_name.replace(/'/g, "\\'");
+                            const escapedOpponent = fixture.opponent.replace(/'/g, "\\'");
+                            const escapedDebug = (fixture.debug || '').replace(/'/g, "\\'");
+                            
+                            // Always show opponent abbreviation on top
+                            const displayText = fixture.isHome ? fixture.opponent.toUpperCase() : fixture.opponent.toLowerCase();
+                            
+                            // Check if we're in 2025/26 season (TBD mode)
+                            if (currentSeason === '2025') {
+                                fixtureCells.push(`
+                                    <td class="fixture-cell" data-fixture="${fixture.gameweek}">
+                                        <div class="fixture fixture-tbd" style="background-color: #f3f4f6; color: #6b7280; cursor: default;">
+                                            <div style="font-weight: bold; font-size: 0.8rem;">TBD</div>
+                                            <div style="font-size: 0.7rem; opacity: 0.8;">2025/26</div>
+                                        </div>
+                                    </td>
+                                `);
+                            } else {
+                                fixtureCells.push(`
+                                    <td class="fixture-cell" data-fixture="${fixture.gameweek}">
+                                        <div class="fixture ${fixture.isHome ? 'fixture-home' : 'fixture-away'} ${difficultyColors[fixture.difficulty]}" 
+                                             onclick="event.stopPropagation(); showMatchupDetails('${escapedPlayerName}', '${escapedOpponent}', ${fixture.isHome}, '${position}', ${fixture.difficulty}, '${escapedDebug}', ${player.team_id}, event)">
+                                            <div style="font-weight: bold; font-size: 0.8rem;">${displayText}</div>
+                                            ${showHistory ? '<div style="font-size: 0.7rem; opacity: 0.8;">...</div>' : ''}
+                                            ${showRanks && fixture.debug ? '<div style="font-size: 0.7rem; opacity: 0.8;">...</div>' : ''}
+                                        </div>
+                                    </td>
+                                `);
+                            }
                         } else {
-                            fixtureCells.push(`
-                                <td class="fixture-cell" data-fixture="${fixture.gameweek}">
-                                    <div class="fixture ${fixture.isHome ? 'fixture-home' : 'fixture-away'} ${difficultyColors[fixture.difficulty]}" 
-                                         onclick="event.stopPropagation(); showMatchupDetails('${escapedPlayerName}', '${escapedOpponent}', ${fixture.isHome}, '${position}', ${fixture.difficulty}, '${escapedDebug}', ${player.team_id}, event)">
-                                        <div style="font-weight: bold; font-size: 0.8rem;">${displayText}</div>
-                                        ${showHistory ? '<div style="font-size: 0.7rem; opacity: 0.8;">...</div>' : ''}
-                                        ${showRanks && fixture.debug ? '<div style="font-size: 0.7rem; opacity: 0.8;">...</div>' : ''}
-                                    </div>
-                                </td>
-                            `);
+                            fixtureCells.push('<td></td>');
                         }
-                    } else {
-                        fixtureCells.push('<td></td>');
                     }
                 }
                 
@@ -5487,11 +5554,34 @@
                 }
             });
             
-            // Create fixture column headers (no sorting)
-            for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
-                const th = document.createElement('th');
-                th.textContent = `GW${gw}`;
-                tableHeader.appendChild(th);
+            // Create fixture column headers or comparison stat headers
+            if (compareMode && selectedTeams.length >= 2) {
+                // For teams, use all available stats
+                const availableColumns = gameweekEnd - gameweekStart + 1;
+                const comparisonStats = getPositionSpecificStats('team', availableColumns);
+                
+                comparisonStats.forEach(stat => {
+                    const th = document.createElement('th');
+                    const statLabels = {
+                        'goals_scored': 'Goals',
+                        'assists': 'Assists',
+                        'expected_goals': 'xG',
+                        'expected_assists': 'xA',
+                        'clean_sheets': 'CS',
+                        'goals_conceded': 'GC',
+                        'bonus': 'Bonus',
+                        'saves': 'Saves'
+                    };
+                    th.textContent = statLabels[stat] || stat;
+                    tableHeader.appendChild(th);
+                });
+            } else {
+                // Create fixture column headers (no sorting)
+                for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
+                    const th = document.createElement('th');
+                    th.textContent = `GW${gw}`;
+                    tableHeader.appendChild(th);
+                }
             }
             
             // Re-add sorting event listeners for all headers
@@ -5656,56 +5746,99 @@
                 // Get team's upcoming fixtures
                 const teamFixtures = getTeamFixtures(team.id, gameweeks);
                 
-                // Create fixture cells
+                // Create fixture cells or comparison stat cells
                 const fixtureCells = [];
-                for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
-                    const fixture = teamFixtures.find(f => f.gameweek === gw);
-                    if (fixture) {
-                        const escapedTeamName = team.name.replace(/'/g, "\\'");
-                        const escapedOpponent = fixture.opponent.replace(/'/g, "\\'");
-                        const escapedDebug = (fixture.debug || '').replace(/'/g, "\\'");
+                
+                if (compareMode && selectedTeams.length >= 2) {
+                    // Comparison mode: show stat columns instead of fixtures
+                    const availableColumns = gameweekEnd - gameweekStart + 1;
+                    const comparisonStats = getPositionSpecificStats('team', availableColumns); // 'team' for team view
+                    
+                    // Get selected teams for leader comparison
+                    const selectedTeamObjects = selectedTeams.map(id => 
+                        teamsData.find(t => t.id === id)
+                    ).filter(t => t);
+                    
+                    comparisonStats.forEach(stat => {
+                        const teamStats = teamStatsData[currentTeamLocation]?.[team.id];
+                        const statValue = teamStats ? (teamStats[stat] || 0) : 0;
+                        const isLeader = findStatLeader(selectedTeamObjects, stat)?.id === team.id;
                         
-                        // Determine what to display and color based on toggle state
-                        let displayText = '';
-                        let colorClass = '';
+                        // Create stat label
+                        const statLabels = {
+                            'goals_scored': 'Goals',
+                            'assists': 'Assists',
+                            'expected_goals': 'xG',
+                            'expected_assists': 'xA',
+                            'clean_sheets': 'CS',
+                            'goals_conceded': 'GC',
+                            'bonus': 'Bonus',
+                            'saves': 'Saves'
+                        };
                         
-                        if (showHistory) {
-                            // Show opponent abbreviation (will be updated with historical result underneath)
-                            displayText = fixture.isHome ? fixture.opponent.toUpperCase() : fixture.opponent.toLowerCase();
-                            colorClass = difficultyColors[fixture.difficulty];
-                        } else if (showRanks) {
-                            // For teams, always show opponent abbreviation on top, rank will be loaded underneath
-                            displayText = fixture.isHome ? fixture.opponent.toUpperCase() : fixture.opponent.toLowerCase();
-                            colorClass = difficultyColors[fixture.difficulty];
+                        const statLabel = statLabels[stat] || stat;
+                        const leaderStyle = isLeader ? 'class="top-player-pill" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"' : '';
+                        
+                        fixtureCells.push(`
+                            <td class="fixture-cell">
+                                <div class="fixture" style="background-color: #f8fafc; border: 1px solid #e2e8f0; cursor: default;">
+                                    <div style="font-weight: bold; font-size: 0.8rem;">${isLeader ? `<span ${leaderStyle}>${statValue}</span>` : statValue}</div>
+                                    <div style="font-size: 0.7rem; opacity: 0.8;">${statLabel}</div>
+                                </div>
+                            </td>
+                        `);
+                    });
+                } else {
+                    // Normal mode: show fixture columns
+                    for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
+                        const fixture = teamFixtures.find(f => f.gameweek === gw);
+                        if (fixture) {
+                            const escapedTeamName = team.name.replace(/'/g, "\\'");
+                            const escapedOpponent = fixture.opponent.replace(/'/g, "\\'");
+                            const escapedDebug = (fixture.debug || '').replace(/'/g, "\\'");
+                            
+                            // Determine what to display and color based on toggle state
+                            let displayText = '';
+                            let colorClass = '';
+                            
+                            if (showHistory) {
+                                // Show opponent abbreviation (will be updated with historical result underneath)
+                                displayText = fixture.isHome ? fixture.opponent.toUpperCase() : fixture.opponent.toLowerCase();
+                                colorClass = difficultyColors[fixture.difficulty];
+                            } else if (showRanks) {
+                                // For teams, always show opponent abbreviation on top, rank will be loaded underneath
+                                displayText = fixture.isHome ? fixture.opponent.toUpperCase() : fixture.opponent.toLowerCase();
+                                colorClass = difficultyColors[fixture.difficulty];
+                            } else {
+                                displayText = fixture.isHome ? fixture.opponent.toUpperCase() : fixture.opponent.toLowerCase();
+                                colorClass = difficultyColors[fixture.difficulty];
+                            }
+                            
+                            // Check if we're in 2025/26 season (TBD mode)
+                            if (currentSeason === '2025') {
+                                fixtureCells.push(`
+                                    <td class="fixture-cell" data-fixture="${fixture.gameweek}">
+                                        <div class="fixture fixture-tbd" style="background-color: #f3f4f6; color: #6b7280; cursor: default;">
+                                            <div style="font-weight: bold; font-size: 0.8rem;">TBD</div>
+                                            <div style="font-size: 0.7rem; opacity: 0.8;">2025/26</div>
+                                        </div>
+                                    </td>
+                                `);
+                            } else {
+                                fixtureCells.push(`
+                                    <td class="fixture-cell" data-fixture="${fixture.gameweek}">
+                                        <div class="fixture ${colorClass}" 
+                                             onclick="event.stopPropagation(); showTeamMatchupDetails('${escapedTeamName}', '${escapedOpponent}', ${fixture.isHome}, ${fixture.difficulty}, '${escapedDebug}', ${team.id}, event)">
+                                            <div style="font-weight: bold; font-size: 0.8rem;">${displayText}</div>
+                                            ${showHistory ? '<div style="font-size: 0.7rem; opacity: 0.8;">...</div>' : ''}
+                                            ${showRanks ? '<div style="font-size: 0.7rem; opacity: 0.8;">...</div>' : ''}
+                                        </div>
+                                    </td>
+                                `);
+                            }
                         } else {
-                            displayText = fixture.isHome ? fixture.opponent.toUpperCase() : fixture.opponent.toLowerCase();
-                            colorClass = difficultyColors[fixture.difficulty];
+                            fixtureCells.push('<td></td>');
                         }
-                        
-                        // Check if we're in 2025/26 season (TBD mode)
-                        if (currentSeason === '2025') {
-                            fixtureCells.push(`
-                                <td class="fixture-cell" data-fixture="${fixture.gameweek}">
-                                    <div class="fixture fixture-tbd" style="background-color: #f3f4f6; color: #6b7280; cursor: default;">
-                                        <div style="font-weight: bold; font-size: 0.8rem;">TBD</div>
-                                        <div style="font-size: 0.7rem; opacity: 0.8;">2025/26</div>
-                                    </div>
-                                </td>
-                            `);
-                        } else {
-                            fixtureCells.push(`
-                                <td class="fixture-cell" data-fixture="${fixture.gameweek}">
-                                    <div class="fixture ${colorClass}" 
-                                         onclick="event.stopPropagation(); showTeamMatchupDetails('${escapedTeamName}', '${escapedOpponent}', ${fixture.isHome}, ${fixture.difficulty}, '${escapedDebug}', ${team.id}, event)">
-                                        <div style="font-weight: bold; font-size: 0.8rem;">${displayText}</div>
-                                        ${showHistory ? '<div style="font-size: 0.7rem; opacity: 0.8;">...</div>' : ''}
-                                        ${showRanks ? '<div style="font-size: 0.7rem; opacity: 0.8;">...</div>' : ''}
-                                    </div>
-                                </td>
-                            `);
-                        }
-                    } else {
-                        fixtureCells.push('<td></td>');
                     }
                 }
                 
@@ -5979,6 +6112,12 @@
                 // Remove team from selection
                 selectedTeams.splice(index, 1);
                 console.log(`Team ${teamId} removed from selection. Selected teams:`, selectedTeams);
+            }
+            
+            // Show/hide compare button based on selection count
+            const compareBtn = document.getElementById('compare-btn');
+            if (compareBtn) {
+                compareBtn.style.display = selectedTeams.length >= 2 ? 'inline-block' : 'none';
             }
             
             // Re-render the table to update the order and styling
@@ -7307,7 +7446,7 @@
         function getPositionSpecificStats(position, availableColumns) {
             const stats = [];
             
-            if (currentView === 'teams') {
+            if (currentView === 'teams' || position === 'team') {
                 // For teams, use all available stats
                 const allTeamStats = ['goals_scored', 'assists', 'expected_goals', 'expected_assists', 'clean_sheets', 'goals_conceded', 'bonus'];
                 return allTeamStats.slice(0, availableColumns);
@@ -7353,9 +7492,20 @@
             let maxValue = -Infinity;
             
             selectedItems.forEach(item => {
-                const statData = getStatValue(item, stat);
-                if (statData.value > maxValue) {
-                    maxValue = statData.value;
+                let statValue;
+                
+                if (currentView === 'teams') {
+                    // For teams, get stats from teamStatsData
+                    const teamStats = teamStatsData[currentTeamLocation]?.[item.id];
+                    statValue = teamStats ? (teamStats[stat] || 0) : 0;
+                } else {
+                    // For players, use getStatValue function
+                    const statData = getStatValue(item, stat);
+                    statValue = statData.value;
+                }
+                
+                if (statValue > maxValue) {
+                    maxValue = statValue;
                     leader = item;
                 }
             });
