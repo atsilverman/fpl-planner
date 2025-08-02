@@ -355,7 +355,7 @@
             
             .badge-cell {
                 width: 42px;
-                padding: 6px 2px;
+                padding: 6px 2px 6px 6px;
             }
             
             /* Improve modal responsiveness */
@@ -5474,14 +5474,17 @@
                 const badgeUrl = getTeamBadgeUrl(playerTeam?.name || '');
                 const badgeHtml = badgeUrl ? `<img src="${badgeUrl}" alt="${playerTeam?.name || ''}" class="team-badge" onerror="this.style.display='none'">` : '';
                 
+                // Add white background styling for Points and Price when in compare mode
+                const compareModeStyle = compareMode && selectedPlayers.length >= 2 ? 'style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 4px;"' : '';
+                
                 row.innerHTML = `
                     <td class="badge-cell">
                         ${badgeHtml}
                     </td>
-                    <td><strong>${player.web_name}</strong> <span style="color: #6b7280; font-weight: normal; font-size: 0.85em;"> ${playerTeam?.name || ''}</span></td>
+                    <td ${compareModeStyle}><strong>${player.web_name}</strong> <span style="color: #6b7280; font-weight: normal; font-size: 0.85em;"> ${playerTeam?.short_name || ''}</span></td>
                     <td><span style="display: inline-block; padding: 2px 8px; background-color: #f3f4f6; color: #374151; border-radius: 12px; font-size: 0.75rem; font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);">${position}</span></td>
-                    <td class="price">${(parseFloat(player.now_cost) / 10).toFixed(1)}</td>
-                    <td class="points">${isTop10 && showConditionalHighlight ? `<span ${top10Style}>${statValue}</span>` : statValue}</td>
+                    <td class="price" ${compareModeStyle}>${(parseFloat(player.now_cost) / 10).toFixed(1)}</td>
+                    <td class="points" ${compareModeStyle}>${isTop10 && showConditionalHighlight ? `<span ${top10Style}>${statValue}</span>` : statValue}</td>
                     ${fixtureCells.join('')}
                 `;
                 
@@ -5987,11 +5990,14 @@
                 const badgeUrl = getTeamBadgeUrl(team.name);
                 const badgeHtml = badgeUrl ? `<img src="${badgeUrl}" alt="${team.name}" class="team-badge" onerror="this.style.display='none'">` : '';
                 
+                // Add white background styling for team name when in compare mode
+                const compareModeStyle = compareMode && selectedTeams.length >= 2 ? 'style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 4px;"' : '';
+                
                 row.innerHTML = `
                     <td class="badge-cell">
                         ${badgeHtml}
                     </td>
-                    <td><strong>${team.name}</strong></td>
+                    <td ${compareModeStyle}><strong>${team.name}</strong></td>
                     ${dynamicColumns}
                     ${fixtureCells.join('')}
                 `;
@@ -7478,7 +7484,7 @@
                 const delta = calculateXGDelta(player);
                 return {
                     value: delta,
-                    color: delta > 0 ? '#10b981' : delta < 0 ? '#ef4444' : '#6b7280'
+                    color: '#000000' // Keep consistent black color
                 };
             }
             return {
