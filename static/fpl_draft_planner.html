@@ -6809,6 +6809,19 @@
             showPer90 = false;
             showRankMode = false;
             
+            // Re-enable per 90 toggle after reset
+            const per90Toggle = document.getElementById('per90-toggle');
+            const per90Label = document.querySelector('label[for="per90-toggle"]');
+            if (per90Toggle) {
+                per90Toggle.disabled = false;
+                per90Toggle.parentElement.style.opacity = '1';
+                per90Toggle.parentElement.style.cursor = 'pointer';
+                if (per90Label) {
+                    per90Label.style.color = '';
+                    per90Label.title = '';
+                }
+            }
+            
             // Reset search input
             const searchInput = document.getElementById('search-input');
             if (searchInput) {
@@ -7270,6 +7283,31 @@
                 showRanks = false;
                 showHistory = true;
                 showRankMode = false;
+            }
+            
+            // Disable per 90 toggle when rank mode is active
+            const per90Toggle = document.getElementById('per90-toggle');
+            const per90Label = document.querySelector('label[for="per90-toggle"]');
+            if (per90Toggle) {
+                if (showRankMode) {
+                    per90Toggle.disabled = true;
+                    per90Toggle.checked = false;
+                    showPer90 = false;
+                    per90Toggle.parentElement.style.opacity = '0.5';
+                    per90Toggle.parentElement.style.cursor = 'not-allowed';
+                    if (per90Label) {
+                        per90Label.style.color = '#9ca3af';
+                        per90Label.title = 'Per 90 not available in Rank mode';
+                    }
+                } else {
+                    per90Toggle.disabled = false;
+                    per90Toggle.parentElement.style.opacity = '1';
+                    per90Toggle.parentElement.style.cursor = 'pointer';
+                    if (per90Label) {
+                        per90Label.style.color = '';
+                        per90Label.title = '';
+                    }
+                }
             }
             
             console.log('Rank filter changed:', selectedRank, 'showRanks:', showRanks, 'showHistory:', showHistory);
