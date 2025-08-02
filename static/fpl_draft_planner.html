@@ -4104,34 +4104,22 @@
                             </div>
                             
                             <!-- Display Options -->
-                                            <div class="filter-section rank-filter-container">
-                    <span class="filter-label">Display:</span>
-                    <button class="filter-btn active" data-rank="none" onclick="handleRankFilter('none')">None</button>
-                    <button class="filter-btn" data-rank="rank" onclick="handleRankFilter('rank')">Rank</button>
-                    <button class="filter-btn" data-rank="last" onclick="handleRankFilter('last')">Last</button>
-                </div>
+                                                                        <div class="filter-section rank-filter-container">
+                                <span class="filter-label">Display:</span>
+                                <button class="filter-btn active" data-rank="none" onclick="handleRankFilter('none')">None</button>
+                                <button class="filter-btn" data-rank="rank" onclick="handleRankFilter('rank')">Rank</button>
+                                <button class="filter-btn" data-rank="last" onclick="handleRankFilter('last')">Last</button>
+                                <button class="filter-btn" data-rank="per90" onclick="handleRankFilter('per90')">Per 90</button>
+                            </div>
                             
                             <!-- Toggle Options -->
                             <div class="filter-section toggle-options">
                                 <span class="filter-label">Options:</span>
                                 <div class="toggle-group">
                                     <!-- Per 90 Toggle -->
-                                    <div class="per90-toggle-container">
-                                        <label class="per90-toggle-label">
-                                            <input type="checkbox" id="per90-toggle" onchange="togglePer90()">
-                                            <span class="per90-toggle-slider"></span>
-                                            <span class="per90-toggle-text">Per 90</span>
-                                        </label>
-                                    </div>
                                     
-                                    <!-- Conditional Highlight Toggle -->
-                                    <div class="conditional-highlight-toggle-container">
-                                        <label class="conditional-highlight-toggle-label">
-                                            <input type="checkbox" id="conditional-highlight-toggle" checked onchange="toggleConditionalHighlight()">
-                                            <span class="conditional-highlight-toggle-slider"></span>
-                                            <span class="conditional-highlight-toggle-text">Top 10</span>
-                                        </label>
-                                    </div>
+                                    
+
                                 </div>
                             </div>
                         </div>
@@ -4187,14 +4175,7 @@
                             <div class="filter-section toggle-options">
                                 <span class="filter-label">Options:</span>
                                 <div class="toggle-group">
-                                    <!-- Conditional Highlight Toggle -->
-                                    <div class="conditional-highlight-toggle-container">
-                                        <label class="conditional-highlight-toggle-label">
-                                            <input type="checkbox" id="conditional-highlight-toggle-teams" checked onchange="toggleConditionalHighlight()">
-                                            <span class="conditional-highlight-toggle-slider"></span>
-                                            <span class="conditional-highlight-toggle-text">Top 10</span>
-                                        </label>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -6679,13 +6660,8 @@
             const goalsScoredStatBtn = document.querySelector('.filter-btn[data-stat="goals_scored"]');
             const isStatModified = !goalsScoredStatBtn || !goalsScoredStatBtn.classList.contains('active');
             
-            // Check if toggles are modified
-            const conditionalHighlightToggle = document.getElementById('conditional-highlight-toggle');
-            const conditionalHighlightToggleTeams = document.getElementById('conditional-highlight-toggle-teams');
-            const per90Toggle = document.getElementById('per90-toggle');
-            const isToggleModified = ((conditionalHighlightToggle && !conditionalHighlightToggle.checked) || 
-                                     (conditionalHighlightToggleTeams && !conditionalHighlightToggleTeams.checked)) || 
-                                   (per90Toggle && per90Toggle.checked);
+            // Check if toggles are modified (per90 is now part of display filter)
+            const isToggleModified = false; // No separate toggles anymore
             
             // Determine if any filter is modified
             const isModified = gameweekStartPlayers !== '1' || 
@@ -6793,34 +6769,11 @@
             }
             
             // Reset toggles
-            const conditionalHighlightToggle = document.getElementById('conditional-highlight-toggle');
-            const conditionalHighlightToggleTeams = document.getElementById('conditional-highlight-toggle-teams');
-            const per90Toggle = document.getElementById('per90-toggle');
-            if (conditionalHighlightToggle) {
-                conditionalHighlightToggle.checked = true;
-            }
-            if (conditionalHighlightToggleTeams) {
-                conditionalHighlightToggleTeams.checked = true;
-            }
-            if (per90Toggle) {
-                per90Toggle.checked = false;
-            }
-            showConditionalHighlight = true;
+            showConditionalHighlight = true; // Always on by default
             showPer90 = false;
             showRankMode = false;
             
-            // Re-enable per 90 toggle after reset
-            const per90Toggle = document.getElementById('per90-toggle');
-            const per90Label = document.querySelector('label[for="per90-toggle"]');
-            if (per90Toggle) {
-                per90Toggle.disabled = false;
-                per90Toggle.parentElement.style.opacity = '1';
-                per90Toggle.parentElement.style.cursor = 'pointer';
-                if (per90Label) {
-                    per90Label.style.color = '';
-                    per90Label.title = '';
-                }
-            }
+
             
             // Reset search input
             const searchInput = document.getElementById('search-input');
@@ -7275,101 +7228,34 @@
                 showRanks = false;
                 showHistory = false;
                 showRankMode = false;
+                showPer90 = false;
             } else if (selectedRank === 'rank') {
                 showRanks = true;
                 showHistory = false;
                 showRankMode = true; // Convert values to ranks
+                showPer90 = false;
             } else if (selectedRank === 'last') {
                 showRanks = false;
                 showHistory = true;
                 showRankMode = false;
+                showPer90 = false;
+            } else if (selectedRank === 'per90') {
+                showRanks = false;
+                showHistory = false;
+                showRankMode = false;
+                showPer90 = true;
             }
             
-            // Disable per 90 toggle when rank mode is active
-            const per90Toggle = document.getElementById('per90-toggle');
-            const per90Label = document.querySelector('label[for="per90-toggle"]');
-            if (per90Toggle) {
-                if (showRankMode) {
-                    per90Toggle.disabled = true;
-                    per90Toggle.checked = false;
-                    showPer90 = false;
-                    per90Toggle.parentElement.style.opacity = '0.5';
-                    per90Toggle.parentElement.style.cursor = 'not-allowed';
-                    if (per90Label) {
-                        per90Label.style.color = '#9ca3af';
-                        per90Label.title = 'Per 90 not available in Rank mode';
-                    }
-                } else {
-                    per90Toggle.disabled = false;
-                    per90Toggle.parentElement.style.opacity = '1';
-                    per90Toggle.parentElement.style.cursor = 'pointer';
-                    if (per90Label) {
-                        per90Label.style.color = '';
-                        per90Label.title = '';
-                    }
-                }
-            }
+
             
             console.log('Rank filter changed:', selectedRank, 'showRanks:', showRanks, 'showHistory:', showHistory);
             renderTable();
             checkFiltersModified();
         }
 
-        function toggleConditionalHighlight() {
-            const conditionalHighlightToggle = document.getElementById('conditional-highlight-toggle');
-            const conditionalHighlightToggleTeams = document.getElementById('conditional-highlight-toggle-teams');
-            
-            // Determine which toggle was clicked and get its new state
-            let isChecked = false;
-            if (event && event.target) {
-                // Get the state from the toggle that was actually clicked
-                isChecked = event.target.checked;
-            } else {
-                // Fallback: get the state from the current view's toggle
-                const currentToggle = currentView === 'teams' ? conditionalHighlightToggleTeams : conditionalHighlightToggle;
-                isChecked = currentToggle ? currentToggle.checked : false;
-            }
-            
-            // Sync both toggles to the same state
-            if (conditionalHighlightToggle) conditionalHighlightToggle.checked = isChecked;
-            if (conditionalHighlightToggleTeams) conditionalHighlightToggleTeams.checked = isChecked;
-            
-            if (isChecked) {
-                // Conditional highlight toggle is being turned ON
-                showConditionalHighlight = true;
-                console.log('Conditional highlight toggle ON');
-            } else {
-                // Conditional highlight toggle is being turned OFF
-                showConditionalHighlight = false;
-                console.log('Conditional highlight toggle OFF');
-            }
-            
-            // Re-render the appropriate table to update the display
-            if (currentView === 'teams') {
-                renderTeamsTable();
-            } else {
-                renderTable();
-            }
-            checkFiltersModified();
-        }
 
-        function togglePer90() {
-            const per90Toggle = document.getElementById('per90-toggle');
-            
-            if (per90Toggle.checked) {
-                // Per 90 toggle is being turned ON
-                showPer90 = true;
-                console.log('Per 90 toggle ON');
-            } else {
-                // Per 90 toggle is being turned OFF
-                showPer90 = false;
-                console.log('Per 90 toggle OFF');
-            }
-            
-            // Re-render the players table to update the display
-            renderPlayersTable();
-            checkFiltersModified();
-        }
+
+
 
         async function loadPlayerHistoricalPoints(playerName, opponent, isHome, gameweek) {
             // Check if opponent is newly promoted (no historical data)
