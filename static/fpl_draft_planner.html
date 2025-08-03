@@ -6341,9 +6341,8 @@
                         statValue = player.saves || 0;
                     }
                     
-                    if (statValue > 0) {
-                        statValues.push({ player, statValue });
-                    }
+                    // Include all players in ranking, not just those with > 0
+                    statValues.push({ player, statValue });
                 });
                 
                 // Sort by stat value for ranking
@@ -6356,9 +6355,23 @@
                     }
                 });
                 
-                // Create ranking map
+                // Create ranking map with proper tie handling
+                let currentRank = 1;
+                let currentValue = null;
+                let tiedCount = 0;
+                
                 statValues.forEach((item, index) => {
-                    playerRanking[item.player.id] = index + 1;
+                    if (currentValue === null || item.statValue !== currentValue) {
+                        // New value, update rank
+                        currentRank = index + 1;
+                        currentValue = item.statValue;
+                        tiedCount = 0;
+                    } else {
+                        // Same value as previous, keep same rank
+                        tiedCount++;
+                    }
+                    
+                    playerRanking[item.player.id] = currentRank;
                 });
             }
             
@@ -6612,41 +6625,66 @@
                         console.log('Filtered player stats for GKP only:', playerStats);
                     }
                     
-                    // Calculate rankings for each stat (all players, not just top 10)
-                    const allRankings = {};
-                    const top10Rankings = {};
-                    playerStats.forEach(stat => {
-                        const statValues = [];
-                        searchFilteredPlayers.forEach(p => {
-                            const data = getStatValue(p, stat);
-                            const value = typeof data.value === 'string' ? parseFloat(data.value.replace(/[+-]/g, '')) : data.value;
-                            if (!isNaN(value) && value > 0) {
-                                statValues.push({ player: p, value: value });
-                            }
+                                            // Calculate rankings for each stat (all players, not just top 10)
+                        const allRankings = {};
+                        const top10Rankings = {};
+                        playerStats.forEach(stat => {
+                            const statValues = [];
+                            searchFilteredPlayers.forEach(p => {
+                                const data = getStatValue(p, stat);
+                                const value = typeof data.value === 'string' ? parseFloat(data.value.replace(/[+-]/g, '')) : data.value;
+                                // Include all players in ranking, not just those with > 0
+                                if (!isNaN(value)) {
+                                    statValues.push({ player: p, value: value });
+                                }
+                            });
+                            
+                            // Sort by value (higher is better, except for goals_conceded)
+                            const lowerIsBetter = ['goals_conceded'];
+                            statValues.sort((a, b) => {
+                                if (lowerIsBetter.includes(stat)) {
+                                    return a.value - b.value; // Lower is better
+                                } else {
+                                    return b.value - a.value; // Higher is better
+                                }
+                            });
+                            
+                            // Create ranking map for ALL players with proper tie handling
+                            let currentRank = 1;
+                            let currentValue = null;
+                            
+                            statValues.forEach((item, index) => {
+                                if (currentValue === null || item.value !== currentValue) {
+                                    // New value, update rank
+                                    currentRank = index + 1;
+                                    currentValue = item.value;
+                                }
+                                // Same value as previous, keep same rank
+                                
+                                if (!allRankings[stat]) allRankings[stat] = {};
+                                allRankings[stat][item.player.id] = currentRank;
+                            });
+                            
+                            // Create ranking map for top 10 (for highlighting) with tie handling
+                            let top10Count = 0;
+                            let top10Rank = 1;
+                            let top10Value = null;
+                            
+                            statValues.forEach((item, index) => {
+                                if (top10Count >= 10) return; // Stop after 10
+                                
+                                if (top10Value === null || item.value !== top10Value) {
+                                    // New value, update rank
+                                    top10Rank = index + 1;
+                                    top10Value = item.value;
+                                }
+                                // Same value as previous, keep same rank
+                                
+                                if (!top10Rankings[stat]) top10Rankings[stat] = {};
+                                top10Rankings[stat][item.player.id] = top10Rank;
+                                top10Count++;
+                            });
                         });
-                        
-                        // Sort by value (higher is better, except for goals_conceded)
-                        const lowerIsBetter = ['goals_conceded'];
-                        statValues.sort((a, b) => {
-                            if (lowerIsBetter.includes(stat)) {
-                                return a.value - b.value; // Lower is better
-                            } else {
-                                return b.value - a.value; // Higher is better
-                            }
-                        });
-                        
-                        // Create ranking map for ALL players
-                        statValues.forEach((item, index) => {
-                            if (!allRankings[stat]) allRankings[stat] = {};
-                            allRankings[stat][item.player.id] = index + 1;
-                        });
-                        
-                                                                                // Create ranking map for top 10 (for highlighting)
-                                        statValues.slice(0, 10).forEach((item, index) => {
-                                            if (!top10Rankings[stat]) top10Rankings[stat] = {};
-                                            top10Rankings[stat][item.player.id] = index + 1;
-                                        });
-                    });
                     
                     playerStats.forEach(stat => {
                         const statData = getStatValue(player, stat);
@@ -8333,16 +8371,19 @@
                 const gameweekStart = parseInt(document.getElementById('gameweek-start-teams').value);
                 const gameweekEnd = parseInt(document.getElementById('gameweek-end-teams').value);
                 
-                // Check if GW headers already exist to avoid duplicates
+                // Remove existing GW headers to ensure they match the current range
                 const existingGwHeaders = tableHeader.querySelectorAll('th');
-                const hasGwHeaders = Array.from(existingGwHeaders).some(th => th.textContent.trim().startsWith('GW'));
-                
-                if (!hasGwHeaders) {
-                    for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
-                        const th = document.createElement('th');
-                        th.textContent = `GW${gw}`;
-                        tableHeader.appendChild(th);
+                existingGwHeaders.forEach(th => {
+                    if (th.textContent.trim().startsWith('GW')) {
+                        th.remove();
                     }
+                });
+                
+                // Add new GW headers for the current range
+                for (let gw = gameweekStart; gw <= gameweekEnd; gw++) {
+                    const th = document.createElement('th');
+                    th.textContent = `GW${gw}`;
+                    tableHeader.appendChild(th);
                 }
             }
             
