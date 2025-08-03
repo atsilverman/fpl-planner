@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FPLens</title>
+    <title>fpl-planner</title>
 
     <style>
 
@@ -84,6 +84,7 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
             min-height: 100vh;
+            min-width: 1200px;
             padding: clamp(8px, 2vw, 24px);
             color: #142634;
             line-height: 1.6;
@@ -108,6 +109,7 @@
 
         .container {
             max-width: clamp(320px, 95vw, 1400px);
+            min-width: 1200px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.98);
             border-radius: clamp(12px, 3vw, 24px);
@@ -123,7 +125,7 @@
         .header {
             background: linear-gradient(135deg, #E8F2FC 0%, #F0F4F8 50%, #E8F0F8 100%);
             color: #2D3748;
-            padding: clamp(10px, 2vw, 20px) clamp(16px, 3vw, 32px);
+            padding: 28px clamp(16px, 3vw, 32px);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -132,20 +134,25 @@
             min-width: 100%;
             max-width: 100%;
             box-sizing: border-box;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .header h1 {
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-size: clamp(0.75rem, 2.5vw, 1.25rem);
             font-weight: 700;
-            margin-bottom: clamp(8px, 2vw, 12px);
+            margin-bottom: clamp(4px, 1vw, 6px);
             position: relative;
             z-index: 1;
             letter-spacing: -0.025em;
             color: #1A202C;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .header p {
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-size: clamp(0.45rem, 1.25vw, 0.55rem);
             opacity: 0.8;
             font-weight: 500;
             position: relative;
@@ -154,22 +161,30 @@
         }
 
         /* Header with Soccer Icon */
-        .header-content {
+        .header-left {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: clamp(16px, 3vw, 32px);
-            flex-wrap: wrap;
+            gap: clamp(8px, 1.5vw, 16px);
+            flex-shrink: 0;
+            padding-top: 4px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-shrink: 0;
         }
 
         .soccer-icon {
             flex-shrink: 0;
+            padding-top: 4px;
         }
 
         .field-icon {
-            width: clamp(48px, 8vw, 80px);
-            height: clamp(48px, 8vw, 80px);
-            filter: drop-shadow(0 4px 12px rgba(34, 50, 71, 0.3));
+            width: clamp(24px, 4vw, 40px);
+            height: clamp(24px, 4vw, 40px);
+            filter: drop-shadow(0 2px 6px rgba(34, 50, 71, 0.3));
         }
 
         .header-text {
@@ -179,31 +194,56 @@
         }
 
         .header-text h1 {
-            margin-bottom: clamp(4px, 1vw, 8px);
+            margin-bottom: clamp(2px, 0.5vw, 4px);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .header-text p {
             margin: 0;
         }
 
+        .header-logo {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-right: 2px;
+        }
+
+        .logo-icon {
+            width: clamp(12px, 1.8vw, 18px);
+            height: clamp(12px, 1.8vw, 18px);
+            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
+        }
+
+        .author-link {
+            font-size: clamp(10px, 1.5vw, 14px);
+            font-weight: 400;
+            color: #1A202C;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .author-link:hover {
+            color: #3B82F6;
+        }
+
         /* Mobile responsive adjustments for header */
         @media (max-width: 768px) {
             .header-content {
-                flex-direction: column;
-                text-align: center;
-                gap: clamp(12px, 2vw, 20px);
+                flex-direction: row;
+                text-align: left;
+                gap: clamp(6px, 1vw, 10px);
             }
 
             .header-text {
-                text-align: center;
+                text-align: left;
             }
 
             .field-icon {
-                width: clamp(40px, 6vw, 60px);
-                height: clamp(40px, 6vw, 60px);
+                width: clamp(20px, 3vw, 30px);
+                height: clamp(20px, 3vw, 30px);
             }
-
-
         }
 
         .view-controls {
@@ -305,7 +345,7 @@
         }
 
         .search-input {
-            padding: clamp(10px, 2vw, 12px) clamp(30px, 4vw, 40px) clamp(10px, 2vw, 12px) clamp(12px, 2vw, 16px);
+            padding: 0 clamp(30px, 4vw, 40px) 0 clamp(12px, 2vw, 16px);
             border: 2px solid rgba(203, 213, 225, 0.6);
             border-radius: 12px;
             font-size: clamp(14px, 2.2vw, 16px);
@@ -354,11 +394,12 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 12px;
+            padding: 0 12px;
             background: rgba(248, 250, 252, 0.8);
             border: 1px solid rgba(203, 213, 225, 0.4);
             border-radius: 8px;
             transition: all 0.2s ease;
+            min-height: 44px;
         }
 
         .fixtures-toggle-container:hover {
@@ -492,24 +533,30 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                height: 54px !important;
+                min-height: 54px !important;
             }
             
             .view-slider-container {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                height: 54px !important;
+                min-height: 54px !important;
             }
             
             .view-slider {
                 position: relative;
                 width: 120px;
-                height: 44px;
+                height: 54px !important;
+                max-height: 54px !important;
                 background: #e2e8f0;
-                border-radius: 22px;
+                border-radius: 27px;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 border: 2px solid #cbd5e1;
-                min-height: 44px;
+                min-height: 54px !important;
+                box-sizing: border-box !important;
             }
             
             .view-slider input[type="checkbox"] {
@@ -525,13 +572,14 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                border-radius: 22px;
+                border-radius: 27px;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 padding: 0 8px;
                 transition: all 0.3s ease;
+                height: 54px !important;
             }
             
             .view-slider-label::before {
@@ -540,9 +588,9 @@
                 top: 2px;
                 left: 2px;
                 width: 40px;
-                height: 36px;
+                height: 46px;
                 background: #3b82f6;
-                border-radius: 18px;
+                border-radius: 23px;
                 transition: all 0.3s ease;
                 z-index: 1;
             }
@@ -688,20 +736,19 @@
         }
         
         #customize-btn {
-            padding: 10px 16px !important;
+            padding: 0 !important;
             font-size: 14px !important;
             background: #E2E8F0 !important;
             color: #36425B !important;
             border: 1px solid #CBD5E1 !important;
             border-radius: 8px !important;
             transition: all 0.2s ease !important;
-            width: auto !important;
-            min-width: 100px !important;
+            width: 44px !important;
             height: 44px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 8px !important;
+            gap: 0 !important;
             flex-shrink: 0 !important;
         }
 
@@ -929,8 +976,8 @@
 
         /* Team Badge Styles */
 .team-badge {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 4px;
     vertical-align: middle;
     display: block;
@@ -938,9 +985,13 @@
 }
 
         .badge-cell {
-            width: 28px;
+            min-width: 50px !important;
+            max-width: 50px !important;
+            width: 50px !important;
             text-align: center;
             padding: 4px 2px;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
         }
 
         .filters-container {
@@ -1956,9 +2007,16 @@
 
         /* Team table specific column widths - fix overlap */
         #team-table th:nth-child(1) {
-            min-width: 80px !important; /* Badge column - match data cells */
-            max-width: none !important; /* Badge column - match data cells */
-            width: 80px !important; /* Badge column - match data cells */
+            min-width: 50px !important; /* Badge column - fixed width */
+            max-width: 50px !important; /* Badge column - fixed width */
+            width: 50px !important; /* Badge column - fixed width */
+            text-align: center !important; /* Center the badge column */
+        }
+
+        #player-table th:nth-child(1) {
+            min-width: 50px !important; /* Badge column - fixed width */
+            max-width: 50px !important; /* Badge column - fixed width */
+            width: 50px !important; /* Badge column - fixed width */
             text-align: center !important; /* Center the badge column */
         }
 
@@ -1976,12 +2034,26 @@
 
         #team-table td:nth-child(1) {
             text-align: center !important;
-            min-width: 80px !important;
-            max-width: none !important;
-            width: 80px !important;
+            min-width: 50px !important;
+            max-width: 50px !important;
+            width: 50px !important;
             font-weight: 600;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
+            padding-left: 14px !important;
+            padding-right: 10px !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+        }
+
+        #player-table td:nth-child(1) {
+            text-align: center !important;
+            min-width: 50px !important;
+            max-width: 50px !important;
+            width: 50px !important;
+            font-weight: 600;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
         }
 
         #team-table td:nth-child(2) {
@@ -2543,7 +2615,7 @@
             transform: translate(-50%, -50%);
             padding: 16px;
             border-radius: 12px;
-            width: 75%;
+            width: 40%;
             max-width: 400px;
             color: #334155;
             box-shadow: 
@@ -3699,6 +3771,73 @@
             transform: translateX(26px);
         }
 
+        /* View Segmented Control */
+                .view-toggle-control {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-container {
+            position: relative;
+            display: flex;
+            background: #E2E8F0;
+            border: 2px solid #CBD5E1;
+            border-radius: 12px;
+            padding: 3px;
+            cursor: pointer;
+            width: 200px;
+            height: 50px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .toggle-container:hover {
+            border-color: #94A3B8;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle-option {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            color: #64748B;
+            transition: color 0.2s ease;
+            border-radius: 10px;
+            user-select: none;
+            height: 44px;
+            transform: translateY(-2px);
+        }
+
+        .toggle-option:first-child {
+            transform: translateY(-2px) translateX(-2px);
+        }
+
+        .toggle-option.active {
+            color: white;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 90px;
+            height: 38px;
+            background: #6197C1;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(97, 151, 193, 0.3);
+        }
+
+        .toggle-container[data-active="teams"] .toggle-slider {
+            transform: translateX(96px);
+        }
+
         /* Mobile responsive toggle switch styles */
         @media (max-width: 768px) {
             .toggle-switch {
@@ -4641,12 +4780,19 @@
     </script>
     <div class="container">
         <div class="header">
-            <div class="header-content">
-                <div class="soccer-icon">
+            <div class="header-left">
+                <div class="soccer-icon" onclick="window.location.reload()" style="cursor: pointer;">
                     <img src="/static/field.png" alt="Football Field" class="field-icon">
                 </div>
                 <div class="header-text">
-                                            <h1>FPLens</h1>
+                                            <h1>fpl-planner</h1>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-logo">
+                    <a href="https://x.com/_fullycoys" target="_blank" rel="noopener noreferrer">
+                        <img src="/static/logo-black.png" alt="Adam Silverman" class="logo-icon">
+                    </a>
                 </div>
             </div>
         </div>
@@ -4654,11 +4800,16 @@
         <div class="controls-container">
             <div class="view-controls">
             <div class="controls-top-row">
-                <!-- View Filter Buttons (Left) -->
-                <div class="view-slider-top-container">
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" data-view="players" onclick="handleViewFilter('players')">Players</button>
-                        <button class="filter-btn" data-view="teams" onclick="handleViewFilter('teams')">Teams</button>
+                <!-- View Filter Segmented Control (Left) -->
+                <div class="view-toggle-control">
+                    <div class="toggle-container" onclick="handleViewToggleClick(event)">
+                        <div class="toggle-option active" data-view="players">
+                            <span>Players</span>
+                        </div>
+                        <div class="toggle-option" data-view="teams">
+                            <span>Teams</span>
+                        </div>
+                        <div class="toggle-slider"></div>
                     </div>
                 </div>
 
@@ -4666,7 +4817,6 @@
                 <div class="customize-container" style="position: relative;">
                     <button class="btn btn-customize" onclick="toggleFilters()" id="customize-btn" style="margin-right: 140px;">
                         <div class="filter-icon" id="filter-icon"></div>
-                        <span class="filter-text">Customize</span>
                     </button>
                     
                     <!-- Compare Mode Indicator -->
@@ -4688,6 +4838,11 @@
 
                 <!-- Search Bar and Fixtures Toggle (Right) -->
                 <div class="search-container">
+                    <!-- FDR Info Icon -->
+                    <div class="fdr-info-icon" id="fdr-info-icon" style="cursor: pointer; margin-right: 8px; display: none; align-items: center; height: 44px;" onclick="toggleFDRInfo()">
+                        <img src="/static/why.svg" alt="FDR Info" style="width: 20px; height: 20px; opacity: 0.7; filter: brightness(0) saturate(100%) invert(40%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.6) contrast(1);">
+                    </div>
+                    
                     <!-- Fixtures Toggle -->
                     <div class="fixtures-toggle-container">
                         <span class="filter-label" style="font-size: 0.875rem; color: #64748B; font-weight: 600;">FDR:</span>
@@ -4885,6 +5040,46 @@
             </div>
         </div>
         
+
+
+        <!-- FDR Info Popup -->
+        <div class="fdr-info-popup" id="fdr-info-popup" style="display: none; position: absolute; z-index: 1000; background: white; border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); padding: 16px; max-width: 500px;">
+            <div class="color-scale-row">
+                <span class="color-scale-label">Difficulty:</span>
+                <div class="color-scale-item">
+                    <div class="color-scale-dot" style="background: #43A15F; border-color: #2D7A4A;"></div>
+                    <span>Very Easy</span>
+                </div>
+                <div class="color-scale-item">
+                    <div class="color-scale-dot" style="background: #A8E0BB; border-color: #15803d;"></div>
+                    <span>Easy</span>
+                </div>
+                <div class="color-scale-item">
+                    <div class="color-scale-dot" style="background: #D9FAE4; border-color: #047857;"></div>
+                    <span>Easy+</span>
+                </div>
+                <div class="color-scale-item">
+                    <div class="color-scale-dot" style="background: #E5E7EB; border-color: #D1D5DB;"></div>
+                    <span>Neutral</span>
+                </div>
+                <div class="color-scale-item">
+                    <div class="color-scale-dot" style="background: #fef2f2; border-color: #991b1b;"></div>
+                    <span>Hard+</span>
+                </div>
+                <div class="color-scale-item">
+                    <div class="color-scale-dot" style="background: #E3B3B3; border-color: #b91c1c;"></div>
+                    <span>Hard</span>
+                </div>
+                <div class="color-scale-item">
+                    <div class="color-scale-dot" style="background: #B55757; border-color: #991B1B;"></div>
+                    <span>Very Hard</span>
+                </div>
+            </div>
+            <div class="difficulty-note">
+                <em>Note: Difficulty based on team rankings, home/away, and player position.</em>
+            </div>
+        </div>
+
         <!-- Difficulty Legend -->
         <div class="difficulty-legend-static" style="text-align: center; margin-top: 20px;">
             <div class="color-scale-row">
@@ -5351,19 +5546,65 @@
             }
         }
 
-        // Handle view filter buttons
-        function handleViewFilter(view) {
-            // Update button states
-            document.querySelectorAll('.filter-btn[data-view]').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            const clickedButton = document.querySelector(`.filter-btn[data-view="${view}"]`);
-            if (clickedButton) {
-                clickedButton.classList.add('active');
-            }
+        // Handle view toggle control
+        function handleViewToggleClick(event) {
+            const container = event.currentTarget;
+            const clickedOption = event.target.closest('.toggle-option');
             
-            switchView(view);
+            if (clickedOption) {
+                const view = clickedOption.dataset.view;
+                
+                // Update active state
+                container.querySelectorAll('.toggle-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                clickedOption.classList.add('active');
+                
+                // Update slider position
+                container.setAttribute('data-active', view);
+                
+                // Switch the view
+                switchView(view);
+            }
         }
+        
+        // Handle FDR info popup
+        function toggleFDRInfo() {
+            const popup = document.getElementById('fdr-info-popup');
+            const infoIcon = document.getElementById('fdr-info-icon');
+            
+            if (popup && infoIcon) {
+                const isVisible = popup.style.display === 'block';
+                
+                if (isVisible) {
+                    // Hide popup
+                    popup.style.display = 'none';
+                } else {
+                    // Show popup positioned near the icon
+                    const iconRect = infoIcon.getBoundingClientRect();
+                    popup.style.left = (iconRect.left - 150) + 'px';
+                    popup.style.top = (iconRect.bottom + 8) + 'px';
+                    popup.style.display = 'block';
+                }
+            }
+        }
+        
+        // Close FDR info popup when clicking outside
+        document.addEventListener('click', function(event) {
+            const popup = document.getElementById('fdr-info-popup');
+            const infoIcon = document.getElementById('fdr-info-icon');
+            
+            if (popup && infoIcon) {
+                const isClickInsidePopup = popup.contains(event.target);
+                const isClickOnIcon = infoIcon.contains(event.target);
+                
+                if (!isClickInsidePopup && !isClickOnIcon && popup.style.display === 'block') {
+                    popup.style.display = 'none';
+                }
+            }
+        });
+        
+
         
         async function switchView(view) {
             currentView = view;
@@ -5376,16 +5617,30 @@
             console.log('Player table display:', document.getElementById('player-table').style.display);
             console.log('Team table display:', document.getElementById('team-table').style.display);
             
-            // Reset customize button text to "Customize" when switching views
-            const customizeBtn = document.getElementById('customize-btn');
-            if (customizeBtn) {
-                const filterText = customizeBtn.querySelector('.filter-text');
-                const filterIcon = customizeBtn.querySelector('.filter-icon');
-                if (filterText) {
-                    filterText.textContent = 'Customize';
+            // Check if filters are currently expanded and manage state properly
+            const filtersContainer = document.getElementById('filters-container');
+            const isExpanded = filtersContainer.classList.contains('expanded');
+            
+            if (isExpanded) {
+                // If filters are open, update the filter display for the new view
+                const playersFilters = document.getElementById('players-filters');
+                const teamsFilters = document.getElementById('teams-filters');
+                
+                if (view === 'teams') {
+                    playersFilters.style.display = 'none';
+                    teamsFilters.style.display = 'block';
+                } else {
+                    playersFilters.style.display = 'block';
+                    teamsFilters.style.display = 'none';
                 }
-                if (filterIcon) {
-                    filterIcon.classList.remove('close');
+            } else {
+                // If filters are closed, reset the customize button
+                const customizeBtn = document.getElementById('customize-btn');
+                if (customizeBtn) {
+                    const filterIcon = customizeBtn.querySelector('.filter-icon');
+                    if (filterIcon) {
+                        filterIcon.classList.remove('close');
+                    }
                 }
             }
             
@@ -5410,13 +5665,15 @@
                 highlightingToggle.style.display = shouldShow ? 'block' : 'none';
             }
             
-            // Keep filters hidden by default - they only show when Customize is clicked
-            const playersFilters = document.getElementById('players-filters');
-            const teamsFilters = document.getElementById('teams-filters');
-            
-            // Both should be hidden by default
+            // Only hide filters if the container is not expanded
+            if (!isExpanded) {
+                const playersFilters = document.getElementById('players-filters');
+                const teamsFilters = document.getElementById('teams-filters');
+                
+                // Both should be hidden by default when container is closed
                 playersFilters.style.display = 'none';
                 teamsFilters.style.display = 'none';
+            }
             
             // Reset all filters and toggles when switching views
 
@@ -8228,14 +8485,12 @@
                 filtersContainer.classList.remove('expanded');
                 filterActions.style.display = 'none';
                 filterIcon.classList.remove('close');
-                filterText.textContent = 'Customize';
                 // Check if reset button should be shown/hidden based on modifications
                 checkFiltersModified();
             } else {
                 filtersContainer.classList.add('expanded');
-                filterActions.style.display = 'flex';
+                filterActions.style.display = 'none';
                 filterIcon.classList.add('close');
-                filterText.textContent = 'Close';
                 
 
                 
@@ -8304,12 +8559,12 @@
                     initializeApp();
 
                 
-                // Ensure filter button shows "Customize" by default
+                // Ensure filter button shows filter icon by default
                 const customizeBtn = document.getElementById('customize-btn');
                 if (customizeBtn) {
-                    const filterText = customizeBtn.querySelector('.filter-text');
-                    if (filterText) {
-                        filterText.textContent = 'Customize';
+                    const filterIcon = customizeBtn.querySelector('.filter-icon');
+                    if (filterIcon) {
+                        filterIcon.classList.remove('close');
                     }
                 }
                 
@@ -8337,6 +8592,15 @@
                 const fdrToggle = document.getElementById('fdr-toggle');
                 if (difficultyLegend && fdrToggle) {
                     difficultyLegend.style.display = fdrToggle.checked ? 'block' : 'none';
+                }
+                
+
+                
+                // Initialize view segmented control state
+                const segmentedContainer = document.querySelector('.segmented-container');
+                if (segmentedContainer) {
+                    // Set initial state to Players
+                    segmentedContainer.setAttribute('data-active', 'players');
                 }
                 
                 // Reset button functionality removed
@@ -8650,6 +8914,12 @@
         function handleFDRToggle(isChecked) {
             console.log('handleFDRToggle called with:', isChecked);
             
+            // Show/hide why icon based on FDR toggle
+            const fdrInfoIcon = document.getElementById('fdr-info-icon');
+            if (fdrInfoIcon) {
+                fdrInfoIcon.style.display = isChecked ? 'flex' : 'none';
+            }
+            
             // Save current highlight state before changing FDR mode
             if (!isChecked) {
                 // When turning FDR off, save the current highlight state
@@ -8675,11 +8945,13 @@
                 }
             }
             
-            // Show/hide difficulty legend based on FDR toggle
+            // Hide difficulty legend when FDR is enabled (since we have the why icon now)
             const difficultyLegend = document.querySelector('.difficulty-legend-static');
             if (difficultyLegend) {
-                difficultyLegend.style.display = isChecked ? 'block' : 'none';
+                difficultyLegend.style.display = 'none';
             }
+            
+
             
             console.log('FDR toggle changed:', isChecked, 'showFDR:', showFDR);
             
