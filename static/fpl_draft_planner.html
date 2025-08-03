@@ -122,7 +122,7 @@
         .header {
             background: linear-gradient(135deg, #F9FBFF 0%, #F0F4F8 50%, #E8F0F8 100%);
             color: #2D3748;
-            padding: clamp(20px, 4vw, 40px) clamp(16px, 3vw, 32px);
+            padding: clamp(10px, 2vw, 20px) clamp(16px, 3vw, 32px);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -1955,14 +1955,15 @@
 
         /* Team table specific column widths - fix overlap */
         #team-table th:nth-child(1) {
-            min-width: 60px; /* Badge column - reduced from 120px */
-            max-width: 80px; /* Badge column - reduced from 150px */
-            text-align: center; /* Center the badge column */
+            min-width: 80px !important; /* Badge column - match data cells */
+            max-width: none !important; /* Badge column - match data cells */
+            width: 80px !important; /* Badge column - match data cells */
+            text-align: center !important; /* Center the badge column */
         }
 
         #team-table th:nth-child(2) {
-            min-width: 160px; /* Team name column - increased from 80px */
-            max-width: 200px; /* Team name column - increased from 100px */
+            min-width: 80px; /* Team name column */
+            max-width: 100px; /* Team name column */
             text-align: left; /* Left align team names */
         }
 
@@ -1973,19 +1974,23 @@
         }
 
         #team-table td:nth-child(1) {
-            text-align: right; /* Right align the badge to get closer to team name */
-            min-width: 60px; /* Badge column - reduced from 120px */
-            max-width: 80px; /* Badge column - reduced from 150px */
-            padding: 8px 16px; /* Doubled horizontal padding for badge column */
+            text-align: center !important;
+            min-width: 80px !important;
+            max-width: none !important;
+            width: 80px !important;
+            font-weight: 600;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
         }
 
         #team-table td:nth-child(2) {
-            text-align: left; /* Left align team names */
-            min-width: 160px; /* Team name column - increased from 80px */
-            max-width: 200px; /* Team name column - increased from 100px */
+            text-align: left !important;
+            min-width: 150px !important;
+            max-width: 150px !important;
+            width: 150px !important;
             font-weight: 600;
-            padding-left: 12px; /* Reduced from 20px */
-            padding-right: 8px; /* Add right padding */
+            padding-left: 10px !important;
+            padding-right: 20px !important;
         }
 
         #team-table td:nth-child(n+3) {
@@ -2011,6 +2016,7 @@
             font-size: 0.875rem;
             border-radius: 20px;
             overflow: hidden;
+            border: 1px solid red !important;
             box-shadow: 
                 0 8px 32px rgba(71, 85, 105, 0.06),
                 0 4px 16px rgba(71, 85, 105, 0.04);
@@ -2026,7 +2032,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            max-width: 200px;
         }
 
         .player-table th,
@@ -2085,19 +2090,24 @@
             font-weight: 500;
         }
 
-        .player-table td:first-child {
-            text-align: left;
-            min-width: 120px;
+        .player-table td:first-child,
+        #player-table td:first-child {
+            text-align: center !important;
+            min-width: 160px !important;
             font-weight: 600;
-            padding-left: 20px;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
         }
 
         /* Player table column widths - make position, price, and points narrower */
         .player-table th:nth-child(2),
-        .player-table td:nth-child(2) {
-            min-width: 120px;
-            max-width: 160px;
-            text-align: left;
+        .player-table td:nth-child(2),
+        #player-table th:nth-child(2),
+        #player-table td:nth-child(2) {
+            min-width: 150px !important;
+            max-width: 150px !important;
+            width: 150px !important;
+            text-align: left !important;
         }
 
         .player-table th:nth-child(3),
@@ -3029,8 +3039,8 @@
             
             .player-table th:first-child,
             .player-table td:first-child {
-                min-width: 80px;
-                max-width: 100px;
+                min-width: 140px;
+                max-width: 160px;
                 padding-left: 8px;
             }
             
@@ -8617,7 +8627,7 @@
                 let description = '';
                 if (selectedRank === 'rank') {
                     if (!showFDR) {
-                        description = 'Shows player rank by category';
+                        description = 'Converts totals to player rank per category';
                     } else {
                         description = 'Shows opponent team rank         ';
                     }
