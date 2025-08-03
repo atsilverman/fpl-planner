@@ -111,6 +111,7 @@
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.98);
             border-radius: clamp(12px, 3vw, 24px);
+            border: 2px solid rgba(97, 151, 193, 0.2);
             overflow: hidden;
             box-shadow: 
                 0 20px 40px rgba(71, 85, 105, 0.08),
@@ -120,7 +121,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #F9FBFF 0%, #F0F4F8 50%, #E8F0F8 100%);
+            background: linear-gradient(135deg, #E8F2FC 0%, #F0F4F8 50%, #E8F0F8 100%);
             color: #2D3748;
             padding: clamp(10px, 2vw, 20px) clamp(16px, 3vw, 32px);
             text-align: center;
@@ -2410,9 +2411,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 24px 32px;
-            background: rgba(248, 250, 252, 0.9);
-            border-top: 1px solid rgba(203, 213, 225, 0.4);
-            backdrop-filter: blur(8px);
+            background: transparent;
+            border-top: none;
+            backdrop-filter: none;
         }
 
         .pagination-info {
@@ -2540,10 +2541,10 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px;
-            border-radius: 16px;
-            width: 85%;
-            max-width: 500px;
+            padding: 16px;
+            border-radius: 12px;
+            width: 75%;
+            max-width: 400px;
             color: #334155;
             box-shadow: 
                 0 20px 40px rgba(71, 85, 105, 0.12),
@@ -2555,28 +2556,6 @@
         
         /* Mobile responsive modal adjustments */
         @media (max-width: 768px) {
-            .modal {
-                padding: 10px;
-            }
-            
-            .modal-content {
-                width: calc(100% - 20px);
-                max-width: none;
-                padding: 16px;
-                border-radius: 12px;
-            }
-            
-            .modal-title {
-                font-size: 1.2rem;
-            }
-            
-            .modal-subtitle {
-                font-size: 0.85rem;
-            }
-        }
-        
-        /* Extra small devices - 480px and below */
-        @media (max-width: 480px) {
             .modal {
                 padding: 8px;
             }
@@ -2595,14 +2574,36 @@
             .modal-subtitle {
                 font-size: 0.8rem;
             }
+        }
+        
+        /* Extra small devices - 480px and below */
+        @media (max-width: 480px) {
+            .modal {
+                padding: 6px;
+            }
+            
+            .modal-content {
+                width: calc(100% - 12px);
+                max-width: none;
+                padding: 10px;
+                border-radius: 8px;
+            }
+            
+            .modal-title {
+                font-size: 1rem;
+            }
+            
+            .modal-subtitle {
+                font-size: 0.75rem;
+            }
             
             .modal-header {
-                margin-bottom: 16px;
-                padding-bottom: 12px;
+                margin-bottom: 12px;
+                padding-bottom: 8px;
             }
             
             .close {
-                font-size: 24px;
+                font-size: 20px;
             }
         }
         
@@ -2670,46 +2671,46 @@
 
         .team-rankings {
             background: rgba(248, 250, 252, 0.9);
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px 0;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 12px 0;
             border: 1px solid rgba(203, 213, 225, 0.4);
         }
 
         .team-rankings h4 {
             color: #64748B;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
             font-weight: 600;
         }
 
         .ranking-row {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             justify-content: space-between;
         }
 
         .team-ranking {
             flex: 1;
-            padding: 12px;
+            padding: 10px;
             background: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid rgba(209, 213, 219, 0.3);
         }
 
         .team-ranking strong {
             color: #1F2937;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .team-ranking small {
             color: #6B7280;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             display: block;
-            margin-top: 8px;
-            line-height: 1.4;
+            margin-top: 6px;
+            line-height: 1.3;
         }
 
         .ranking-badge {
@@ -2737,17 +2738,17 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            margin: 20px 0;
-            font-size: 0.9rem;
+            margin: 16px 0;
+            font-size: 0.8rem;
             background: white;
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         .fixture-history-table th,
         .fixture-history-table td {
-            padding: 12px 8px;
+            padding: 8px 6px;
             text-align: center;
             color: #333;
             border: none;
@@ -4649,7 +4650,7 @@
                     <img src="/static/field.png" alt="Football Field" class="field-icon">
                 </div>
                 <div class="header-text">
-                    <h1>Data XI</h1>
+                    <h1>FPL Research</h1>
                 </div>
             </div>
         </div>
@@ -4788,6 +4789,7 @@
                     <div class="filter-columns">
                         <!-- Left Column -->
                         <div class="filter-column">
+
 
                             
                             <!-- Gameweek Range -->
@@ -5011,6 +5013,7 @@
         let showConditionalHighlight = false;
         let compareMode = false;
         let showFDR = false; // Default to stats view
+        let previousHighlightState = false; // Track previous highlight state
         let teamStatsData = {}; // Object to store team statistics by location
         let currentTeamLocation = 'overall'; // Current location filter for teams
         let currentTeamType = 'attack'; // Current type filter for teams (attack/defense)
@@ -5404,7 +5407,7 @@
                 per90ToggleContainer.style.display = view === 'players' ? 'block' : 'none';
             }
             
-                            // Hide Top Performers toggle when switching to teams view (only for players view)
+                            // Manage Top Performers toggle visibility for players view
             const highlightingToggle = document.getElementById('highlighting-toggle');
             if (highlightingToggle) {
                 const shouldShow = !showFDR && view === 'players';
@@ -6210,9 +6213,9 @@
                 }
             });
             
-            // Get top 10 players for highlighting
-            const top10 = statValues.slice(0, 10);
-            const top10PlayerIds = top10.map(item => item.player.id);
+                                                        // Get top 10 players for highlighting
+                            const top10 = statValues.slice(0, 10);
+                            const top10PlayerIds = top10.map(item => item.player.id);
             
             // Update playerRanking for display purposes
             statValues.forEach((item, index) => {
@@ -6385,11 +6388,11 @@
                             allRankings[stat][item.player.id] = index + 1;
                         });
                         
-                        // Create ranking map for top 10 (for highlighting)
-                        statValues.slice(0, 10).forEach((item, index) => {
-                            if (!top10Rankings[stat]) top10Rankings[stat] = {};
-                            top10Rankings[stat][item.player.id] = index + 1;
-                        });
+                                                                                // Create ranking map for top 10 (for highlighting)
+                                        statValues.slice(0, 10).forEach((item, index) => {
+                                            if (!top10Rankings[stat]) top10Rankings[stat] = {};
+                                            top10Rankings[stat][item.player.id] = index + 1;
+                                        });
                     });
                     
                     playerStats.forEach(stat => {
@@ -6450,30 +6453,12 @@
                                 playersData.find(p => p.id === id)
                             ).filter(p => p);
                             
-                            // Find the best performer for this stat among selected players
-                            const bestPlayer = findStatLeader(selectedPlayerObjects, stat);
-                            isBestAmongSelected = bestPlayer && bestPlayer.id === player.id;
+                            // Find the best performers for this stat among selected players
+                            const bestPlayers = findStatLeader(selectedPlayerObjects, stat);
+                            isBestAmongSelected = bestPlayers.some(bestPlayer => bestPlayer.id === player.id);
                         }
                         
-                        // Manage Top Performers toggle when auto-compare is active
-                        if (!showFDR && selectedPlayers.length >= 2) {
-                            // Auto-compare is active - turn off and lock Top Performers toggle
-                            const highlightToggle = document.getElementById('highlight-toggle');
-                            if (highlightToggle && highlightToggle.checked) {
-                                highlightToggle.checked = false;
-                                showConditionalHighlight = false;
-                            }
-                            // Disable the toggle to prevent user interaction
-                            if (highlightToggle) {
-                                highlightToggle.disabled = true;
-                            }
-                        } else if (!showFDR && selectedPlayers.length < 2) {
-                            // Auto-compare is not active - re-enable Top Performers toggle
-                            const highlightToggle = document.getElementById('highlight-toggle');
-                            if (highlightToggle) {
-                                highlightToggle.disabled = false;
-                            }
-                        }
+
                         
                         // Make zero values light grey
                         if (displayValue === 0 || displayValue === '0' || displayValue === '0.00') {
@@ -6481,16 +6466,16 @@
                         }
                         
                         // Create auto-compare pill style for best performer
-                        const autoCompareStyle = isBestAmongSelected ? `class="compare-player-pill" style="display: inline-block; padding: 3px 8px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap;"` : '';
+                        const autoCompareStyle = isBestAmongSelected ? `class="compare-player-pill" style="display: inline-block; padding: 3px 8px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #F2C640; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
                         
                         fixtureCells.push(`
                             <td class="fixture-cell">
                                 ${(stat === 'xG_delta' || stat === 'xA_delta') ? 
                                     `<span style="font-weight: 500; font-size: 0.8rem; color: ${displayColor};">${displayValue}</span>` : 
-                                    isBestAmongSelected ? 
-                                        `<span ${autoCompareStyle}>${displayValue}</span>` :
-                                        (isTop10 && showConditionalHighlight) ? 
-                                            `<span ${top10Style}>${displayValue}</span>` : 
+                                    (isTop10 && showConditionalHighlight) ? 
+                                        `<span ${top10Style}>${displayValue}</span>` :
+                                        isBestAmongSelected ? 
+                                            `<span ${autoCompareStyle}>${displayValue}</span>` :
                                             `<span style="font-weight: 500; font-size: 0.8rem; color: ${displayColor};">${displayValue}</span>`
                                 }
                             </td>
@@ -6603,6 +6588,22 @@
                 const top10Class = (isTop10 && showConditionalHighlight) ? `top-player-pill top-rank-${ranking}` : '';
                 const top10Style = (isTop10 && showConditionalHighlight) ? `class="top-player-pill top-rank-${ranking}" style="display: inline-block; padding: 3px 8px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #A2E5A6;"` : '';
                 
+                // Auto-compare: highlight best performer for total_points among selected players
+                let isBestPointsAmongSelected = false;
+                if (!showFDR && selectedPlayers.length >= 2 && selectedPlayers.includes(player.id)) {
+                    // Get selected players for comparison
+                    const selectedPlayerObjects = selectedPlayers.map(id => 
+                        playersData.find(p => p.id === id)
+                    ).filter(p => p);
+                    
+                    // Find the best performers for total_points among selected players
+                    const bestPlayers = findStatLeader(selectedPlayerObjects, 'total_points');
+                    isBestPointsAmongSelected = bestPlayers.some(bestPlayer => bestPlayer.id === player.id);
+                }
+                
+                // Create auto-compare pill style for best performer in points
+                const autoComparePointsStyle = isBestPointsAmongSelected ? `class="compare-player-pill" style="display: inline-block; padding: 3px 8px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #F2C640; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
+                
                 // Get team badge URL
                 const badgeUrl = getTeamBadgeUrl(playerTeam?.name || '');
                 const badgeHtml = badgeUrl ? `<img src="${badgeUrl}" alt="${playerTeam?.name || ''}" class="team-badge" onerror="this.style.display='none'">` : '';
@@ -6622,7 +6623,7 @@
                     </td>
                     <td><span style="display: inline-block; padding: 2px 8px; background-color: #f3f4f6; color: #374151; border-radius: 12px; font-size: 0.75rem; font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);">${position}</span></td>
                     <td class="price" ${compareModeStyle}>${(parseFloat(player.now_cost) / 10).toFixed(1)}</td>
-                    ${!showFDR ? `<td class="points" ${compareModeStyle}>${(selectedStat === 'xG_delta' || selectedStat === 'xA_delta') ? `<span style="color: ${getStatValue(player, selectedStat).color}; font-weight: 600;">${statValue}</span>` : (isTop10 && showConditionalHighlight) ? `<span ${top10Style}>${statValue}</span>` : statValue}</td>` : ''}
+                    ${!showFDR ? `<td class="points" ${compareModeStyle}>${(selectedStat === 'xG_delta' || selectedStat === 'xA_delta') ? `<span style="color: ${getStatValue(player, selectedStat).color}; font-weight: 600;">${statValue}</span>` : (isTop10 && showConditionalHighlight) ? `<span ${top10Style}>${statValue}</span>` : isBestPointsAmongSelected ? `<span ${autoComparePointsStyle}>${statValue}</span>` : statValue}</td>` : ''}
                     ${fixtureCells.join('')}
                 `;
                 
@@ -6934,17 +6935,9 @@
                     statisticValue = teamStats[currentTeamStat] !== undefined ? teamStats[currentTeamStat] : 'N/A';
                 }
                 
-                // Calculate top 10 teams for conditional highlighting (only if enabled)
-                const topTeams = calculateTopTeams(currentTeamStat, currentTeamLocation);
-                const teamRank = topTeams.findIndex(t => t.id === team.id) + 1; // 1-based ranking
-                const isTop10 = teamRank >= 1 && teamRank <= 10;
-                
                 // Apply conditional highlighting only if enabled
                 let backgroundColor = '';
-                let top10Style = '';
-                if (isTop10 && showConditionalHighlight && statisticValue !== 'N/A') {
-                    top10Style = `class="top-player-pill top-rank-${teamRank}" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #A2E5A6;"`;
-                }
+                let top6Style = '';
                 
                 // Create dynamic columns with all stats when not in FDR mode
                 let dynamicColumns = '';
@@ -6959,7 +6952,7 @@
                     const cs = teamStats ? (teamStats.clean_sheets || 0) : 0;
                     const saves = teamStats ? (teamStats.saves || 0) : 0;
                     
-                    // Calculate individual rankings for each column
+                    // Calculate individual rankings for each column (for auto-compare only)
                     const topGoalsTeams = calculateTopTeams('goals_scored', currentTeamLocation);
                     const topGcTeams = calculateTopTeams('goals_conceded', currentTeamLocation);
                     const topCsTeams = calculateTopTeams('clean_sheets', currentTeamLocation);
@@ -6969,11 +6962,6 @@
                     const gcRank = topGcTeams.findIndex(t => t.id === team.id) + 1;
                     const csRank = topCsTeams.findIndex(t => t.id === team.id) + 1;
                     const savesRank = topSavesTeams.findIndex(t => t.id === team.id) + 1;
-                    
-                    const isTop10Goals = goalsRank >= 1 && goalsRank <= 10;
-                    const isTop10Gc = gcRank >= 1 && gcRank <= 10;
-                    const isTop10Cs = csRank >= 1 && csRank <= 10;
-                    const isTop10Saves = savesRank >= 1 && savesRank <= 10;
                     
                     // Auto-compare: highlight best performer among selected teams
                     let isBestGoals = false;
@@ -6988,23 +6976,20 @@
                         ).filter(t => t);
                         
                         // Find the best performers for each stat among selected teams
-                        const bestGoalsTeam = findStatLeader(selectedTeamObjects, 'goals_scored');
-                        const bestGcTeam = findStatLeader(selectedTeamObjects, 'goals_conceded');
-                        const bestCsTeam = findStatLeader(selectedTeamObjects, 'clean_sheets');
-                        const bestSavesTeam = findStatLeader(selectedTeamObjects, 'saves');
+                        const bestGoalsTeams = findStatLeader(selectedTeamObjects, 'goals_scored');
+                        const bestGcTeams = findStatLeader(selectedTeamObjects, 'goals_conceded');
+                        const bestCsTeams = findStatLeader(selectedTeamObjects, 'clean_sheets');
+                        const bestSavesTeams = findStatLeader(selectedTeamObjects, 'saves');
                         
-                        isBestGoals = bestGoalsTeam && bestGoalsTeam.id === team.id;
-                        isBestGc = bestGcTeam && bestGcTeam.id === team.id;
-                        isBestCs = bestCsTeam && bestCsTeam.id === team.id;
-                        isBestSaves = bestSavesTeam && bestSavesTeam.id === team.id;
+                        isBestGoals = bestGoalsTeams.some(bestTeam => bestTeam.id === team.id);
+                        isBestGc = bestGcTeams.some(bestTeam => bestTeam.id === team.id);
+                        isBestCs = bestCsTeams.some(bestTeam => bestTeam.id === team.id);
+                        isBestSaves = bestSavesTeams.some(bestTeam => bestTeam.id === team.id);
                     }
                     
-                    const goalsStyle = isTop10Goals && showConditionalHighlight && goals > 0 ? `class="top-player-pill top-rank-${goalsRank}" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #A2E5A6;"` : '';
-                    const gcStyle = isTop10Gc && showConditionalHighlight && gc > 0 ? `class="top-player-pill top-rank-${gcRank}" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #A2E5A6;"` : '';
-                    const csStyle = isTop10Cs && showConditionalHighlight && cs > 0 ? `class="top-player-pill top-rank-${csRank}" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #A2E5A6;"` : '';
-                    const savesStyle = isTop10Saves && showConditionalHighlight && saves > 0 ? `class="top-player-pill top-rank-${savesRank}" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #A2E5A6;"` : '';
+
                     
-                    // Yellow pill styling for comparison (best among selected teams)
+                    // Yellow fill styling for comparison (best among selected teams)
                     const compareGoalsStyle = isBestGoals ? `class="compare-player-pill" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #F2C640; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
                     const compareGcStyle = isBestGc ? `class="compare-player-pill" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #F2C640; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
                     const compareCsStyle = isBestCs ? `class="compare-player-pill" style="display: inline-block; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 12px; color: #1F2937; min-width: 40px; text-align: center; white-space: nowrap; background: #F2C640; box-shadow: 0 2px 8px rgba(242, 198, 64, 0.25);"` : '';
@@ -7031,12 +7016,12 @@
                     }
                     
                     dynamicColumns = `
-                        <td class="goals" data-sort-value="${goals}">${isBestGoals ? `<span ${compareGoalsStyle}>${goals}</span>` : (goals > 0 && isTop10Goals && showConditionalHighlight) ? `<span ${goalsStyle}>${goals}</span>` : goals > 0 ? goals : `<span style="color: #9CA3AF; opacity: 0.5;">${goals}</span>`}</td>
+                        <td class="goals" data-sort-value="${goals}">${isBestGoals ? `<span ${compareGoalsStyle}>${goals}</span>` : goals > 0 ? goals : `<span style="color: #9CA3AF; opacity: 0.5;">${goals}</span>`}</td>
                         <td class="xg-diff" data-sort-value="${xgDiff}">${xgDiffDisplay}</td>
-                        <td class="gc" data-sort-value="${gc}">${isBestGc ? `<span ${compareGcStyle}>${gc}</span>` : (gc > 0 && isTop10Gc && showConditionalHighlight) ? `<span ${gcStyle}>${gc}</span>` : gc > 0 ? gc : `<span style="color: #9CA3AF; opacity: 0.5;">${gc}</span>`}</td>
+                        <td class="gc" data-sort-value="${gc}">${isBestGc ? `<span ${compareGcStyle}>${gc}</span>` : gc > 0 ? gc : `<span style="color: #9CA3AF; opacity: 0.5;">${gc}</span>`}</td>
                         <td class="xgc-diff" data-sort-value="${xgcDiff}">${xgcDiffDisplay}</td>
-                        <td class="cs" data-sort-value="${cs}">${isBestCs ? `<span ${compareCsStyle}>${cs}</span>` : (cs > 0 && isTop10Cs && showConditionalHighlight) ? `<span ${csStyle}>${cs}</span>` : cs > 0 ? cs : `<span style="color: #9CA3AF; opacity: 0.5;">${cs}</span>`}</td>
-                        <td class="saves" data-sort-value="${saves}">${isBestSaves ? `<span ${compareSavesStyle}>${saves}</span>` : (saves > 0 && isTop10Saves && showConditionalHighlight) ? `<span ${savesStyle}>${saves}</span>` : saves > 0 ? saves : `<span style="color: #9CA3AF; opacity: 0.5;">${saves}</span>`}</td>
+                        <td class="cs" data-sort-value="${cs}">${isBestCs ? `<span ${compareCsStyle}>${cs}</span>` : cs > 0 ? cs : `<span style="color: #9CA3AF; opacity: 0.5;">${cs}</span>`}</td>
+                        <td class="saves" data-sort-value="${saves}">${isBestSaves ? `<span ${compareSavesStyle}>${saves}</span>` : saves > 0 ? saves : `<span style="color: #9CA3AF; opacity: 0.5;">${saves}</span>`}</td>
                     `;
                 }
                 
@@ -7095,28 +7080,7 @@
                 }
             }
             
-            // Manage Top Performers toggle when auto-compare is active (for teams)
-            if (!showFDR && selectedTeams.length >= 2) {
-                // Auto-compare is active - turn off Top Performers toggle but keep highlighting enabled
-                const highlightToggle = document.getElementById('highlight-toggle');
-                if (highlightToggle && highlightToggle.checked) {
-                    highlightToggle.checked = false;
-                }
-                // Disable the toggle to prevent user interaction
-                if (highlightToggle) {
-                    highlightToggle.disabled = true;
-                }
-                // Keep showConditionalHighlight true for auto-compare highlighting
-                showConditionalHighlight = true;
-            } else if (!showFDR && selectedTeams.length < 2) {
-                // Auto-compare is not active - re-enable Top Performers toggle
-                const highlightToggle = document.getElementById('highlight-toggle');
-                if (highlightToggle) {
-                    highlightToggle.disabled = false;
-                }
-                // Use the toggle state for highlighting
-                showConditionalHighlight = highlightToggle ? highlightToggle.checked : false;
-            }
+
 
         }
 
@@ -7198,6 +7162,14 @@
             const indicator = document.getElementById('compare-mode-indicator');
             const topPerformerIndicator = document.getElementById('top-performer-indicator');
             
+            // Ensure FDR toggle remains enabled during team compare mode
+            const fdrToggle = document.getElementById('fdr-toggle');
+            if (fdrToggle) {
+                fdrToggle.disabled = false;
+                fdrToggle.style.opacity = '1';
+                fdrToggle.style.cursor = 'pointer';
+            }
+            
             // Hide compare mode indicator when in Fixture mode (FDR mode)
             if (showFDR) {
                 indicator.style.display = 'none';
@@ -7239,6 +7211,14 @@
                 console.log(`Team ${teamId} removed from selection. Selected teams:`, selectedTeams);
             }
             
+            // Ensure FDR toggle remains enabled during team compare mode
+            const fdrToggle = document.getElementById('fdr-toggle');
+            if (fdrToggle) {
+                fdrToggle.disabled = false;
+                fdrToggle.style.opacity = '1';
+                fdrToggle.style.cursor = 'pointer';
+            }
+            
             // Update compare mode indicator
             updateCompareModeIndicator();
             
@@ -7266,27 +7246,25 @@
                 const highlightToggle = document.getElementById('highlight-toggle');
                 const topPerformerIndicator = document.getElementById('top-performer-indicator');
                 if (selectedPlayers.length >= 2) {
-                    // Auto-compare is active - turn off and lock Top Performers toggle
+                    // Auto-compare is active - but don't disable top performers toggle
+                    // Let the toggle drive the highlighting behavior
                     if (highlightToggle && highlightToggle.checked) {
-                        highlightToggle.checked = false;
+                        // Top performers is ON - use green pills
+                        showConditionalHighlight = true;
+                    } else {
+                        // Top performers is OFF - use yellow pills for compare
                         showConditionalHighlight = false;
                     }
-                    // Disable the toggle to prevent user interaction
-                    if (highlightToggle) {
-                        highlightToggle.disabled = true;
-                    }
-                    // Hide Top Performer indicator when auto-compare is active
-                    if (topPerformerIndicator) {
-                        topPerformerIndicator.style.display = 'none';
-                    }
                 } else {
-                    // Auto-compare is not active - re-enable Top Performers toggle
+                    // Auto-compare is not active - restore previous highlight state
                     if (highlightToggle) {
-                        highlightToggle.disabled = false;
+                        showConditionalHighlight = highlightToggle.checked;
                     }
                     // Show Top Performer indicator if toggle is on
                     if (topPerformerIndicator && showConditionalHighlight) {
                         topPerformerIndicator.style.display = 'block';
+                    } else if (topPerformerIndicator) {
+                        topPerformerIndicator.style.display = 'none';
                     }
                 }
             }
@@ -7336,8 +7314,8 @@
                 }
             });
             
-            // Return top 10 teams
-            return teamsWithStats.slice(0, 10);
+            // Return top 6 teams
+            return teamsWithStats.slice(0, 6);
         }
 
         function getTeamFixtures(teamId, gameweeks) {
@@ -8493,7 +8471,7 @@
         }
         
         function findStatLeader(selectedItems, stat) {
-            let leader = null;
+            let leaders = [];
             let maxValue = -Infinity;
             
             console.log(`findStatLeader called with stat: ${stat}, currentView: ${currentView}`);
@@ -8514,15 +8492,31 @@
                     console.log(`${item.name} (${item.id}) - ${stat}: ${statValue} (from getStatValue)`);
                 }
                 
-                if (statValue > maxValue) {
-                    maxValue = statValue;
-                    leader = item;
-                    console.log(`New leader: ${item.name} with value ${statValue}`);
+                // Convert string values to numbers for proper comparison
+                let numericValue;
+                if (typeof statValue === 'string') {
+                    // Handle delta stats that return strings like "+1.2" or "-0.8"
+                    numericValue = parseFloat(statValue.replace(/[+-]/g, ''));
+                    // Preserve the sign for comparison
+                    if (statValue.startsWith('-')) {
+                        numericValue = -numericValue;
+                    }
+                } else {
+                    numericValue = parseFloat(statValue) || 0;
+                }
+                
+                if (numericValue > maxValue) {
+                    maxValue = numericValue;
+                    leaders = [item];
+                    console.log(`New leader: ${item.name} with value ${statValue} (numeric: ${numericValue})`);
+                } else if (numericValue === maxValue) {
+                    leaders.push(item);
+                    console.log(`Tied leader: ${item.name} with value ${statValue} (numeric: ${numericValue})`);
                 }
             });
             
-            console.log(`Final leader: ${leader?.name} with value ${maxValue}`);
-            return leader;
+            console.log(`Final leaders: ${leaders.map(l => l.name).join(', ')} with value ${maxValue}`);
+            return leaders;
         }
         
         // Add scroll indicator for mobile
@@ -8660,6 +8654,16 @@
         function handleFDRToggle(isChecked) {
             console.log('handleFDRToggle called with:', isChecked);
             
+            // Save current highlight state before changing FDR mode
+            if (!isChecked) {
+                // When turning FDR off, save the current highlight state
+                // Only save if we're not in auto-compare mode
+                const selectedCount = currentView === 'players' ? selectedPlayers.length : selectedTeams.length;
+                if (selectedCount < 2) {
+                    previousHighlightState = showConditionalHighlight;
+                }
+            }
+            
             // Update current FDR mode
             showFDR = isChecked;
             
@@ -8685,10 +8689,11 @@
             
             // Reset button functionality removed
             
-            // Show/hide highlighting toggle based on FDR mode AND current view (only for players view)
+            // Show/hide highlighting toggle based on FDR mode AND current view
             const highlightingToggle = document.getElementById('highlighting-toggle');
+            
+            // Manage players toggle
             if (highlightingToggle) {
-                // Always show the toggle container for players view, but control the toggle state
                 const shouldShow = currentView === 'players';
                 highlightingToggle.style.display = shouldShow ? 'block' : 'none';
                 
@@ -8711,23 +8716,28 @@
                         highlightToggle.style.opacity = '1';
                         highlightToggle.style.cursor = 'pointer';
                         
-                        // Additional check for auto-compare mode
-                        if (selectedPlayers.length >= 2) {
-                            // Auto-compare is active - turn off and lock Top Performers toggle
+                        // Allow top performers toggle to work independently of compare mode
+                        const selectedCount = currentView === 'players' ? selectedPlayers.length : selectedTeams.length;
+                        if (selectedCount >= 2) {
+                            // Auto-compare is active - but don't disable top performers toggle
+                            // Let the toggle drive the highlighting behavior
                             if (highlightToggle.checked) {
-                                highlightToggle.checked = false;
+                                // Top performers is ON - use green pills
+                                showConditionalHighlight = true;
+                            } else {
+                                // Top performers is OFF - use yellow pills for compare
                                 showConditionalHighlight = false;
                             }
-                            highlightToggle.disabled = true;
-                            // Hide Top Performer indicator when auto-compare is active
-                            const topPerformerIndicator = document.getElementById('top-performer-indicator');
-                            if (topPerformerIndicator) {
-                                topPerformerIndicator.style.display = 'none';
-                            }
+                        } else {
+                            // Not in auto-compare mode - restore previous highlight state
+                            showConditionalHighlight = previousHighlightState;
+                            highlightToggle.checked = previousHighlightState;
                         }
                     }
                 }
             }
+            
+
             
             // Handle Last display button state
             const lastButton = document.querySelector('button[onclick="handleRankFilter(\'last\')"]');
@@ -8898,7 +8908,9 @@
             // Update Top Performer indicator
             const topPerformerIndicator = document.getElementById('top-performer-indicator');
             if (topPerformerIndicator) {
-                if (isChecked && !showFDR && selectedPlayers.length < 2) {
+                const selectedCount = currentView === 'players' ? selectedPlayers.length : selectedTeams.length;
+                if (isChecked && !showFDR) {
+                    // Show indicator when top performers is enabled, regardless of compare mode
                     topPerformerIndicator.style.display = 'block';
                 } else {
                     topPerformerIndicator.style.display = 'none';
