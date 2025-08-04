@@ -153,6 +153,7 @@
         
         .table-container {
             min-width: 1200px !important;
+            padding-right: 16px;
         }
         
         .table-scroll-wrapper {
@@ -169,7 +170,7 @@
             background: rgba(255, 255, 255, 0.98);
             border-radius: clamp(12px, 3vw, 24px);
             border: 2px solid rgba(97, 151, 193, 0.2);
-            overflow: visible;
+            overflow: hidden;
             box-shadow: 
                 0 20px 40px rgba(71, 85, 105, 0.08),
                 0 8px 16px rgba(71, 85, 105, 0.04),
@@ -193,6 +194,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-radius: clamp(12px, 3vw, 24px) clamp(12px, 3vw, 24px) 0 0;
         }
 
         .header h1 {
@@ -10451,7 +10453,8 @@
             /* Preserve Desktop Table Container Styling */
             .table-container {
                 min-width: 1200px !important;
-                padding: 15px 30px !important;
+                padding: 15px 30px 15px 30px !important;
+                padding-right: 46px !important;
                 background: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
@@ -10639,6 +10642,172 @@
             }
         }
     </style>
+
+    <!-- Mobile Development Popup -->
+    <div id="mobile-popup" class="mobile-popup" style="display: none;">
+        <div class="mobile-popup-content">
+            <div class="mobile-popup-header">
+                <h3>💻 Desktop Recommended</h3>
+                <button class="mobile-popup-close" onclick="closeMobilePopup()">×</button>
+            </div>
+            <div class="mobile-popup-body">
+                <p>Mobile view is under development. For the best experience and full functionality, please use desktop view.</p>
+            </div>
+            <div class="mobile-popup-footer">
+                <button class="mobile-popup-btn" onclick="closeMobilePopup()">Got it</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Mobile Popup Styles */
+        .mobile-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(4px);
+        }
+
+        .mobile-popup-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(203, 213, 225, 0.4);
+        }
+
+        .mobile-popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .mobile-popup-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1A202C;
+        }
+
+        .mobile-popup-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #64748B;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-popup-close:hover {
+            background: #F1F5F9;
+            color: #475569;
+        }
+
+        .mobile-popup-body {
+            margin-bottom: 20px;
+        }
+
+        .mobile-popup-body p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #4A5568;
+        }
+
+        .mobile-popup-footer {
+            text-align: center;
+        }
+
+        .mobile-popup-btn {
+            background: #6197C1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(97, 151, 193, 0.3);
+        }
+
+        .mobile-popup-btn:hover {
+            background: #4A7C9A;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(97, 151, 193, 0.4);
+        }
+
+        .mobile-popup-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Only show on mobile devices */
+        @media (min-width: 1200px) {
+            .mobile-popup {
+                display: none !important;
+            }
+        }
+    </style>
+
+    <script>
+        // Mobile popup functionality
+        function showMobilePopup() {
+            const popup = document.getElementById('mobile-popup');
+            if (popup) {
+                popup.style.display = 'flex';
+            }
+        }
+
+        function closeMobilePopup() {
+            const popup = document.getElementById('mobile-popup');
+            if (popup) {
+                popup.style.display = 'none';
+            }
+        }
+
+        // Show popup on mobile devices
+        function checkMobileAndShowPopup() {
+            const isMobile = window.innerWidth < 1200;
+            const hasSeenPopup = localStorage.getItem('mobile-popup-dismissed');
+            
+            if (isMobile && !hasSeenPopup) {
+                // Small delay to ensure page is loaded
+                setTimeout(showMobilePopup, 500);
+            }
+        }
+
+        // Close popup and remember dismissal
+        function closeMobilePopup() {
+            const popup = document.getElementById('mobile-popup');
+            if (popup) {
+                popup.style.display = 'none';
+                localStorage.setItem('mobile-popup-dismissed', 'true');
+            }
+        }
+
+        // Check on page load
+        document.addEventListener('DOMContentLoaded', checkMobileAndShowPopup);
+        
+        // Check on window resize
+        window.addEventListener('resize', checkMobileAndShowPopup);
+    </script>
 
 </body>
 </html> 
