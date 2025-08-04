@@ -8809,9 +8809,15 @@
         
         function findStatLeader(selectedItems, stat) {
             let leaders = [];
-            let maxValue = -Infinity;
+            let bestValue = -Infinity;
             
-            console.log(`findStatLeader called with stat: ${stat}, currentView: ${currentView}`);
+            // For goals_conceded, lower is better; for others, higher is better
+            const isLowerBetter = stat === 'goals_conceded';
+            if (isLowerBetter) {
+                bestValue = Infinity;
+            }
+            
+            console.log(`findStatLeader called with stat: ${stat}, currentView: ${currentView}, isLowerBetter: ${isLowerBetter}`);
             console.log(`Selected items:`, selectedItems);
             
             selectedItems.forEach(item => {
@@ -8842,17 +8848,31 @@
                     numericValue = parseFloat(statValue) || 0;
                 }
                 
-                if (numericValue > maxValue) {
-                    maxValue = numericValue;
-                    leaders = [item];
-                    console.log(`New leader: ${item.name} with value ${statValue} (numeric: ${numericValue})`);
-                } else if (numericValue === maxValue) {
-                    leaders.push(item);
-                    console.log(`Tied leader: ${item.name} with value ${statValue} (numeric: ${numericValue})`);
+                // Compare based on whether lower or higher is better
+                if (isLowerBetter) {
+                    // For goals_conceded, lower values are better
+                    if (numericValue < bestValue) {
+                        bestValue = numericValue;
+                        leaders = [item];
+                        console.log(`New leader: ${item.name} with value ${statValue} (numeric: ${numericValue})`);
+                    } else if (numericValue === bestValue) {
+                        leaders.push(item);
+                        console.log(`Tied leader: ${item.name} with value ${statValue} (numeric: ${numericValue})`);
+                    }
+                } else {
+                    // For other stats, higher values are better
+                    if (numericValue > bestValue) {
+                        bestValue = numericValue;
+                        leaders = [item];
+                        console.log(`New leader: ${item.name} with value ${statValue} (numeric: ${numericValue})`);
+                    } else if (numericValue === bestValue) {
+                        leaders.push(item);
+                        console.log(`Tied leader: ${item.name} with value ${statValue} (numeric: ${numericValue})`);
+                    }
                 }
             });
             
-            console.log(`Final leaders: ${leaders.map(l => l.name).join(', ')} with value ${maxValue}`);
+            console.log(`Final leaders: ${leaders.map(l => l.name).join(', ')} with value ${bestValue}`);
             return leaders;
         }
         
