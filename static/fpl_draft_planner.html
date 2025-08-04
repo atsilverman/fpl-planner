@@ -93,12 +93,12 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
             min-height: 100vh;
-            min-width: 1200px;
+            min-width: 1200px; /* Preserve desktop layout */
             padding: clamp(8px, 2vw, 24px);
             color: #142634;
             line-height: 1.6;
             font-size: clamp(14px, 2vw, 16px);
-            overflow-x: hidden;
+            overflow-x: auto;
         }
         
         /* Global overflow prevention */
@@ -106,24 +106,70 @@
             box-sizing: border-box;
         }
         
-        /* Prevent text overflow in all elements */
+        /* Allow horizontal scrolling for main containers */
         .container,
         .header,
         .view-controls,
         .filter-controls,
         .table-container,
         .modal-content {
-            overflow-x: hidden;
+            overflow-x: auto;
         }
+        
+        /* Force desktop layout on all screen sizes - override all responsive breakpoints */
+        * {
+            min-width: auto !important;
+        }
+        
+        /* Prevent any responsive behavior on controls */
+        .view-controls,
+        .controls-container,
+        .controls-top-row {
+            min-width: 1200px !important;
+            flex-shrink: 0 !important;
+        }
+        
+        .customize-container,
+        .search-container,
+        .search-input,
+        .fixtures-toggle-container {
+            flex-shrink: 0 !important;
+        }
+        
+        body {
+            min-width: 1200px !important;
+        }
+        
+        .container {
+            min-width: 1200px !important;
+            max-width: 1400px !important;
+        }
+        
+        .player-table,
+        .team-table {
+            min-width: 1200px !important;
+            table-layout: fixed !important;
+        }
+        
+        .table-container {
+            min-width: 1200px !important;
+        }
+        
+        .table-scroll-wrapper {
+            min-width: 1200px !important;
+        }
+        
+
 
         .container {
-            max-width: clamp(320px, 95vw, 1400px);
-            min-width: 1200px;
+            max-width: clamp(1200px, 95vw, 1400px);
+            min-width: 1200px; /* Preserve desktop layout */
+            width: 100%;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.98);
             border-radius: clamp(12px, 3vw, 24px);
             border: 2px solid rgba(97, 151, 193, 0.2);
-            overflow: hidden;
+            overflow: visible;
             box-shadow: 
                 0 20px 40px rgba(71, 85, 105, 0.08),
                 0 8px 16px rgba(71, 85, 105, 0.04),
@@ -237,23 +283,7 @@
             color: #3B82F6;
         }
 
-        /* Mobile responsive adjustments for header */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: row;
-                text-align: left;
-                gap: clamp(6px, 1vw, 10px);
-            }
 
-            .header-text {
-                text-align: left;
-            }
-
-            .field-icon {
-                width: clamp(20px, 3vw, 30px);
-                height: clamp(20px, 3vw, 30px);
-            }
-        }
 
         .view-controls {
             padding: clamp(8px, 2vw, 16px) clamp(16px, 3vw, 32px) 8px clamp(16px, 3vw, 32px);
@@ -261,29 +291,34 @@
             flex-direction: column;
             gap: clamp(8px, 2vw, 16px);
             width: 100%;
-            min-width: 100%;
+            min-width: 1200px;
             max-width: 100%;
             box-sizing: border-box;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            flex-shrink: 0;
         }
 
         .controls-container {
             padding: 8px 0;
             max-width: 100%;
             width: 100%;
-            min-width: 100%;
+            min-width: 1200px;
             box-sizing: border-box;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            flex-shrink: 0;
         }
         
         .controls-top-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: clamp(8px, 2vw, 16px);
+            flex-wrap: nowrap;
+            gap: 16px;
+            min-width: 1200px;
+            width: 100%;
+            flex-shrink: 0;
         }
 
         /* Customize Button Container (Left) */
@@ -291,6 +326,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-shrink: 0;
         }
 
         /* Reset Button Container */
@@ -351,22 +387,25 @@
             align-items: center;
             margin-left: auto;
             gap: 16px;
+            flex-shrink: 0;
         }
 
         .search-input {
-            padding: 0 clamp(30px, 4vw, 40px) 0 clamp(12px, 2vw, 16px);
+            padding: 0 40px 0 16px;
             border: 2px solid rgba(203, 213, 225, 0.6);
             border-radius: 12px;
-            font-size: clamp(14px, 2.2vw, 16px);
+            font-size: 16px;
             font-weight: 500;
             background: rgba(255, 255, 255, 0.98);
             color: #334155;
-            width: clamp(250px, 30vw, 300px);
+            width: 300px;
+            min-width: 300px;
             min-height: 44px;
             transition: all 0.3s ease;
             box-shadow: 
                 0 2px 8px rgba(0, 0, 0, 0.08),
                 0 1px 3px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
         }
 
         .search-input:focus {
@@ -637,19 +676,19 @@
                 transform: scale(0.98);
             }
             
-            /* Improve table responsiveness */
+            /* Preserve desktop table layout */
             .table-container {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 width: 100%;
-                min-width: 100%;
+                min-width: 1200px; /* Preserve desktop layout */
                 max-width: 100%;
                 box-sizing: border-box;
             }
             
             .player-table,
             .team-table {
-                min-width: 600px;
+                min-width: 1200px; /* Preserve desktop layout */
                 font-size: 14px;
             }
             
@@ -731,9 +770,9 @@
             justify-content: center;
             align-items: center;
             gap: clamp(8px, 2vw, 16px);
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             width: 100%;
-            min-width: 100%;
+            min-width: 1200px;
             max-width: 100%;
             box-sizing: border-box;
             overflow-x: auto;
@@ -1996,14 +2035,17 @@
         .table-container {
             padding: 15px 30px;
             max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .table-scroll-wrapper {
             max-height: none;
             overflow-y: visible;
-            overflow-x: visible;
+            overflow-x: auto;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.98);
+            min-width: 1200px; /* Preserve desktop layout */
         }
 
 
@@ -2091,8 +2133,8 @@
 
         .player-table {
             width: 100%;
-            min-width: 800px; /* Ensure minimum width for all columns */
-            table-layout: fixed;
+            min-width: 1200px; /* Preserve desktop layout */
+            table-layout: fixed; /* Maintain consistent column widths */
             border-collapse: collapse;
             background: rgba(255, 255, 255, 0.98);
             font-size: 0.875rem;
@@ -3110,7 +3152,7 @@
             
             .player-table {
                 font-size: 12px;
-                min-width: 600px; /* Ensure minimum width for readability */
+                min-width: 1200px; /* Preserve desktop layout */
             }
             
             .player-table th,
@@ -3357,7 +3399,7 @@
             .player-table,
             .team-table {
                 font-size: 12px;
-                min-width: 500px;
+                min-width: 1200px; /* Preserve desktop layout */
             }
             
             .player-table th,
@@ -3611,7 +3653,7 @@
             right: -4px;
             top: 50%;
             transform: translateY(-50%);
-            display: flex;
+            display: none !important; /* Hidden by default */
             align-items: center;
             z-index: 1001;
         }
@@ -3622,7 +3664,7 @@
             right: -4px;
             top: 50%;
             transform: translateY(-50%);
-            display: flex;
+            display: none !important; /* Hidden by default */
             align-items: center;
             z-index: 1001;
         }
@@ -4079,11 +4121,12 @@
 
         /* Additional mobile-specific improvements */
         @media (max-width: 768px) {
-            /* Improve table readability on mobile */
+            /* Preserve desktop layout on mobile */
             .player-table {
                 border-radius: 12px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                min-width: 900px; /* Ensure all columns are visible */
+                min-width: 1200px; /* Preserve desktop layout */
+                table-layout: fixed; /* Maintain consistent column widths */
             }
             
             /* Make horizontal scrolling more obvious on mobile */
@@ -4219,7 +4262,7 @@
             /* Reduce table font size further */
             .player-table {
                 font-size: 10px;
-                min-width: 450px;
+                min-width: 1200px; /* Preserve desktop layout */
             }
             
             .player-table th,
@@ -4279,38 +4322,7 @@
             }
         }
 
-        /* Comprehensive Mobile Responsive Design */
-        
-        /* Large tablets and small desktops */
-        @media (max-width: 1024px) {
-            .container {
-                margin: 0 8px;
-            }
-            
-            .header h1 {
-                font-size: clamp(1.8rem, 4vw, 2.2rem);
-            }
-            
-            .header p {
-                font-size: clamp(0.9rem, 2vw, 1rem);
-            }
-            
-            .view-toggle {
-                padding: 3px;
-            }
-            
-            .toggle-btn {
-                padding: clamp(12px, 2.5vw, 16px) clamp(20px, 3vw, 32px);
-                font-size: clamp(13px, 2vw, 16px);
-                min-width: clamp(80px, 15vw, 120px);
-            }
-            
-            .team-toggle-btn {
-                padding: clamp(8px, 2vw, 12px) clamp(16px, 2.5vw, 24px);
-                font-size: clamp(12px, 1.8vw, 14px);
-                min-width: clamp(60px, 12vw, 80px);
-            }
-        }
+
 
         /* Tablets and large phones */
         @media (max-width: 768px) {
@@ -4544,7 +4556,7 @@
             
             .player-table,
             .team-table {
-                min-width: 600px;
+                min-width: 1200px; /* Preserve desktop layout */
                 font-size: 11px;
             }
             
@@ -4749,44 +4761,7 @@
     </style>
 </head>
 <body>
-    <!-- Mobile Detection and Desktop-Only Message -->
-    <div id="mobile-message" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;">
-        <div style="text-align: center; max-width: 400px; background: rgba(255, 255, 255, 0.98); padding: 40px 30px; border-radius: 16px; box-shadow: 0 20px 40px rgba(71, 85, 105, 0.1);">
-            <div style="font-size: 48px; margin-bottom: 20px;">💻</div>
-            <h1 style="font-size: 24px; font-weight: 700; color: #1F2937; margin-bottom: 16px;">Desktop Only</h1>
-            <p style="font-size: 16px; color: #6B7280; line-height: 1.6; margin-bottom: 20px;">
-                The FPL Draft Planner is optimized for desktop use. Please access this tool on a computer or tablet for the best experience.
-            </p>
 
-        </div>
-    </div>
-
-    <script>
-        // Mobile detection and desktop-only enforcement
-        function checkDevice() {
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                            window.innerWidth < 768;
-            
-            const mobileMessage = document.getElementById('mobile-message');
-            const mainContent = document.querySelector('.container');
-            
-            if (isMobile) {
-                mobileMessage.style.display = 'flex';
-                if (mainContent) {
-                    mainContent.style.display = 'none';
-                }
-            } else {
-                mobileMessage.style.display = 'none';
-                if (mainContent) {
-                    mainContent.style.display = 'block';
-                }
-            }
-        }
-        
-        // Check on load and resize
-        window.addEventListener('load', checkDevice);
-        window.addEventListener('resize', checkDevice);
-    </script>
     <div class="container">
         <div class="header">
             <div class="header-left">
@@ -4824,7 +4799,7 @@
 
                 <!-- Customize Button (Center) -->
                 <div class="customize-container" style="position: relative;">
-                    <button class="btn btn-customize" onclick="toggleFilters()" id="customize-btn" style="margin-right: 140px;">
+                    <button class="btn btn-customize" onclick="toggleFilters()" id="customize-btn">
                         <div class="filter-icon" id="filter-icon"></div>
                     </button>
                     
@@ -4861,8 +4836,10 @@
                         </div>
                     </div>
                     
-                    <input type="text" id="search-input" placeholder="Search players/teams..." class="search-input" oninput="handleSearch()">
-                    <div class="search-icon"></div>
+                    <div class="search-input-wrapper">
+                        <input type="text" id="search-input" placeholder="Search players/teams..." class="search-input" oninput="handleSearch()">
+                        <div class="search-icon"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -5061,7 +5038,7 @@
                 </div>
                 <div class="color-scale-item">
                     <div class="color-scale-dot" style="background: #A8E0BB; border-color: #15803d;"></div>
-                    <span>Easy</span>
+                    <span>Good</span>
                 </div>
                 <div class="color-scale-item">
                     <div class="color-scale-dot" style="background: #D9FAE4; border-color: #047857;"></div>
@@ -5099,7 +5076,7 @@
                 </div>
                 <div class="color-scale-item">
                     <div class="color-scale-dot" style="background: #A8E0BB; border-color: #15803d;"></div>
-                    <span>Easy</span>
+                    <span>Good</span>
                 </div>
                 <div class="color-scale-item">
                     <div class="color-scale-dot" style="background: #D9FAE4; border-color: #047857;"></div>
@@ -7468,6 +7445,15 @@
             const indicator = document.getElementById('compare-mode-indicator');
             const topPerformerIndicator = document.getElementById('top-performer-indicator');
             
+            // Debug logging
+            console.log('updateCompareModeIndicator called:', {
+                selectedPlayers: selectedPlayers.length,
+                selectedTeams: selectedTeams.length,
+                showFDR: showFDR,
+                showConditionalHighlight: showConditionalHighlight,
+                currentView: currentView
+            });
+            
             // Ensure FDR toggle remains enabled during team compare mode
             const fdrToggle = document.getElementById('fdr-toggle');
             if (fdrToggle) {
@@ -7482,6 +7468,7 @@
                 if (topPerformerIndicator) {
                     topPerformerIndicator.style.display = 'none';
                 }
+                console.log('FDR mode - hiding both indicators');
                 return;
             }
             
@@ -7494,6 +7481,7 @@
                 if (topPerformerIndicator) {
                     topPerformerIndicator.style.display = 'none';
                 }
+                console.log('Compare mode active - showing compare indicator');
             } else {
                 // Hide compare mode indicator
                 indicator.style.display = 'none';
@@ -7501,10 +7489,36 @@
                 const isInCompareMode = selectedPlayers.length >= 2;
                 if (topPerformerIndicator && showConditionalHighlight && !isInCompareMode) {
                     topPerformerIndicator.style.display = 'block';
+                    console.log('Top performer mode active - showing top performer indicator');
                 } else if (topPerformerIndicator) {
                     topPerformerIndicator.style.display = 'none';
+                    console.log('Hiding top performer indicator');
                 }
             }
+            
+            // Force hide indicators on page load if no selections
+            if (selectedCount === 0) {
+                if (indicator) {
+                    indicator.style.display = 'none';
+                    console.log('Force hiding compare indicator (no selections)');
+                }
+                if (topPerformerIndicator) {
+                    topPerformerIndicator.style.display = 'none';
+                    console.log('Force hiding top performer indicator (no selections)');
+                }
+            }
+            
+            // Final check - force hide if still showing
+            setTimeout(() => {
+                if (indicator && indicator.style.display !== 'none') {
+                    indicator.style.display = 'none';
+                    console.log('Final force hide - compare indicator');
+                }
+                if (topPerformerIndicator && topPerformerIndicator.style.display !== 'none') {
+                    topPerformerIndicator.style.display = 'none';
+                    console.log('Final force hide - top performer indicator');
+                }
+            }, 100);
         }
 
         async function toggleTeamSelection(teamId) {
@@ -10200,6 +10214,431 @@
 
     </script>
     
+    <style>
+        /* MOBILE-FIRST RESPONSIVE DESIGN - Maintain Desktop Consistency */
+        /* This redesigns mobile to match desktop exactly while being mobile-friendly */
+        
+        @media (max-width: 1199px) {
+            /* Mobile Layout - Same as Desktop but Responsive */
+            body {
+                min-width: auto !important;
+                padding: 8px !important;
+                overflow-x: auto !important;
+            }
+            
+            .container {
+                min-width: 1200px !important;
+                max-width: none !important;
+                margin: 0 !important;
+                border-radius: 12px !important;
+                /* Preserve desktop styling */
+                background: rgba(255, 255, 255, 0.98) !important;
+                border: 2px solid rgba(97, 151, 193, 0.2) !important;
+                box-shadow: 
+                    0 20px 40px rgba(71, 85, 105, 0.08),
+                    0 8px 16px rgba(71, 85, 105, 0.04),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+                backdrop-filter: blur(10px) !important;
+            }
+            
+            /* Preserve Desktop Header Styling */
+            .header {
+                background: linear-gradient(135deg, #E8F2FC 0%, #F0F4F8 50%, #E8F0F8 100%) !important;
+                color: #2D3748 !important;
+                padding: 28px 16px !important;
+                height: 70px !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+            }
+            
+            .header h1 {
+                font-size: 1.25rem !important;
+                margin-bottom: 6px !important;
+                color: #1A202C !important;
+                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+            }
+            
+            .header p {
+                font-size: 0.55rem !important;
+                color: #4A5568 !important;
+            }
+            
+            /* Preserve Desktop Controls Styling */
+            .view-controls {
+                padding: 8px 16px 8px 16px !important;
+                background: transparent !important;
+                min-width: 1200px !important;
+                width: 100% !important;
+                flex-shrink: 0 !important;
+                overflow-x: auto !important;
+            }
+            
+            .controls-container {
+                min-width: 1200px !important;
+                width: 100% !important;
+                flex-shrink: 0 !important;
+            }
+            
+            .controls-top-row {
+                min-width: 1200px !important;
+                width: 100% !important;
+                flex-wrap: nowrap !important;
+                flex-shrink: 0 !important;
+                display: flex !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
+                gap: 16px !important;
+                padding: 0 16px !important;
+                box-sizing: border-box !important;
+                flex-direction: row !important;
+            }
+            
+            .search-container {
+                flex-shrink: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 16px !important;
+                white-space: nowrap !important;
+                margin-left: auto !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+            }
+            
+            .customize-container {
+                flex-shrink: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                white-space: nowrap !important;
+            }
+            
+            .search-input {
+                min-width: 300px !important;
+                width: 300px !important;
+                flex-shrink: 0 !important;
+                white-space: nowrap !important;
+            }
+            
+            .toggle-btn {
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
+            }
+            
+            #customize-btn {
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
+            }
+            
+            .fixtures-toggle-container {
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+            }
+            
+            .fdr-info-icon {
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            
+            .search-input-wrapper {
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            
+            .filter-controls {
+                padding: 16px 8px !important;
+                background: rgba(248, 250, 252, 0.7) !important;
+                border-bottom: 1px solid rgba(203, 213, 225, 0.3) !important;
+                backdrop-filter: blur(8px) !important;
+                min-width: 1200px !important;
+                width: 100% !important;
+                flex-wrap: nowrap !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: clamp(8px, 2vw, 16px) !important;
+            }
+            
+            /* Preserve Desktop Button Styling */
+            .toggle-btn {
+                padding: 12px 20px !important;
+                font-size: 14px !important;
+                min-width: 80px !important;
+                border-radius: 8px !important;
+                background: var(--button-color) !important;
+                color: white !important;
+                border: 1px solid var(--button-color) !important;
+            }
+            
+            .toggle-btn.active {
+                background: var(--button-color) !important;
+                color: white !important;
+            }
+            
+            .toggle-btn:not(.active) {
+                background: transparent !important;
+                color: var(--button-color) !important;
+                border: 1px solid var(--button-color) !important;
+            }
+            
+            .team-toggle-btn {
+                padding: 8px 16px !important;
+                font-size: 12px !important;
+                min-width: 60px !important;
+                border-radius: 8px !important;
+            }
+            
+            .filter-btn {
+                padding: 4px 6px !important;
+                font-size: 9px !important;
+                min-width: 25px !important;
+                border-radius: 6px !important;
+                background: var(--button-color) !important;
+                color: white !important;
+                border: 1px solid var(--button-color) !important;
+            }
+            
+            .filter-btn.active {
+                background: var(--button-hover) !important;
+                border-color: var(--button-hover) !important;
+            }
+            
+            .btn {
+                padding: 6px 10px !important;
+                font-size: 11px !important;
+                border-radius: 8px !important;
+            }
+            
+            /* Preserve Desktop Table Styling - CRITICAL */
+            .player-table,
+            .team-table {
+                min-width: 1200px !important;
+                table-layout: fixed !important;
+                font-size: 0.875rem !important;
+                background: rgba(255, 255, 255, 0.98) !important;
+                border-radius: 20px !important;
+                overflow: hidden !important;
+                border: 1px solid rgba(203, 213, 225, 0.4) !important;
+                box-shadow: 
+                    0 8px 32px rgba(71, 85, 105, 0.06),
+                    0 4px 16px rgba(71, 85, 105, 0.04) !important;
+            }
+            
+            /* Preserve Desktop Table Header Styling - CRITICAL */
+            .player-table th,
+            .team-table th {
+                background: #2D5A7A !important; /* Desktop dark blue */
+                color: white !important;
+                font-weight: 700 !important;
+                padding: 8px 6px !important;
+                font-size: 0.875rem !important;
+                border: none !important;
+            }
+            
+            .player-table td,
+            .team-table td {
+                padding: 8px 6px !important;
+                font-size: 0.875rem !important;
+                border-bottom: 1px solid rgba(203, 213, 225, 0.2) !important;
+                background: transparent !important;
+            }
+            
+            /* Preserve Desktop Table Container Styling */
+            .table-container {
+                min-width: 1200px !important;
+                padding: 15px 30px !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            
+            .table-scroll-wrapper {
+                min-width: 1200px !important;
+                background: rgba(255, 255, 255, 0.98) !important;
+                border-radius: 20px !important;
+                overflow: hidden !important;
+            }
+            
+            /* Preserve Desktop Fixture Styling */
+            .fixture {
+                padding: 4px 6px !important;
+                font-size: 12px !important;
+                border-radius: 6px !important;
+                border: 1px solid rgba(203, 213, 225, 0.3) !important;
+            }
+            
+            /* Allow fixture background colors to work properly */
+            .fixture[style*="background"] {
+                background: inherit !important;
+            }
+            
+            /* Preserve Desktop Modal Styling */
+            .modal-content {
+                padding: 20px !important;
+                border-radius: 16px !important;
+                max-width: 500px !important;
+                background: rgba(255, 255, 255, 0.98) !important;
+                border: 1px solid rgba(203, 213, 225, 0.4) !important;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+            }
+            
+            .modal-content h3 {
+                font-size: 18px !important;
+                color: #1A202C !important;
+            }
+            
+            .modal-content p {
+                font-size: 14px !important;
+                color: #4A5568 !important;
+            }
+            
+            .pagination-container {
+                gap: 8px !important;
+                background: transparent !important;
+                border: none !important;
+            }
+            
+            /* Remove any dashed borders or mobile-specific styling */
+            .table-container::before,
+            .table-container::after {
+                display: none !important;
+            }
+            
+            /* Ensure no mobile-specific background changes */
+            .container::before,
+            .container::after {
+                display: none !important;
+            }
+            
+            /* Add desktop-style scroll indicator for mobile */
+            .table-container::before {
+                content: '← Scroll horizontally to see all data →';
+                position: absolute;
+                top: -35px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #2D5A7A !important; /* Desktop dark blue */
+                color: white !important;
+                padding: 8px 16px !important;
+                border-radius: 20px !important;
+                font-size: 12px !important;
+                font-weight: 600 !important;
+                z-index: 10 !important;
+                white-space: nowrap !important;
+                box-shadow: 0 4px 12px rgba(45, 90, 122, 0.3) !important;
+            }
+            
+            /* FDR Toggle Container */
+            .fixtures-toggle-container {
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                padding: 8px 12px !important;
+                background: rgba(248, 250, 252, 0.8) !important;
+                border: 1px solid rgba(203, 213, 225, 0.4) !important;
+                border-radius: 8px !important;
+                min-height: 44px !important;
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
+            }
+            
+            /* Search input wrapper */
+            .search-input-wrapper {
+                position: relative !important;
+                flex-shrink: 0 !important;
+            }
+            
+            .search-input {
+                width: 300px !important; /* Fixed width - same as desktop max */
+                padding-right: 40px !important; /* Space for icon */
+                padding-left: 16px !important;
+                height: 44px !important;
+                font-size: 16px !important;
+                border: 2px solid rgba(203, 213, 225, 0.6) !important;
+                border-radius: 12px !important;
+                background: rgba(255, 255, 255, 0.98) !important;
+                color: #334155 !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+                box-sizing: border-box !important;
+                flex-shrink: 0 !important;
+            }
+            
+            /* Keep Search Icon Inside Input */
+            .search-icon {
+                position: absolute !important;
+                right: 12px !important;
+                top: 50% !important;
+                transform: translateY(-50%) !important;
+                width: 16px !important;
+                height: 16px !important;
+                z-index: 2 !important;
+                pointer-events: none !important;
+                background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 3.5C7.95763 3.5 4.68066 6.77697 4.68066 10.8193C4.68066 14.8617 7.95763 18.1386 12 18.1386C16.0423 18.1386 19.3193 14.8617 19.3193 10.8193C19.3193 6.77697 16.0423 3.5 12 3.5ZM3.18066 10.8193C3.18066 5.94854 7.1292 2 12 2C16.8707 2 20.8193 5.94854 20.8193 10.8193C20.8193 13.5062 19.6177 15.9125 17.7225 17.5301L20.2719 20.7877C20.5272 21.1139 20.4697 21.5853 20.1435 21.8405C19.8173 22.0958 19.3459 22.0383 19.0907 21.7121L16.5021 18.4045C15.1842 19.1884 13.6447 19.6386 12 19.6386C7.1292 19.6386 3.18066 15.6901 3.18066 10.8193Z' fill='%239CA3AF'/%3E%3C/svg%3E") !important;
+                background-size: contain !important;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+            }
+            
+            /* Essential fixes only - preserve desktop layout for all screen sizes */
+            @media (max-width: 1199px) {
+                /* Fix customize button position */
+                #customize-btn {
+                    margin-right: 140px !important;
+                }
+                
+                /* Preserve pill backgrounds */
+                .compare-mode-pill {
+                    background: #F2C640 !important;
+                    color: #1F2937 !important;
+                }
+                
+                .top-performer-pill {
+                    background: #22C55E !important;
+                    color: #1F2937 !important;
+                }
+                
+                .pill-description {
+                    color: #1F2937 !important;
+                }
+                
+                /* Force hide indicators by default */
+                .compare-mode-indicator,
+                .top-performer-indicator {
+                    display: none !important;
+                    visibility: hidden !important;
+                    opacity: 0 !important;
+                }
+                
+                /* Preserve row selection styling */
+                #player-table tbody tr.selected,
+                #team-table tbody tr.selected {
+                    background-color: rgba(60, 110, 150, 0.1) !important;
+                    border-left: 4px solid #6197C1 !important;
+                }
+                
+                #player-table tbody tr.unselected,
+                #team-table tbody tr.unselected {
+                    opacity: 0.4 !important;
+                    color: #64748B !important;
+                }
+                
+                #player-table tbody tr.unselected td,
+                #team-table tbody tr.unselected td {
+                    color: #64748B !important;
+                }
+                
+                #player-table tbody tr.unselected .points,
+                #team-table tbody tr.unselected .points {
+                    opacity: 0.6 !important;
+                }
+            }
+        }
+    </style>
 
 </body>
 </html> 

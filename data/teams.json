@@ -86,10 +86,10 @@
       "atk_a": 0,
       "def_h": 0,
       "def_a": 0,
-      "atk_h_rank": 10,
-      "atk_a_rank": 10,
-      "def_h_rank": 10,
-      "def_a_rank": 10
+      "atk_h_rank": 20,
+      "atk_a_rank": 20,
+      "def_h_rank": 20,
+      "def_a_rank": 20
     },
     {
       "id": 7,
@@ -161,10 +161,10 @@
       "atk_a": 0,
       "def_h": 0,
       "def_a": 0,
-      "atk_h_rank": 10,
-      "atk_a_rank": 10,
-      "def_h_rank": 10,
-      "def_a_rank": 10
+      "atk_h_rank": 20,
+      "atk_a_rank": 20,
+      "def_h_rank": 20,
+      "def_a_rank": 20
     },
     {
       "id": 12,
@@ -251,10 +251,10 @@
       "atk_a": 0,
       "def_h": 0,
       "def_a": 0,
-      "atk_h_rank": 10,
-      "atk_a_rank": 10,
-      "def_h_rank": 10,
-      "def_a_rank": 10
+      "atk_h_rank": 20,
+      "atk_a_rank": 20,
+      "def_h_rank": 20,
+      "def_a_rank": 20
     },
     {
       "id": 18,
