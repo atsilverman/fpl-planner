@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fpl-planner</title>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VWXTYFJ379"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-VWXTYFJ379');
+    </script>
 
     <style>
 
@@ -5609,6 +5618,9 @@
         async function switchView(view) {
             currentView = view;
             
+            // Track view toggle in Google Analytics
+            trackViewToggle(view);
+            
             // Show/hide tables
             document.getElementById('player-table').style.display = view === 'players' ? 'table' : 'none';
             document.getElementById('team-table').style.display = view === 'teams' ? 'table' : 'none';
@@ -8470,6 +8482,10 @@
             if (newPage >= 1 && newPage <= totalPages) {
                 currentPage = newPage;
                 console.log('currentPage after:', currentPage);
+                
+                // Track pagination in Google Analytics
+                trackPagination(direction > 0 ? 'next' : 'previous', newPage);
+                
                 await renderTable();
             } else {
                 console.log('Page change rejected - newPage:', newPage, 'valid range: 1 to', totalPages);
@@ -8491,6 +8507,10 @@
             if (page >= 1 && page <= totalPages) {
                 currentPage = page;
                 console.log('currentPage after:', currentPage);
+                
+                // Track pagination in Google Analytics
+                trackPagination('goto', page);
+                
                 await renderTable();
             } else {
                 console.log('Page change rejected - page:', page, 'valid range: 1 to', totalPages);
@@ -8504,6 +8524,10 @@
             const newResultsPerPage = document.getElementById('results-per-page').value;
             resultsPerPage = newResultsPerPage === 'all' ? 'all' : parseInt(newResultsPerPage);
             currentPage = 1; // Reset to first page
+            
+            // Track results per page change in Google Analytics
+            trackPagination('results_per_page', newResultsPerPage);
+            
             await renderTable();
         }
         
@@ -8570,6 +8594,11 @@
         function handleSearch() {
             const searchInput = document.getElementById('search-input');
             searchTerm = searchInput.value.toLowerCase().trim();
+            
+            // Track search in Google Analytics
+            if (searchTerm) {
+                trackSearch(searchTerm);
+            }
             
             // Re-render the table with search filter
             renderTable();
@@ -10012,6 +10041,9 @@
         function handlePositionFilter(position) {
             console.log('handlePositionFilter called with position:', position);
             
+            // Track filter usage in Google Analytics
+            trackFilterUsage('position', position);
+            
             const clickedButton = document.querySelector(`.filter-btn[data-position="${position}"]`);
             
             if (position === '') {
@@ -10051,6 +10083,9 @@
 
         // Location filter handler
         function handleLocationFilter(location) {
+            // Track filter usage in Google Analytics
+            trackFilterUsage('location', location);
+            
             // Remove active class from all location buttons
             document.querySelectorAll('.filter-btn[data-location]').forEach(btn => btn.classList.remove('active'));
             
@@ -10074,8 +10109,74 @@
             // Reset button functionality removed
         }
 
+        // Google Analytics 4 Custom Event Tracking
+        function trackGAEvent(eventName, parameters = {}) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, parameters);
+            }
+        }
+
+        // Track view toggle changes
+        function trackViewToggle(view) {
+            trackGAEvent('view_toggle', {
+                view: view,
+                page_title: document.title
+            });
+        }
+
+        // Track filter usage
+        function trackFilterUsage(filterType, filterValue) {
+            trackGAEvent('filter_used', {
+                filter_type: filterType,
+                filter_value: filterValue,
+                page_title: document.title
+            });
+        }
+
+        // Track player/team selection
+        function trackSelection(selectionType, itemName) {
+            trackGAEvent('item_selected', {
+                selection_type: selectionType,
+                item_name: itemName,
+                page_title: document.title
+            });
+        }
+
+        // Track search usage
+        function trackSearch(searchTerm) {
+            trackGAEvent('search_performed', {
+                search_term: searchTerm,
+                page_title: document.title
+            });
+        }
+
+        // Track pagination
+        function trackPagination(action, pageNumber) {
+            trackGAEvent('pagination', {
+                action: action,
+                page_number: pageNumber,
+                page_title: document.title
+            });
+        }
+
+        // Track modal interactions
+        function trackModalInteraction(action, modalType) {
+            trackGAEvent('modal_interaction', {
+                action: action,
+                modal_type: modalType,
+                page_title: document.title
+            });
+        }
 
 
+
+        // Track page load
+        document.addEventListener('DOMContentLoaded', function() {
+            trackGAEvent('page_view', {
+                page_title: document.title,
+                page_location: window.location.href
+            });
+        });
 
     </script>
     
