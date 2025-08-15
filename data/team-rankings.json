@@ -1,5 +1,5 @@
 {
-  "last_updated": "2025-07-31T22:25:06.134872",
+  "last_updated": "2025-08-15T15:52:38.907536",
   "attack": [
     {
       "team_id": 12,
@@ -8,16 +8,16 @@
       "weighted_score": 2.2296842105263157
     },
     {
-      "team_id": 13,
-      "team_name": "Man City",
-      "rank": 2,
-      "weighted_score": 1.8800526315789474
-    },
-    {
       "team_id": 1,
       "team_name": "Arsenal",
+      "rank": 2,
+      "weighted_score": 1.979
+    },
+    {
+      "team_id": 13,
+      "team_name": "Man City",
       "rank": 3,
-      "weighted_score": 1.7646315789473683
+      "weighted_score": 1.8800526315789474
     },
     {
       "team_id": 15,
@@ -38,28 +38,28 @@
       "weighted_score": 1.7049736842105263
     },
     {
+      "team_id": 2,
+      "team_name": "Aston Villa",
+      "rank": 7,
+      "weighted_score": 1.691
+    },
+    {
       "team_id": 5,
       "team_name": "Brentford",
-      "rank": 7,
+      "rank": 8,
       "weighted_score": 1.6897105263157894
     },
     {
       "team_id": 18,
       "team_name": "Spurs",
-      "rank": 8,
+      "rank": 9,
       "weighted_score": 1.6380263157894737
     },
     {
       "team_id": 4,
       "team_name": "Bournemouth",
-      "rank": 9,
-      "weighted_score": 1.5758157894736842
-    },
-    {
-      "team_id": 2,
-      "team_name": "Aston Villa",
       "rank": 10,
-      "weighted_score": 1.5193684210526317
+      "weighted_score": 1.5758157894736842
     },
     {
       "team_id": 16,
@@ -102,6 +102,12 @@
       "team_name": "Everton",
       "rank": 17,
       "weighted_score": 1.099342105263158
+    },
+    {
+      "team_id": 3,
+      "team_name": "Burnley",
+      "rank": 18,
+      "weighted_score": 0.569
     }
   ],
   "defense": [
@@ -112,100 +118,106 @@
       "weighted_score": -1.9552631578947368
     },
     {
-      "team_id": 1,
-      "team_name": "Arsenal",
-      "rank": 2,
-      "weighted_score": -1.8789473684210527
-    },
-    {
       "team_id": 13,
       "team_name": "Man City",
-      "rank": 3,
+      "rank": 2,
       "weighted_score": -1.6557894736842105
     },
     {
       "team_id": 15,
       "team_name": "Newcastle",
-      "rank": 4,
+      "rank": 3,
       "weighted_score": -1.6205263157894736
     },
     {
       "team_id": 16,
       "team_name": "Nott'm Forest",
-      "rank": 5,
+      "rank": 4,
       "weighted_score": -1.6078947368421053
     },
     {
       "team_id": 9,
       "team_name": "Everton",
-      "rank": 6,
+      "rank": 5,
       "weighted_score": -1.4631578947368422
     },
     {
       "team_id": 7,
       "team_name": "Chelsea",
-      "rank": 7,
+      "rank": 6,
       "weighted_score": -1.2773684210526315
     },
     {
       "team_id": 8,
       "team_name": "Crystal Palace",
-      "rank": 8,
+      "rank": 7,
       "weighted_score": -1.1336842105263158
     },
     {
       "team_id": 14,
       "team_name": "Man Utd",
-      "rank": 9,
+      "rank": 8,
       "weighted_score": -0.8552631578947368
     },
     {
       "team_id": 4,
       "team_name": "Bournemouth",
-      "rank": 10,
+      "rank": 9,
       "weighted_score": -0.8189473684210526
-    },
-    {
-      "team_id": 2,
-      "team_name": "Aston Villa",
-      "rank": 11,
-      "weighted_score": -0.72
     },
     {
       "team_id": 5,
       "team_name": "Brentford",
-      "rank": 12,
+      "rank": 10,
       "weighted_score": -0.4121052631578947
     },
     {
       "team_id": 6,
       "team_name": "Brighton",
-      "rank": 13,
+      "rank": 11,
       "weighted_score": -0.3868421052631579
+    },
+    {
+      "team_id": 1,
+      "team_name": "Arsenal",
+      "rank": 12,
+      "weighted_score": -0.27
     },
     {
       "team_id": 20,
       "team_name": "Wolves",
-      "rank": 14,
+      "rank": 13,
       "weighted_score": -0.2136842105263158
     },
     {
       "team_id": 19,
       "team_name": "West Ham",
-      "rank": 15,
+      "rank": 14,
       "weighted_score": -0.1184210526315789
     },
     {
       "team_id": 10,
       "team_name": "Fulham",
-      "rank": 16,
+      "rank": 15,
       "weighted_score": 0.1010526315789474
     },
     {
       "team_id": 18,
       "team_name": "Spurs",
-      "rank": 17,
+      "rank": 16,
       "weighted_score": 0.1584210526315789
+    },
+    {
+      "team_id": 2,
+      "team_name": "Aston Villa",
+      "rank": 17,
+      "weighted_score": 0.486
+    },
+    {
+      "team_id": 3,
+      "team_name": "Burnley",
+      "rank": 18,
+      "weighted_score": 2.126
     }
   ]
 }

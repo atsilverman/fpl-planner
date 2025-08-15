@@ -173,6 +173,51 @@ def sync_players_2025():
         print(f"❌ Error syncing players: {e}")
         return False
 
+def sync_fixtures_2025():
+    """Sync fixtures data to fixtures_2025 table"""
+    try:
+        fpl_data = fetch_fpl_api_data()
+        if not fpl_data:
+            return False
+            
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # Get fixtures
+        fixtures = fpl_data.get('events', [])
+        
+        # Insert fixture data
+        for fixture in fixtures:
+            cursor.execute("""
+                INSERT INTO fixtures_2025 (
+                    id, event, team_h, team_a, team_h_difficulty, team_a_difficulty, kickoff_time
+                ) VALUES (
+                    %s, %s, %s, %s, %s, %s, %s
+                ) ON CONFLICT (id) DO UPDATE SET
+                    event = EXCLUDED.event,
+                    team_h = EXCLUDED.team_h,
+                    team_a = EXCLUDED.team_a,
+                    team_h_difficulty = EXCLUDED.team_h_difficulty,
+                    team_a_difficulty = EXCLUDED.team_a_difficulty,
+                    kickoff_time = EXCLUDED.kickoff_time,
+                    updated_at = CURRENT_TIMESTAMP
+            """, (
+                fixture['id'], fixture['id'], 
+                fixture.get('team_h'), fixture.get('team_a'),
+                fixture.get('team_h_difficulty', 3), fixture.get('team_a_difficulty', 3),
+                fixture.get('deadline_time')
+            ))
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        print(f"✅ Synced {len(fixtures)} fixtures to fixtures_2025 table")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Error syncing fixtures: {e}")
+        return False
+
 def update_server_to_use_2025_tables():
     """Update the server.py to use the new 2025 tables"""
     try:
@@ -212,8 +257,14 @@ def main():
         print("❌ Failed to sync players. Aborting.")
         return
     
-    # Step 4: Update server
-    print("\n🔧 Step 4: Updating server configuration...")
+    # Step 4: Sync fixtures
+    print("\n📅 Step 4: Syncing fixtures...")
+    if not sync_fixtures_2025():
+        print("❌ Failed to sync fixtures. Aborting.")
+        return
+    
+    # Step 5: Update server
+    print("\n🔧 Step 5: Updating server configuration...")
     update_server_to_use_2025_tables()
     
     print("\n✅ FPL Data Sync Complete!")
@@ -221,6 +272,7 @@ def main():
     print("📊 Summary:")
     print("• Created players_2025 table with current FPL data")
     print("• Updated teams_2025 table with current team data")
+    print("• Updated fixtures_2025 table with current fixture data")
     print("• Updated server.py to use new tables")
     print("\n🚀 Your draft planner will now use the latest FPL data!")
     print("\n💡 Next steps:")
